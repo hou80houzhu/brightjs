@@ -1,0 +1,18 @@
+{
+   "id": "OPEN",
+   "build": "000050",
+   "pathPrefix": "",
+   "updatePage": {
+      "type": 1,
+      "path": [
+         "./index.php",
+         "../index.php",
+         "../index.html",
+         "../*.php",
+         "../*.*"
+      ]
+   },
+   "cssCompressWithout": [],
+   "codeCompressWithout": [],
+   "tmpCompressWithout": []
+}

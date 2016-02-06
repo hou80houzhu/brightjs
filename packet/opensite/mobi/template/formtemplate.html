@@ -1,0 +1,379 @@
+<!--[imageupload]-->
+<div class="imageupload-desc">选择图片</div>
+<input type="file" data-bind="change:input" accept='.png,.gif,.jpg,.jpeg'/>
+<div class="loadingbar">
+    <div class="loadingbar-color"></div>
+</div>
+<!--[imagesuploader]-->
+<div class='imagesuploader-container'>
+    <div class='imagesuploader-filebtnplus'><div class='imagesuploader-addicon'></div><input type='file' multiple='multiple' data-bind='change:file' accept='.png,.gif,.jpg,.jpeg'/></div>
+</div>
+<div class='imagesupload-title'><%=data.title;%></div>
+<div class='imagesuploader-tools'>
+    <div class='imagesuploader-btn' data-bind='click:upload'><i class='fa fa-upload'></i> 开始上传</div>
+    <div class='imagesuploader-btn'><input type='file' multiple='multiple' data-bind='change:file' accept='.png,.gif,.jpg,.jpeg'/><i class='fa fa-plus'></i> 继续添加</div>
+</div>
+<!--[text]-->
+<%if(data.label&&data.label!==''){%>
+<div class='label-block'><%=data.label;%></div>
+<%}%>
+<%if(data.inputType==='text'||data.inputType==='password'||data.inputType==='datetime-local'){%>
+<input data-find='input' data-bind='keyup:keyup' type='<%=data.inputType;%>' value='<%=data.value||'';%>' placeholder='<%=data.placeholder||'';%>'>
+<%}else{%>
+<textarea data-find='input' data-bind='keyup:keyup' placeholder='<%=data.placeholder||'';%>'><%=data.value||'';%></textarea>
+<%}%>
+<%if(data.desc&&data.desc!==''){%>
+<div class='<%=data.isblock?'block':'inline';%>'><%=data.desc;%></div>
+<%}%>
+<!--[textarea]-->
+<%if(data.label&&data.label!==''){%>
+<div class='label-block'><%=data.label;%></div>
+<%}%>
+<div class="likeinput" data-find='input' data-bind='keyup:keyup' placeholder='<%=data.placeholder||'';%>' contenteditable=true><%=data.value||'';%></div>
+<%if(data.desc&&data.desc!==''){%>
+<div class='<%=data.isblock?'block':'inline';%>'><%=data.desc;%></div>
+<%}%>
+<!--[text2]-->
+<%if(data.label&&data.label!==''){%>
+<div class='label-block'><%=data.label;%></div>
+<%}%>
+<input data-find='input' data-bind='keyup:keyup' type='<%=data.inputType;%>' value='<%=data.value||'';%>' placeholder='<%=data.placeholder||'';%>'>
+<%if(data.desc&&data.desc!==''){%>
+<div class='<%=data.isblock?'block':'inline';%>'><%=data.desc;%></div>
+<%}%>
+<!--[checkboxgroup]-->
+<div class='form-label'><%=data.label;%></div>
+<%for(var i in data.checkboxs){%>
+<div class='checkbox'>
+    <div class='checkbox-btn'>
+        <input type='checkbox' value='<%=data.checkboxs[i].value;%>'/>
+    </div>
+    <div class='checkbox-text'><%=data.checkboxs[i].key;%></div></div>
+<%}%>
+</div>
+<!--[radiogroup]-->
+<div class='label'><%=data.label;%></div>
+<%var dot = Math.round(Math.random(1) * 1000000000);%>
+<%for(var i in data.radios){%>
+<label class='radio'>
+    <div class='radio-btn'>
+        <input type='radio'<%=((data.radios[i].value === data.value? ' checked=\"checked\"' : '') + '  name=' + dot);%>>
+    </div>
+    <div class='radio-text'><%=data.radios[i].key;%></div>
+</label>
+<%}%>
+<!--[select]-->
+<%if(data.label&&data.label!==''){%>
+<div class='label-block'><%=data.label;%></div>
+<%}%>
+<select data-bind="change:select" data-find="select">
+    <%for(var i in data.defaults){%>
+    <option value='<%=data.defaults[i][data.valuename];%>'<%=(data.defaults[i][data.valuename]===data.value?' selected=\"selected\"':'');%>><%=data.defaults[i][data.keyname];%></option>
+    <%}%>
+    <%for(var i in data.remoteData){%>
+    <option value='<%=data.remoteData[i][data.valuename];%>'<%=(data.remoteData[i][data.valuename]===data.value?' selected=\"selected\"':'');%>><%=data.remoteData[i][data.keyname];%></option>
+    <%}%>
+</select>
+<!--[treelite]-->
+<div class='xhead'>
+    <div class='xcurrent'>
+        <i class='fa fa-refresh fa-spin'></i>
+    </div>
+    <div class='xtoggle' data-bind='click:xtoggle'>
+        <i class='fa fa-angle-double-down' title='全部展开'></i>
+        <i class='fa fa-angle-double-up' title='全部收起'></i>
+    </div>
+</div><div class='xcon'></div>
+<!--[extendform]-->
+<div class="extendform-tools">
+    <%=data.option.label;%>
+</div>
+<div class='extendform-con'></div>
+<div class="extendform-btn" data-find='add'><i class='fa fa-plus'></i> 添加数据</div>
+<!--[extendformcell]-->
+<div class='extendform-cell'>
+    <div class='extendform-form'></div>
+    <div class='extendform-no-tools'>
+        <div class='extendform-no-btn' data-find='remove'><i class='fa fa-cross'></i></div>
+    </div>
+</div>
+<!--[eform]-->
+<div class='con'><div class='row'>
+        <%for(var i in data.option.fields){%>
+        <div class='span1-<%=data.option.colnum;%>'>
+            <div view-<%=data.id;%>='<%=data.option.fields[i]._type;%>' viewid='k<%=i;%>'></div>
+        </div>"<div class='con'><div class='row'>
+                <%for(var i in data.option.fields){%>
+                <div class='span1-<%=data.option.colnum;%>'>
+                    <div view-<%=data.id;%>='<%=data.option.fields[i]._type;%>' viewid='k<%=i;%>'></div>
+                </div>
+                <%}%>
+            </div></div>
+        <%}%>
+    </div>
+</div>
+<!--[simpleform]-->
+<%for(var i in data.option.fields){%>
+<%=module(data.option.fields[i].type,'','t'+i);%>
+<%}%>
+<!--[martform]-->
+<%for(var i in data.option.fields){%>
+<div><%=module(data.option.fields[i].type,'','t'+i);%></div>
+<%}%>
+<!--[listform]-->
+<div class="listform-tips" data-find="tips"></div>
+<div class="listform-container">
+    <%for(var i in data.option.fields){%>
+    <div><%=module(data.option.fields[i].type,'','t'+i);%></div>
+    <%}%>
+</div>
+<!--[singleform]-->
+<div class="singleform-tips" data-find="tips"></div>
+<div class='singleform-container'>
+    <%for(var i in data.option.fields){%>
+    <div><%=module(data.option.fields[i].type,'','t'+i);%></div>
+    <%}%>
+</div>
+<div class='singleform-foot'>
+    <div class='singleform-group'>
+        <%for(var i in data.option.btns){%>
+        <div data-btn='<%=data.option.btns[i].action;%>' class='singleform-btn' type='<%=data.option.btns[i].action;%>'><i class='<%=data.option.btns[i].icon;%>'></i></div>
+        <%}%>
+    </div>
+</div>
+<!--[gridform]-->
+<div class='row'>
+    <%for(var i in data.option.fields){%>
+    <div class='span<%=data.option.fields[i].col;%>-<%=data.option.cols;%>'>
+        <div view-<%=data.id;%>='<%=data.option.fields[i]._type;%>' viewid='m<%=i;%>'></div>
+    </div>
+    <%}%>
+</div>
+<!--[freeform]-->
+<%for(var i in data.option.fields){%>
+<div view-<%=data.id;%>='<%=data.option.fields[i]._type;%>' viewid='<%=i;%>'></div>
+<%}%>
+<!--[htmleditor]-->
+<div class="editor-textare">
+    <iframe data-find='textarea'></iframe>
+</div>
+<div class="editor-toolbar">
+    <%if(data.option.fontsize){%>
+    <div class="editor-droplist" data-find='droplist' type='FontSize'>
+        <div class="editor-droplist-title" data-bind='click:droplist'><span><%=data.option.fontsize[0].name;%></span>&nbsp;<i class='fa fa-caret-down'></i></div>
+        <div class="editor-droplist-con">
+            <%for(var i in data.option.fontsize){%>
+            <div class="editor-droplist-con-item" data-bind="click:droplistitem" value="<%=data.option.fontsize[i].value;%>" label='<%=data.option.fontsize[i].name;%>'><font size='<%=data.option.fontsize[i].value;%>'><%=data.option.fontsize[i].name;%></font></div>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+    <%if(data.option.fontfamily){%>
+    <div class="editor-droplist" data-find='droplist' type='FontName'>
+        <div class="editor-droplist-title" data-bind='click:droplist'><span><%=data.option.fontfamily[0].name;%></span>&nbsp;<i class='fa fa-caret-down'></i></div>
+        <div class="editor-droplist-con">
+            <%for(var i in data.option.fontfamily){%>
+            <div class="editor-droplist-con-item" data-bind="click:droplistitem" value="<%=data.option.fontfamily[i].value;%>" label='<%=data.option.fontfamily[i].name;%>' style='font-family: <%=data.option.fontfamily[i].value;%>'><%=data.option.fontfamily[i].name;%></div>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+    <%if(data.option.color){%>
+    <div class="editor-droplist" data-find='droplist' type='foreColor'>
+        <div class="editor-droplist-title" data-bind='click:droplist'><span><div style='display:inline-block;vertical-align:sub;width:15px;height:15px;background:black;'></div></span>&nbsp;<i class='fa fa-caret-down'></i></div>
+        <div class="editor-droplist-con">
+            <div class="colorpanl">
+                <%var bgcolor = ['00', '33', '66', '99', 'CC', 'FF', '00', '33', '66', '99', 'CC', 'FF'];%>
+                <%for (var i = 0; i < 12; i++) {%>
+                <div class='colorpanl-row'>
+                    <%for (var j = 0; j < 18; j++) {%>
+                    <%var color = i < 6 ? '#' + bgcolor[Math.floor(j / 6)] + bgcolor[Math.floor(j % 6)] + bgcolor[i] : '#' + bgcolor[Math.floor(j / 6) + 3] + bgcolor[Math.floor(j % 6)] + bgcolor[i - 6];%>
+                    <div class='colorpanl-col' data-bind="click:colorpicker" style='background:<%=color;%>;' value='<%=color;%>'></div>
+                    <%}%>
+                </div>
+                <%}%>
+            </div>
+        </div>
+    </div>
+    <%}%>
+    <%if(data.option.basic){%>
+    <div class="editor-btngroup">
+        <%for(var i in data.option.basic){%>
+        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.option.basic[i].action;%>" title="<%=data.option.basic[i].title;%>"><i class="<%=data.option.basic[i].icon;%>"></i></div>
+        <%}%>
+    </div>
+    <%}%>
+    <%if(data.option.justify){%>
+    <div class="editor-btngroup">
+        <%for(var i in data.option.justify){%>
+        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.option.justify[i].action;%>" title="<%=data.option.justify[i].title;%>"><i class="<%=data.option.justify[i].icon;%>"></i></div>
+        <%}%>
+    </div>
+    <%}%>
+    <%if(data.option.list){%>
+    <div class="editor-btngroup">
+        <%for(var i in data.option.list){%>
+        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.option.list[i].action;%>" title="<%=data.option.list[i].title;%>"><i class="<%=data.option.list[i].icon;%>"></i></div>
+        <%}%>
+    </div>
+    <%}%>
+    <%if(data.option.dent){%>
+    <div class="editor-btngroup">
+        <%for(var i in data.option.dent){%>
+        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.option.dent[i].action;%>" title="<%=data.option.dent[i].title;%>"><i class="<%=data.option.dent[i].icon;%>"></i></div>
+        <%}%>
+    </div>
+    <%}%>
+    <%if(data.option.insert){%>
+    <div class="editor-btngroup">
+        <%for(var i in data.option.insert){%>
+        <div class="editor-btn" data-find='insert' data-bind='click:insert' action="<%=data.option.insert[i].action;%>" title="<%=data.option.insert[i].title;%>"><i class="<%=data.option.insert[i].icon;%>"></i></div>
+        <%}%>
+    </div>
+    <%}%>
+    <%if(data.option.undo){%>
+    <div class="editor-btnx" data-find='basic' data-bind='click:basic' action="<%=data.option.undo.action;%>" title="<%=data.option.undo.title;%>"><i class="<%=data.option.undo.icon;%>"></i></div>
+    <%}%>
+    <%if(data.option.html){%>
+    <div class="editor-btnx" data-find='basic' data-bind='click:basic' action="<%=data.option.html.action;%>" title="<%=data.option.html.title;%>"><i class="<%=data.option.html.icon;%>"></i></div>
+    <%}%>
+</div>
+<div class="editor-tip"><i class='fa fa-check'></i> tips</div>
+<!--[htmleditorbox]-->
+<div class="editor-mask"></div>
+<div class="editor-box-content">
+    <div class="editor-box-header"><%=data.option.title;%></div>
+    <div class="editor-box-body"><%=module(data.option.inner);%></div>
+    <div class="editor-box-footer">
+        <%for(var i in data.option.btns){%>
+        <div class="editor-box-btn" action='<%=data.option.btns[i].action;%>' data-bind='click:btn'><i class='<%=data.option.btns[i].icon;%>'></i></div>
+        <%}%>
+    </div>
+</div>
+<!--[selecttree]-->
+<%if(data.label&&data.label!==''){%>
+<div class='label-block'><%=data.label;%></div>
+<%}%>
+<div class="selecttree-container" data-bind='click:btn' data-find="container">
+    <div class="select-desc">点击选择数据</div>
+</div>
+<!--[imagesuploaderasys]-->
+<div class='imagesuploader-container'>
+    <div class='imagesuploader-filebtnplus'><div class='imagesuploader-addicon'></div><input type='file' data-bind='change:file' accept='image/*'/></div>
+</div>
+<!--[stars]-->
+<%for(var i=0;i<5;i++){%>
+<div class="stars-star" data-find='star'>
+    <i class='fa fa-star-o'></i>
+    <i class='fa fa-star'></i>
+</div>
+<%}%>
+<!--[duanxin]-->
+<%if(data.label&&data.label!==''){%>
+<div class='label-block'><%=data.label;%></div>
+<%}%>
+<div class="duanxin-con">
+    <input data-find='input' data-bind='keyup:keyup' type='text' value='<%=data.value||'';%>'>
+    <div class="duanxin-desc" data-find="get">获取验证码</div>
+</div>
+<!--[picode]-->
+<%if(data.label&&data.label!==''){%>
+<div class='label-block'><%=data.label;%></div>
+<%}%>
+<div class="picode-con">
+    <input data-find='input' data-bind='keyup:keyup' type='text' value='<%=data.value||'';%>'>
+    <div class="picode-pic" data-find="pic">
+        <img src="<%=data.url+'?t='+(new Date().getTime());%>"/>
+    </div>
+</div>
+<!--[codebtn]-->
+<div class="codebtn-btn" data-find="get">获取手机验证码</div>
+<!--[dpicker]-->
+<div class="dpicker-bg" data-find="bg"></div>
+<div class="dpicker-con"></div>
+<!--[datep]-->
+<%if(option.label&&option.label!==''){%>
+<div class='label-block'><%=option.label;%></div>
+<%}%>
+<div class="datep-con" data-find='btn'><%=option.value||'';%></div>
+<!--[datepanel]-->
+<div class="datepanel-con">
+    <div class="datepanel-head">
+        <div class="datepanel-head-left" data-find="prev"><i class="fa fa-rewind"></i></div>
+        <div class="datepanel-head-center" data-find="current">2015-06</div>
+        <div class="datepanel-head-left" data-find="next"><i class="fa fa-fast-forward"></i></div>
+    </div>
+    <div class="datepanel-middle">
+        <div class="datepanel-middle-cell">一</div>
+        <div class="datepanel-middle-cell">二</div>
+        <div class="datepanel-middle-cell">三</div>
+        <div class="datepanel-middle-cell">四</div>
+        <div class="datepanel-middle-cell">五</div>
+        <div class="datepanel-middle-cell">六</div>
+        <div class="datepanel-middle-cell">日</div>
+    </div>
+    <div class="datepanel-body" data-find="databody"></div>
+    <%if(data.withTime){%>
+    <div class="datepanel-extend">
+        <div class="datepanel-time-hour" data-find="shour"><span>0</span> 时</div>
+        <div class="datepanel-time-time" data-find="stime"><span>0</span> 分</div>
+        <div class="datepanel-time-second" data-find="ssecond"><span>0</span> 秒</div>
+    </div>
+    <div class="datepanel-hour" data-find="phour">
+        <%for(var i=0;i<24;i++){%>
+        <div class="datepanel-hour-cell" data-find="hour"><%=i;%></div>
+        <%}%>
+    </div>
+    <div class="datepanel-sound" data-find="psecond">
+        <%for(var i=0;i<60;i++){%>
+        <div class="datepanel-sound-cell" data-find="second"><%=i;%></div>
+        <%}%>
+    </div>
+    <%}%>
+    <div class="datepanel-year" data-find="yearbody"></div>
+    <div class="datepanel-month" data-find="monthbody">
+        <%for(var i=1;i<=12;i++){%>
+        <div class="datepanel-month-cell" data-find="month"><%=i;%></div>
+        <%}%>
+    </div>
+</div>
+<div class="datepanel-selected" data-find="selectdate">确定</div>
+<!--[datepanelbody]-->
+<div class="datepanel-body-row">
+<%for(var i=0;i<data.length;i++){%>
+    <div class="datepanel-body-row-cell<%=(data[i].disabled===true?' disabled':'');%>" data-find="day">
+        <%if(data[i].current){%>
+            <div class="datapanel-body-row-cell current"><%=data[i].value;%></div>
+        <%}else if(data[i].selected){%>
+            <div class="datapanel-body-row-cell selected"><%=data[i].value;%></div>
+        <%}else{%>
+        <div class="datapanel-body-row-cell"><%=data[i].value;%></div>
+        <%}%>
+    </div>
+    <%if((i+1)%7===0){%>
+    </div><div class="datepanel-body-row">
+    <%}%>
+<%}%>
+</div>
+<!--[datepanelyear]-->
+<div class="datepanel-year-cell" data-find="yleft"><i class="fa fa-rewind"></i></div>
+<%for(var i=0;i<data.length;i++){%>
+<div class="datepanel-year-cell" data-find="year"><%=data[i];%></div>
+<%}%>
+<div class="datepanel-year-cell" data-find="yright"><i class="fa fa-fast-forward"></i></div>
+<!--[multiselect]-->
+<%if(data.label&&data.label!==''){%>
+<div class='label-block'><%=data.label;%></div>
+<%}%>
+<div class='multiselect-con'>
+    <%for(var i in data.defaults){%>
+    <div data-find='item' class='multiselect-con-item' value='<%=data.defaults[i][data.valuename];%>'>
+        <div class="multiselect-con-item-inner"><%=data.defaults[i][data.keyname];%></div>
+    </div>
+    <%}%>
+    <%for(var i in data.remoteData){%>
+    <div data-find='item' class='multiselect-con-item' value='<%=data.remoteData[i][data.valuename];%>'>
+        <div class="multiselect-con-item-inner"><%=data.remoteData[i][data.keyname];%></div>
+    </div>
+    <%}%>
+</div>

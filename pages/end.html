@@ -1,0 +1,30 @@
+<div class="end">
+    <div class="content-title-h1">Change Log</div>
+    <div class="end-content">
+        <div class="timeline">
+            <div class="timeline-contents">
+                <div class="timeline-content top">
+                    <div class="timeline-content-text">废弃module.postData()接口，使用module.postRequest()方法代替</div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-content-text">修正html(src)和css(url())引入资源未改变时随着html和css的其他内容的更新而重复下载问题。修正为这些资源只有变化时才会重新获取，未改变时直接从缓存中获取(http 304)</div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-content-text">模板中对其他资源的引用（src属性）可以直接从packet目录起进行路径引用。并保证更新缓存。</div>
+                </div>
+                <div class="timeline-time"><div class="timeline-time-text">version 0.12.2</div></div>
+                
+                <div class="timeline-content">
+                    <div class="timeline-content-text">增强内置模板的功能，添加可以自定义标签功能</div>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-content-text">重新设计Module API使之贴近Flash Sprite对象API</div>
+                </div>
+                <div class="timeline-content end">
+                    <div class="timeline-content-text">增加本地缓存模块，实现应用的增量更新</div>
+                </div>
+                <div class="timeline-time top"><div class="timeline-time-text">version 0.0.1</div></div>
+            </div>
+        </div>
+    </div>
+</div>

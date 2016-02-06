@@ -1,0 +1,164 @@
+<div class="todo">
+    <div class="content-title-h1">TODO List Sample</div>
+    <p class="content-p">
+        brooder是浏览器端javascript开发框架，是web前端整体解决方案
+    </p>
+    <div class="content-title-h2">Sample Show</div>
+    <div class="demoshowloading" data-find="demo"><div class='fa-spin' style='display:inline-block;'><i class='fa fa-repeat'></i></div> Loading...</div>
+    <div class="demoshow"></div>
+    <div class="content-title-h2">Step1.创建HTML模板(todo.html)</div>
+    <div class="content-p-code">
+        <pre class="line-numbers" data-language="html"><code class="language-html">&lt;!--[todolist]--&gt;
+&lt;div class="todolisthead"&gt;
+    &lt;div class="todolisthead-input"&gt;&lt;input type="text" data-find="input"/&gt;&lt;/div&gt;
+    &lt;div class="todolisthead-btn" data-find="btn"&gt;&lt;i class="fa fa-check"&gt;&lt;/i&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="todolist-body" data-find="body"&gt;
+    &lt;@include data="{{data.list}}" template="{{data.template}}"/&gt;
+&lt;/div&gt;
+&lt;!--[todolistlist]--&gt;
+&lt;div class="todolistlist-con"&gt;
+    &lt;%for(var i in data){%&gt;
+    &lt;div class="todolist-con-item" data-group="item" @cache(data[i])&gt;
+        &lt;div class="todolist-con-item-desc" data-groupi="name"&gt;&lt;%=data[i].name;%&gt;&lt;/div&gt;
+        &lt;div class="todolist-con-item-btn" data-groupi="btn"&gt;&lt;i class="fa fa-cross"&gt;&lt;/i&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;%}%&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+    <div class="content-title-h2">Step2.创建样式文件(main.scss)</div>
+    <div class="content-p-code">
+        <pre class="line-numbers" data-language="scss"><code class="language-scss">.todolist{
+    .todolisthead{
+        line-height:45px;
+        display:-webkit-flex;
+        background:#D7D7D7;
+        .todolisthead-input{
+            line-height:45px;
+            -webkit-flex:1;
+            input{
+                width:100%;
+                line-height:35px;
+                border:0;
+                padding:0 0 0 5px;
+                -webkit-box-sizing: border-box;
+            }
+        }
+        .todolisthead-btn{
+            width:45px;
+            text-align: center;
+        }
+    }
+    .todolist-body{
+        .todolist-con-item{
+            line-height:45px;
+            display:-webkit-flex;
+            border-bottom:1px solid #D7D7D7;
+            .todolist-con-item-desc{
+                line-height:45px;
+                -webkit-flex:1;
+            }
+            .todolist-con-item-btn{
+                width:45px;
+                text-align: center;
+            }
+        }
+    }
+}</code></pre>
+    </div>
+    <div class="content-title-h2">Step3.创建Javascript文件(test.js)</div>
+    <div class="content-p-code">
+        <pre class="line-numbers" data-language="javascript"><code class="language-javascript">/*!
+ * @packet test;
+ * @css test.style.main;
+ * @template test.todolist;
+ */
+Module({
+    name:"todolist",
+    extend:"view",
+    className:"todolist",
+    template:module.getTemplate("@todolist","todolist"),
+    init:function(){
+        this.data={
+            template:module.getTemplate("@todolist","todolistlist"),
+            list:[]
+        };
+        //监听this.data变化
+        this.observe("data",this.data);
+        //渲染模板
+        this.render(this.data);
+    },
+    /*模板中包含data-find='btn'的标签在渲染模板时的回调，并传入该dom*/
+    find_btn:function(dom){
+        var ths=this;
+        dom.click(function(){
+            var val=ths.finders("input").val();
+            if(val!==""){
+                ths.data.list.push({
+                    name:val
+                });
+            }
+        });
+    },
+    /*模板中包含data-group='item'的标签在渲染模板时的回调，并传入该dom*/
+    group_item:function(dom,group){
+        group.get("btn").click(function(){
+            $(this).group().cache().remove();
+        });
+    },
+    /*当监听的数据this.data中的list属性有添加数据操作时的回调*/
+    "data_list_add":function(e){
+        //将新添加的数据渲染进dom
+        $.template(this.data.template).renderAppendTo(this.finders("body"),[e.value]);
+        //重新关联数据与dom
+        this.delegate();
+    },
+    /*当监听的数据this.data中的list属性有删除数据操作时的回调*/
+    "data_list_remove":function(e){
+        //将dom中指定数据从dom中移除
+        this.groups().eq(e.value[0].getIndex()).remove();
+        this.delegate();
+    }
+});
+Option({
+    name: "root",
+    option: {
+        override: {
+            /*当root初始化完成时的回调*/
+            onendinit: function () {
+                //将todolist module添加到root中
+                this.addChild({
+                    type: "@.todolist"
+                });
+            }
+        }
+    }
+});</code></pre>
+    </div>
+    <div class="content-title-h2">Step4.创建入口文件(index.html)</div>
+    <div class="content-p-code">
+        <pre class="line-numbers" data-language="html"><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;title&gt;&lt;/title&gt;
+        &lt;script src="brooder.js" type="text/javascript"&gt;&lt;/script&gt;
+        &lt;script&gt;
+            $.App({
+                basePath:"packet2/",
+                debug:true
+            }).boot("test.root");
+        &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+    <div class="content-title-h2">Step5.运行程序</div>
+    <p class="content-p">
+        将文件部署到任一web服务器下并访问index.html。本地直接打开是无法运行的。
+    </p>
+    <p class="content-p">
+        <a href='#' class="content-btn">下载todolist demo源文件</a>
+    </p>
+</div>
