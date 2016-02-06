@@ -3451,6 +3451,7 @@
                 data: data,
                 dataType: "text",
                 success: success,
+                type:"get",
                 error: error
             });
             return this;
@@ -3461,6 +3462,7 @@
                 data: data,
                 dataType: "json",
                 success: success,
+                type:"get",
                 error: error
             });
             return this;
