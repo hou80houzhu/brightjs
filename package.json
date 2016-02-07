@@ -1,0 +1,21 @@
+{
+  "name" : "brooderjs",
+  "description" : "A awesome frontend framework",
+  "version" : "0.0.1",
+  "main" : "./brooder.js",
+  "author" : {
+    "name" : "hou80houzhu",
+    "email" : "hou80houzhu@vip.qq.com"
+  },
+  "keywords" : [ "brooder,frontend,framework" ],
+  "licenses" : {
+    "type" : "MIT"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : ""
+  },
+  "scripts" : {
+    "start" : "node bin\/brooderBuilder.js"
+  }
+}
