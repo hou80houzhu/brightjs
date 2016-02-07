@@ -5029,7 +5029,7 @@
                 }
                 for (var i in self.prototype) {
                     if (is.isFunction(self.prototype[i])) {
-                        if (i !== propName) {
+                        if (!parent.prototype[i]) {
                             pp.push(i);
                             (function (mp) {
                                 _a[mp] = function () {
