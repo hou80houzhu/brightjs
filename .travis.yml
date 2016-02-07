@@ -1,4 +1,6 @@
 language: node_js
+service_name: travis-pro
+repo_token: NvpXsrrgDrWtlqSwTO33ArgtMVmxv2ysz
 node_js:
   - "4.1"
   - "4.0"
@@ -8,3 +10,4 @@ node_js:
   - "0.8"
   - "0.6"
   - "iojs"
+ 
