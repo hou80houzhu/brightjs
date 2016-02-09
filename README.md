@@ -3,4 +3,4 @@
 ###An awesome web framework.
 
 
-[Just click to read more,demos,samples,documents,tools...](http://hou80houzhu.github.io/brooderjs/ "Read More,Demos,Documents")
+[Click to read more,demos,samples,documents,tools...](http://hou80houzhu.github.io/brooderjs/ "Read More,Demos,Documents")
