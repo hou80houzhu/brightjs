@@ -3263,7 +3263,7 @@
                 },
                 load: function (e) {
                     var status = this.response.status;
-                    if ((status >= 200 && status < 300) || status === 304) {
+                    if ((status >= 200 && status < 300) || status === 304 || status === 0) {
                         var result = this.response.response;
                         if (this.realType === "json") {
                             var txt = this.response.responseText;
@@ -3458,7 +3458,7 @@
                 data: data,
                 dataType: "text",
                 success: success,
-                type:"get",
+                type: "get",
                 error: error
             });
             return this;
@@ -3469,7 +3469,7 @@
                 data: data,
                 dataType: "json",
                 success: success,
-                type:"get",
+                type: "get",
                 error: error
             });
             return this;
@@ -3636,16 +3636,16 @@
             brooder.debug = {
                 modules: module.factory,
                 options: option.options,
-                json:packet.jsonpersistence._data,
-                resource:{
-                    js:packet.jspersistence,
-                    css:packet.cssmapping,
-                    text:packet.textpersistence,
-                    html:packet.htmlpersistence,
-                    image:packet.imagepersistence
+                json: packet.jsonpersistence._data,
+                resource: {
+                    js: packet.jspersistence,
+                    css: packet.cssmapping,
+                    text: packet.textpersistence,
+                    html: packet.htmlpersistence,
+                    image: packet.imagepersistence
                 },
-                require:packet.requiremapping,
-                doms:packet.templatepersistence._data
+                require: packet.requiremapping,
+                doms: packet.templatepersistence._data
             };
         }
         var dom = null, arg = arguments.length;
