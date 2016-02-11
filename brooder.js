@@ -1,7 +1,7 @@
 /*!
  * brooderjs JavaScript Library v0.12.2
  * http://rocui.com/
- * Author hou80houzhu
+ * Author hou80houzhu(WangJinliang)
  * licensed under the MIT licenses.
  * https://github.com/hou80houzhu/brooderjs/blob/master/LICENSE
  */
