@@ -13,9 +13,8 @@
   },
   "repository" : {
     "type" : "git",
-    "url" : ""
+    "url" : "https://github.com/hou80houzhu/brooderjs"
   },
   "scripts" : {
-    "start" : "node bin\/brooderBuilder.js"
   }
 }
