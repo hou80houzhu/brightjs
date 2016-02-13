@@ -11,13 +11,13 @@ brooder suitable for any scene web development, support highly customizable, foc
 - Frontend UI framework
   - brooderjs and modules
 - Nodejs web server 
-  - [corgiserver](http://hou80houzhu.github.io/corgiserver/ "corgiserver")
+  - [corgiserver](https://github.com/hou80houzhu/corgiserver "corgiserver")
 - Java server framework
-  - [brooderServer](http://hou80houzhu.github.io/brooderServer/ "brooderServer")
+  - [brooderServer](https://github.com/hou80houzhu/brooderServer "brooderServer")
 - Project building tools
-  - [brooderbuilder](http://hou80houzhu.github.io/brooderbuilder/ "brooderbuilder")
+  - [brooderbuilder](https://github.com/hou80houzhu/brooderbuilder "brooderbuilder")
 - Browser debugging extension.
-  - [brooderToolkit](http://hou80houzhu.github.io/brooderToolkit/ "brooderToolkit")
+  - [brooderToolkit](https://github.com/hou80houzhu/brooderToolkit "brooderToolkit")
 
 **brooder supports**
 
