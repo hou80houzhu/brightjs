@@ -4608,28 +4608,32 @@
             for (var i in old) {
                 oldtemp += old[i];
             }
-            var q = oldtemp.match(/src=".+?"/g);
+            var q = oldtemp.match(/src=['"].+?['"]/g);
             if (q) {
                 for (var i = 0; i < q.length; i++) {
                     oldpaths.push(q[i]);
                 }
             }
         }
-        return code.replace(/src=".+?"/g, function (a) {
-            var rp = a, newpath = a.substring(5, a.length - 1), _a = newpath.split("/"), name = _a[_a.length - 1].split(".")[0], done = false;
-            if (oldtemp.indexOf(name) !== -1) {
-                for (var i = 0; i < oldpaths.length; i++) {
-                    if (oldpaths[i].indexOf(name) !== -1) {
-                        rp = oldpaths[i];
-                        done = true;
-                        break;
+        return code.replace(/src=['"].+?['"]/g, function (a) {
+            if (a.indexOf("<%") === -1) {
+                var rp = a, newpath = a.substring(5, a.length - 1), _a = newpath.split("/"), name = _a[_a.length - 1].split(".")[0], done = false;
+                if (oldtemp.indexOf(name) !== -1) {
+                    for (var i = 0; i < oldpaths.length; i++) {
+                        if (oldpaths[i].indexOf(name) !== -1) {
+                            rp = oldpaths[i];
+                            done = true;
+                            break;
+                        }
                     }
                 }
+                if (!done) {
+                    rp = "src=\"" + baseMapping.basePath + a.substring(5, a.length - 1) + "\"";
+                }
+                return rp;
+            } else {
+                return a;
             }
-            if (!done) {
-                rp = "src=\"" + baseMapping.basePath + a.substring(5, a.length - 1) + "\"";
-            }
-            return rp;
         });
     };
     packet.prototype.load = function (pkt, path, fn, parent) {
