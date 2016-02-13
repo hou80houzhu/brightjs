@@ -217,7 +217,7 @@ Module({
                     y: (ths.r - _h) / 2,
                     rotate: 0
                 });
-                image.setImage(this, "fit");
+                image.setImage(pimage, "fit");
                 ths.imageContainer.rotate(0);
             });
         }

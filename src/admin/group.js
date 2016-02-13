@@ -16,7 +16,7 @@ Module({
         var ops = {
             title: "Title",
             type: "",
-            width: (300 + Math.random() * 500)+"px",
+            width: (300 + Math.random() * 500) + "px",
             option: "",
             parameters: {},
             target: null,
@@ -35,8 +35,8 @@ Module({
             });
             this.group.children().eq(i).children(".foot").hide();
         }
-        if($.is.isNumber(ops.width)){
-            ops.width=ops.width+"px";
+        if ($.is.isNumber(ops.width)) {
+            ops.width = ops.width + "px";
         }
         var cc = "<div class='choutier' num='" + this.group.children().length + "' style='width:" + ops.width + ";'>" +
                 "<div class='head'><div class='title'>" + ops.title + "</div></div>" +
@@ -223,7 +223,7 @@ Module({
     extend: ["@.tablegrouplite", "@.extendgroup"],
     className: "tablegroup",
     option: {
-    	idrefresh:true,
+        idrefresh: true,
         tableedit: {},
         tableremove: {},
         tableadd: {}
@@ -319,15 +319,15 @@ Module({
             option: this.option.tableadd,
             width: this.option.tableadd.width || 350,
             target: e.target,
-            btns: [
+            btns: this.option.tableadd.btns || ([
                 {type: "table_submit", name: "submit", icon: "fa fa-check"},
                 {type: "removeChouti", name: "close", icon: "fa fa-times"}
-            ]
+            ])
         });
         e.stopPropagation();
     },
     event_table_rowdelete: function (e) {
-        var btn = e.data.btn, data = e.data.data, ths = e.target.parentView,thss=this;
+        var btn = e.data.btn, data = e.data.data, ths = e.target.parentView, thss = this;
         var control = btn.data("control");
         if (!control) {
             btn.data("control", {});
@@ -400,7 +400,7 @@ Module({
         formType: "@form.listform",
         showName: "name",
         idName: "id",
-        singleselect:false,
+        singleselect: false,
         btns: [
             {name: "save", action: "searchtable", icon: "fa fa-check"},
             {name: "close", action: "close", icon: "fa fa-times"}
@@ -414,15 +414,15 @@ Module({
     },
     onbeforeinit: function (option) {
         option[option.formType] = option.find;
-        option[option.tableType] = option.table||{};
-        option[option.tableType]["singleselect"]=option.singleselect;
+        option[option.tableType] = option.table || {};
+        option[option.tableType]["singleselect"] = option.singleselect;
     },
     find_panel: function (dom) {
         this.panel = dom;
     },
     event_removeselect: function (e) {
         e.target.getChildAt(1).unselect(this.selectdata[e.data][this.option.idName]);
-        this.selectdata.splice(e.data,1);
+        this.selectdata.splice(e.data, 1);
         e.stopPropagation();
     },
     event_unselectrow: function (e) {
@@ -519,9 +519,9 @@ Module({
     onbeforeinit: function (option) {
         option[option.tablegroupType] = {
             find: this.option.find,
-            table: this.option.table||{}
+            table: this.option.table || {}
         };
-        option[option.tablegroupType].table["isrefresh"]=true;
+        option[option.tablegroupType].table["isrefresh"] = true;
         option[option.treeType] = this.option.tree;
         $.extend(option[option.treeType], {
             ischeck: false,
@@ -537,7 +537,7 @@ Module({
     },
     event_treeclick: function (e) {
         if (e.target.parentView.getLastChild().typeOf("@.tablegrouplite")) {
-            e.target.parentView.getLastChild().refresh({aState:e.data.data.id});
+            e.target.parentView.getLastChild().refresh({aState: e.data.data.id});
         }
         e.stopPropagation();
     }
@@ -554,7 +554,7 @@ Module({
     },
     layout: module.getTemplate("@group", "treetabgroup"),
     onbeforeinit: function (option) {
-    	option[option.tablegroupType] = this.option.tab || {};
+        option[option.tablegroupType] = this.option.tab || {};
         option[option.treeType] = this.option.tree || {};
         $.extend(option[option.treeType], {
             ischeck: false,
@@ -568,9 +568,9 @@ Module({
     init: function (option) {
 //        this.getChildAt(1).close();
     },
-    event_treeclick:function(e){
-    	this.getLastChild().parameters=e.data;
-    	this.dispatchEvent("parenttreeclick",e.data,false);
+    event_treeclick: function (e) {
+        this.getLastChild().parameters = e.data;
+        this.dispatchEvent("parenttreeclick", e.data, false);
     }
 });
 Module({
@@ -615,7 +615,7 @@ Module({
     },
     layout: module.getTemplate("@group", "edittree"),
     onbeforeinit: function (option) {
-        this.option[this.option.treeType] = this.option.tree||{};
+        this.option[this.option.treeType] = this.option.tree || {};
 //        $.extend(this.option[this.option.treeType], {
 //            ischeck: false,
 //            isadd: true,
@@ -722,16 +722,16 @@ Module({
     }
 });
 Module({
-    name:"tabstate",
-    extend:"@.basegroup",
-    className:"tabstate",
-    option:{
-        states:[
+    name: "tabstate",
+    extend: "@.basegroup",
+    className: "tabstate",
+    option: {
+        states: [
             {name: "tab1", inner: "", option: ""},
             {name: "tab2", inner: "", option: ""}
         ],
-        inner:"",
-        option:""
+        inner: "",
+        option: ""
     },
     layout: module.getTemplate("@group", "tabstate"),
     onbeforeinit: function () {
@@ -739,7 +739,7 @@ Module({
     },
     init: function () {
         this.titles[0].click();
-        this.dispatchEvent("stateclick",this.option.states[this.titles[0].attr("num")]);
+        this.dispatchEvent("stateclick", this.option.states[this.titles[0].attr("num")]);
     },
     find_title: function (dom) {
         this.titles.push(dom);
@@ -748,7 +748,7 @@ Module({
         for (var i in this.titles) {
             if (this.titles[i].get(0) === dom.get(0)) {
                 this.titles[i].addClass("hover");
-                this.dispatchEvent("stateclick",this.option.states[this.titles[i].attr("num")]);
+                this.dispatchEvent("stateclick", this.option.states[this.titles[i].attr("num")]);
             } else {
                 this.titles[i].removeClass("hover");
             }
@@ -841,7 +841,7 @@ Module({
         this.add(this.option);
     },
     event_nochouti: function () {
-    	this.parentView.getChildAt(1).refresh();
+        this.parentView.getChildAt(1).refresh();
         this.remove();
     }
 });

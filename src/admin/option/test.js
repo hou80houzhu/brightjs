@@ -28,9 +28,13 @@ Option({
         },
         tableadd: {
             action: basePath + "data/dataok.json",
-            width: 1000,
+            width: 400,
+            btns: [
+                {type: "cutter", name: "cutter", icon: "fa fa-crop"},
+                {type: "gallery", name: "gallery", icon: "fa fa-picture-o"},
+                {type: "removeChouti", name: "close", icon: "fa fa-times"}
+            ],
             fields: [
-//             {type: "@form.dynamiclist", label: "", name: "xx"},
                 {type: "@form.text", label: "输入框", name: "xx"},
                 {type: "@form.select", label: "下拉框", name: "state",
                     defaults: [{key: "启用", value: 0}, {key: "禁用", value: 1}]},
@@ -75,9 +79,7 @@ Option({
                     }},
                 {name: "content", key: 'bName', ishow: true, width: 200}
             ],
-            tool: ["search", "refresh", "deletemulti", "add",
-                {title: "popup", img: "fa fa-upload", type: "popup"},
-                {title: "popup", img: "fa fa-upload", type: "popup2"}],
+            tool: ["search", "refresh", "deletemulti", "add"],
             override: {
                 event_parenttreeclick: function (e) {
                     console.log("-----table");
@@ -103,6 +105,25 @@ Option({
             },
             event_parenttreeclick: function (e) {
                 console.log(e.data);
+            },
+            event_cutter: function (e) {
+                this.add({
+                    width: 500,
+                    title: "photocutter",
+                    type: "@photo.photocutter"
+                });
+                e.stopPropagation();
+            },
+            event_gallery: function (e) {
+                this.add({
+                    width: 800,
+                    title: "gallery",
+                    type: "@photo.gallery",
+                    option: {
+                        url: "data/gallery_1.json"
+                    }
+                });
+                e.stopPropagation();
             }
         }
     }
@@ -226,7 +247,6 @@ Option({
         tree: {
             override: {
                 event_parenttreeclick: function (e) {
-                    console.log("-----tree");
                     console.log(e.data);
                 },
                 event_treeclick: function (e) {
