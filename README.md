@@ -2,9 +2,9 @@
 
 ###An awesome web framework.
 
-brooder is a complete web development solution for large-scale project development and design.
+brooder is a complete web development solution,designed for the design and development of large projects.
 
-brooder suitable for any scene web development, support highly customizable, focusing on software engineering and design, high performance, and have the best developer friendly. 
+brooder is also suitable for any scene of web development, support highly customizable, focusing on software engineering and design, high performance, and have the best developer friendly. 
 
 **brooder includs**
  
