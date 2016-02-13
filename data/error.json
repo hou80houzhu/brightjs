@@ -1,0 +1,42 @@
+{
+    "code": "1",
+    "data":{
+        "tasktime":160,
+        "code":"11111111111111111111111111111111",
+        "name":"贷款信息维护",
+        "autor":"A001",
+        "shop":"南宁分行",
+        "time":"2014 06 07 15：20：20",
+        "money":"0.05",
+        "postSite":"录入岗",
+        "postAutor":"A003250",
+        "desc":"切片无法辨认",
+        "detail":[
+            {
+                "index":"1",
+                "picname":"xxererererexxx",
+                "desc":"3322323"
+            },
+            {
+                "index":"2",
+                "picname":"xxxxx",
+                "desc":"3322323"
+            },
+            {
+                "index":"3",
+                "picname":"xxxxx",
+                "desc":"3322323"
+            },
+            {
+                "index":"4",
+                "picname":"xxxxx",
+                "desc":"3322323"
+            },
+            {
+                "index":"5",
+                "picname":"xxxxx",
+                "desc":"3322323"
+            }
+        ]
+    }
+}

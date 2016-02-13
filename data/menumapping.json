@@ -1,0 +1,27 @@
+{
+    "code": "1",
+    "msg": "",
+    "data": [
+        {"id":"0","name": "HOME", "img": "fa fa-home", "view": "admin.main.quickmenu","option":"admin.option.test.quickmenu", "list": []},
+        {"id":"1","name": "基本表", "img": "fa fa-file-text-o", "view": "admin.main.maincontainer","option":"", "list": [
+            {"id":"2","name": "列表", "img": "fa fa-file-text-o", "view": "admin.group.tablegroup","option":"admin.option.test.main", "list": []},
+            {"id":"2","name": "树形列表", "img": "fa fa-file-text-o", "view": "admin.group.treetablegroup","option":"admin.option.test.main", "list": []},
+            {"id":"3","name": "树形结构", "img": "fa fa-file-text-o", "view": "admin.group.edittree","option":"admin.option.test.table2", "list": []},
+            {"id":"33","name": "tab结构", "img": "fa fa-file-text-o", "view": "admin.group.tabgroup","option":"admin.option.test.tab", "list": []},
+            {"id":"33","name": "选择形列表", "img": "fa fa-file-text-o", "view": "admin.group.selecttable","option":"admin.option.test.main", "list": []},
+            {"id":"34","name": "可编辑树的树形列表", "img": "fa fa-file-text-o", "view": "admin.group.edittreetablegroup","option":"admin.option.test.table2", "list": []},
+            {"id":"55","name": "选择形树形列表", "img": "fa fa-file-text-o", "view": "admin.group.treetableselectgroup","option":"admin.option.test.main", "list": []}
+        ]},
+        {"id":"1","name": "图表", "img": "fa fa-line-chart", "view": "admin.main.maincontainer","option":"", "list": [
+            {"id":"4","name": "柱状图", "img": "fa fa-bar-chart", "view": "admin.test.showcharts","option":"", "list": []},
+            {"id":"4","name": "组合柱状图", "img": "fa fa-bar-chart", "view": "admin.test.showcharts5","option":"", "list": []},
+            {"id":"4","name": "线形图", "img": "fa fa-line-chart", "view": "admin.test.showcharts3","option":"", "list": []},
+            {"id":"4","name": "区域图", "img": "fa fa-area-chart", "view": "admin.test.showcharts4","option":"", "list": []},
+            {"id":"5","name": "饼状图", "img": "fa fa-pie-chart", "view": "admin.test.showcharts2","option":"", "list": []},
+            {"id":"5","name": "复合坐标系", "img": "fa fa-bar-chart", "view": "admin.test.showcharts6","option":"", "list": []}
+        ]},
+        {"id":"8","name": "相册组件", "img": "fa fa-file-photo-o", "view": "admin.main.maincontainer","option":"", "list": [
+            {"id":"9","name": "相册", "img": "fa fa-file-photo-o","view": "admin.photo.gallery","option":"admin.option.test.gallery", "list": []}
+        ]}
+    ]
+}

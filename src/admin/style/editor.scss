@@ -1,0 +1,181 @@
+.editor{
+    position:relative;
+    min-height:400px;
+    background:white;
+    &.autosize{
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom:0;
+    }
+    .editor-toolbar{
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        border-bottom:1px solid #D7D7D7;
+        .editor-droplist{
+            display:inline-block;
+            padding:0 10px 0 10px;
+            position:relative;
+            border-right:1px solid #F1F1F1;
+            .editor-droplist-title{
+                line-height:30px;
+                width:70px;
+                text-align: center;
+            }
+            .editor-droplist-con{
+                position:absolute;
+                left:0;
+                top:100%;
+                border:1px solid #D7D7D7;
+                border-bottom: 0;
+                background:white;
+                display:none;
+                .editor-droplist-con-item{
+                    padding:5px 10px 5px 10px;
+                    border-bottom: 1px solid #D7D7D7;
+                    white-space:nowrap;
+                    text-align:center;
+                    &:hover{
+                        background:#EDE8E8;
+                    }
+                }
+                .colorpanl{
+                    border:1px solid #D7D7D7;
+                    border-left:0;
+                    border-right:0;
+                }
+                .colorpanl-row{
+                    white-space:nowrap;
+                    padding:0;
+                    margin:0;
+                    height:15px;
+                    .colorpanl-col{
+                        width:15px;
+                        height:15px;
+                        display:inline-block;
+                        vertical-align: top;
+                        padding:0;
+                        margin:0;
+                        -webkit-box-sizing:border-box;
+                        &:hover{
+                            border:1px solid white;
+                        }
+                    }
+                }
+            }
+            &.open{
+                .editor-droplist-con{
+                    display:block;
+                }
+            }
+        }
+        .editor-btngroup{
+            display:inline-block;
+            border-right:1px solid #F1F1F1;
+            .editor-btn{
+                display:inline-block;
+                width:30px;
+                text-align: center;
+                line-height:30px;
+                &:hover{
+                    background:#EDE8E8;
+                }
+                &.hover{
+                    background:#EDE8E8;
+                }
+            }
+        }
+        .editor-btnx{
+            display:inline-block;
+            width:30px;
+            text-align: center;
+            line-height:30px;
+            &:hover{
+                background:#EDE8E8;
+            }
+            &.hover{
+                background:#EDE8E8;
+            }
+        }
+    }
+    .editor-textare{
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:0;
+        top:31px;
+        iframe{
+            width:100%;
+            height:100%;
+            border:0;
+            background:#DBDBDB;
+        }
+    }
+    .editor-box{
+        position: absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom:0;
+        .editor-mask{
+            position: absolute;
+            left:0;
+            top:0;
+            right:0;
+            bottom:0;
+            background:rgba(0,0,0,.2);
+        }
+        .editor-box-content{
+            background:white;
+            position:absolute;
+            top:0;
+            right:0;
+            bottom:0;
+            width:400px;
+            -webkit-box-shadow:0 0 10px #A5A2A2;
+            .editor-box-header{
+                line-height: 30px;
+                border-bottom: 1px solid #D7D7D7;
+                padding:0 10px 0 10px;
+            }
+            .editor-box-body{
+                position: absolute;
+                left:0;
+                top:31px;
+                right:0;
+                bottom:31px;
+                padding:10px;
+            }
+            .editor-box-footer{
+                border-top: 1px solid #D7D7D7;
+                position: absolute;
+                left:0;
+                bottom:0;
+                right:0;
+                line-height:30px;
+                .editor-box-btn{
+                    width:30px;
+                    text-align: center;
+                    display:inline-block;
+                    &:hover{
+                        background:#F5F0F0;
+                    }
+                }
+            }
+        }
+    }
+    .editor-tip{
+        line-height: 30px;
+        padding:0 10px 0 10px;
+        background:#FFFCDB;
+        border-top: 1px solid #D7D7D7;
+        position: absolute;
+        left:0;
+        bottom:0;
+        right:0;
+        display:none;
+    }
+}

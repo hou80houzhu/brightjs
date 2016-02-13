@@ -1,0 +1,21 @@
+{
+    "code": "1",
+    "data": [
+        {
+            "name": "keywords",
+            "key": "keywords",
+            "width": 100
+        },
+        {
+            "name": "goods_no",
+            "key": "goods_no",
+            "width": 100
+        },
+        {
+            "name": "状态33333",
+            "key": "state",
+            "width": 100,
+            "center": true
+        }
+    ]
+}

@@ -1,0 +1,317 @@
+$color:(primary,#428BCA,#3071A9),(success,#5CB85C,#449D44),(info,#5BC0DE,#31B0D5),(warning,#F0AD4E,#EC971F),(danger,#D9534F,#C9302C);
+%basepath{
+    stroke: #CCCCCC;
+    stroke-width: 1px;
+    stroke-linecap: square;
+    stroke-linejoin: round;
+    fill-opacity: 1;
+    stroke-opacity: 1;
+    shape-rendering:crispEdges;
+}
+
+%linepath{
+    stroke-width: 2px;
+    stroke-linecap: square;
+    stroke-linejoin: round;
+    fill-opacity: 1;
+    stroke-opacity: 1;
+}
+%areapath{
+    stroke-width: 2px;
+    stroke-linecap: square;
+    stroke-linejoin: round;
+    fill-opacity: 1;
+    stroke-opacity: 1;
+    opacity:.8;
+}
+%areacircle{
+    stroke-width: 1px;
+    stroke-linecap: square;
+    stroke-linejoin: round;
+    fill-opacity: 1;
+    stroke-opacity: 1;
+    stroke: white;
+    fill:rgb(242, 182, 97);
+}
+
+.chart{
+    font-size:12px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    .title text{
+        text-anchor:middle;
+    }
+    .legend{
+        rect{
+            fill:#4BB349;
+        }
+        text{
+            cursor:default;
+        }
+        @each $map in $color{
+            &.#{nth($map,1)}{
+                rect{
+                    fill:nth($map,2);
+                }
+            }
+            &.#{nth($map,1)}:hover{
+                rect{
+                    fill:nth($map,3);
+                }
+            }
+        }
+        &.disabled{
+            rect{
+                fill:#D7D7D7;
+            }
+            text{
+                fill:#D7D7D7;
+            }
+        }
+        &.disabled:hover{
+            rect{
+                fill:#D7D7D7;
+            }
+            text{
+                color:#D7D7D7;
+            }
+        }
+    }
+    .grid{
+        path{
+            @extend %basepath;
+        }
+    }
+    .grid{
+        @each $map in $color{
+            &.#{nth($map,1)}{
+                path{
+                    stroke:nth($map,2);
+                }
+            }
+        }
+    }
+    .axis{
+        path{
+            @extend %basepath;
+            stroke: black;
+        }
+    }
+    .axis-x{
+        text{
+            text-anchor:middle;
+        }
+    }
+    .axis-y{
+        text{
+            text-anchor:end;
+        }
+        &.right{
+            text{
+                text-anchor:start;
+            }
+            .title{
+                text-anchor:middle;
+                writing-mode: tb;
+            }
+        }
+    }
+    .xyaxis{
+        path{
+            stroke: black;
+            stroke-width: 1px;
+            stroke-linecap: square;
+            stroke-linejoin: round;
+            fill-opacity: 1;
+            stroke-opacity: 1;
+            shape-rendering:crispEdges;
+            stroke-dasharray:4,4;
+        }
+    }
+    .xyaxis circle{
+        fill:#E5E5E5;
+    }
+    .bar{
+        rect{
+            fill:#4BB349;
+        }
+        @each $map in $color{
+            rect.#{nth($map,1)}{
+                fill:nth($map,2);
+                &:hover{
+                    fill:nth($map,3);
+                }
+            }
+            rect.#{nth($map,1)}.hover{
+                fill:nth($map,3);
+            }
+        }
+        @each $map in $color{
+            &.#{nth($map,1)}{
+                rect{
+                    fill:nth($map,2);
+                    &:hover{
+                        fill:nth($map,3);
+                    }
+                }
+            }
+            &.#{nth($map,1)}.hover{
+                rect{
+                    fill:nth($map,3);
+                }
+            }
+        }
+    }
+    .line path{
+        @extend %linepath;
+        stroke: rgb(242, 182, 97);
+        fill: none;
+    }
+    .line circle{
+        @extend %linepath;
+        stroke: rgb(242, 182, 97);
+        fill: white;
+    }
+    .line{
+        @each $map in $color{
+            &.#{nth($map,1)} path{
+                @extend %linepath;
+                stroke:nth($map,2);
+                fill: none;
+            }
+            &.#{nth($map,1)} circle{
+                @extend %linepath;
+                stroke:nth($map,2);
+                fill: white;
+            }
+            &.#{nth($map,1)} circle:hover{
+                @extend %linepath;
+                stroke:nth($map,3);
+                fill: nth($map,3);
+            }
+            &.#{nth($map,1)}:hover path{
+                @extend %linepath;
+                stroke:nth($map,3);
+                fill: none;
+            }
+            &.#{nth($map,1)}.hover path{
+                @extend %linepath;
+                stroke:nth($map,3);
+                fill: none;
+            }
+            &.#{nth($map,1)}.hover circle{
+                @extend %linepath;
+                stroke:nth($map,3);
+                fill: nth($map,3);
+            }
+        }
+    }
+
+    .area path{
+        @extend %areapath;
+        stroke: rgb(242, 182, 97);
+        fill: rgb(242, 182, 97);
+    }
+    .area circle{
+        @extend %areacircle;
+        display:none;
+    }
+    .area{
+        @each $map in $color{
+            &.#{nth($map,1)} path{
+                @extend %areapath;
+                stroke:nth($map,2);
+                fill: nth($map,2);
+            }
+            &.#{nth($map,1)} circle{
+                @extend %areapath;
+                fill: nth($map,2);
+            }
+        }
+        &:hover{
+            @each $map in $color{
+                &.#{nth($map,1)} path{
+                    @extend %areapath;
+                    stroke:nth($map,3);
+                    fill: nth($map,3);
+                }
+            }
+        }
+        &:hover circle{
+            display:block;
+        }
+        &.hover{
+            @each $map in $color{
+                &.#{nth($map,1)} path{
+                    @extend %areapath;
+                    stroke:nth($map,3);
+                    fill: nth($map,3);
+                }
+            }
+        }
+        &.hover circle{
+            display:block;
+        }
+    }
+    .tip{
+        position: absolute;
+        padding:0 10px 0 10px;
+        background:black;
+        color:white;
+        -webkit-border-radius: 5px;
+        -webkit-transition:all .3s ease-out;
+        line-height:25px;
+        bottom:auto;
+        right:auto;
+        &:after{
+            content:"";
+            display:block;
+            position:absolute;
+            left:50%;
+            top:100%;
+            margin-left:-2.5px;
+            width:0;
+            height:0;
+            bottom:auto;
+            right:auto;
+            border-left:5px solid transparent;
+            border-right:5px solid transparent;
+            border-top:5px solid black;
+            border-bottom: 5px solid transparent;
+        }
+    }
+    .pie .piclabel{
+        stroke-width: 1px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill-opacity: 1;
+        stroke-opacity: 1;
+        stroke:black;
+        fill:none;
+        transform: translate(-0.5px,-0.5px);
+    }
+    .pie{
+        @each $map in $color{
+            &.#{nth($map,1)} .circle{
+                @extend %areapath;
+                fill: nth($map,2);
+            }
+            &.#{nth($map,1)} .circle:hover{
+                @extend %areapath;
+                fill: nth($map,3);
+            }
+            &.#{nth($map,1)}.hover .circle{
+                @extend %areapath;
+                fill: nth($map,3);
+            }
+        }
+    }
+    .pielabel{
+        text{
+            text-anchor:middle;
+        }
+    }
+}

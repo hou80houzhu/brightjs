@@ -5,4 +5,26 @@
 
 [Click to read more,demos,samples,documents,tools...](http://hou80houzhu.github.io/brooderjs/ "Read More,Demos,Documents")
 
-> run todolist demo,you should deployment the project before accessing from a browser,you can not open directly from the local.
+##What is in
+
+There are two samples and brooder core library in the master branch. the documentation site is in the gh-pages branch.the documentation site is a sample too.
+
+##How to run the samples
+
+###Step 1
+
+Download or fork the project
+
+###Step 2
+
+Deployed on any web server
+
+###Step 3
+
+Accessed through a modern browser
+
+> Run brooder samples,you should deployment the samples before accessing from a browser,you can not open directly from the local.
+
+##Read More...
+
+[Click to read more,demos,samples,documents,tools...](http://hou80houzhu.github.io/brooderjs/ "Read More,Demos,Documents")

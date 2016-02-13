@@ -1,0 +1,9 @@
+{
+    "code": "1",
+    "msg": "",
+    "data": [
+        {"id": "0", "name": "待审核", "img": "fa fa-users", "list": [], "view": "goods", "type": "big", "color": "1", "method": "list"},
+        {"id": "1", "name": "已通过", "img": "fa fa-users", "list": [], "view": "member", "type": "small", "color": "2", "method": "list"},
+        {"id": "2", "name": "未通过", "img": "icon-book", "list": [], "view": "order", "type": "small", "color": "3", "method": "list"}
+    ]
+}
