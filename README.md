@@ -2,7 +2,30 @@
 
 ###An awesome web framework.
 
-brooder is a set of web development solutions for large-scale project development and design.brooder including required to build the front end and back-end services and UI development tools and browser debugging tools.brooder suitable for any scene web development, support highly customizable, focusing on software engineering and design, high performance, and have the best developer friendly. Now covers Desktop Admin System, mobile high-end imitation native (operating experience to maintain the native application) App (webapp), customizable responsive website front-end routing and ordinary single-page or multi-page applications.
+brooder is a complete web development solution for large-scale project development and design.
+
+brooder suitable for any scene web development, support highly customizable, focusing on software engineering and design, high performance, and have the best developer friendly. 
+
+**brooder includs**
+ 
+- Frontend UI framework
+  - brooderjs and modules
+- Nodejs web server 
+  - [corgiserver](http://hou80houzhu.github.io/corgiserver/ "corgiserver")
+- Java server framework
+  - [brooderServer](http://hou80houzhu.github.io/brooderServer/ "brooderServer")
+- Project building tools
+  - [brooderbuilder](http://hou80houzhu.github.io/brooderbuilder/ "brooderbuilder")
+- Browser debugging extension.
+  - [brooderToolkit](http://hou80houzhu.github.io/brooderToolkit/ "brooderToolkit")
+
+**brooder supports**
+
+- Desktop Admin system
+- Mobile high-end imitation native (operating experience to maintain the native application)app
+- Customizable responsive website
+- Common tip routed single-page or multi-page applications
+- And you would like...
 
 
 [Click to read more,demos,samples,documents,tools...](http://hou80houzhu.github.io/brooderjs/ "Read More,Demos,Documents")
