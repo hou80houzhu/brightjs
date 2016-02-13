@@ -7,7 +7,7 @@
 
 ##What is in
 
-There are two samples and brooder core library in the master branch. the documentation site is in the gh-pages branch.the documentation site is a sample too.
+There are two samples,brooder core library and an chrome    extenstion(builded only for brooder) in the master branch. the documentation site is in the gh-pages branch.the documentation site is a sample too.
 
 ##How to run the samples
 
@@ -22,6 +22,10 @@ Deployed on any web server
 ###Step 3
 
 Accessed through a modern browser
+
+###Step 4
+
+install the chrome extenstion and debug the samples.
 
 > Run brooder samples,you should deployment the samples before accessing from a browser,you can not open directly from the local.
 
