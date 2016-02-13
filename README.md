@@ -42,19 +42,19 @@ There are two samples(admin&todolist),brooder core library and an chrome    exte
 
 ##How to run the samples
 
-###Step 1
+**Step 1**
 
 Download or fork the project
 
-###Step 2
+**Step 2**
 
 Deployed on any web server
 
-###Step 3
+**Step 3**
 
 Accessed through a modern browser
 
-###Step 4
+**Step 4**
 
 install the chrome extenstion and debug the samples.
 
