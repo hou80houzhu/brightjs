@@ -21,10 +21,10 @@ brooder is also suitable for any scene of web development, support highly custom
 
 **brooder supports**
 
-- Desktop Admin system
-- Mobile high-end imitation native (operating experience to maintain the native application)app
-- Customizable responsive website
-- Common tip routed single-page or multi-page applications
+- Desktop Admin system UI framework
+- Mobile high-end imitation native (operating experience to maintain the native application)app UI framework
+- Customizable responsive website framework
+- Common tip routed single-page or multi-page applications supports
 - And you would like...
 
 
