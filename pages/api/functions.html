@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1>核心功能</h1>
+
+<p>这里简单介绍brooder框架中最为重要的内置对象的基本信息。</p>
+
+<h2>面向对象</h2>
+
+<p>adapt是brooder框架中所有与面向对象相关的基础。</p>
+
+<blockquote>
+<p>具体信息请参考adapt对象的说明</p>
+</blockquote>
+
+<h2>模板引擎</h2>
+
+<p><code>brooder.template()</code> 是brooder的内置模板引擎，用于处理插值运算。它是轻量级的，并且具备自定义标签的能力</p>
+
+<h3>语法</h3>
+
+<p><code>broode.template</code>为保证处理的性能在异常处理上有所保留，所以尽可能的保证语法的正确以免进入复杂的调试过程。</p>
+
+<ul>
+<li>
+<code>&lt;% code %&gt;</code>表达式为标准javascript语句（严格模式），语句末尾必须加<code>;</code>
+</li>
+<li>
+<code>&lt;%=code;%&gt;</code>赋值语句为标准javascript语句（严格模式），语句末尾必须加<code>;</code>
+</li>
+<li>模板不止于HTML语法文件，更适用于任何文本文件。</li>
+</ul>
+
+<h3>宏</h3>
+
+<p><code>brooder.template</code> 支持自定义标签（宏），单标签宏的写法为<code>&lt;@tagname prop=""... /&gt;</code>，带标签体的宏写法<code>&lt;@tagname prop=""...&gt;body&lt;/@tagname&gt;</code>。宏实际上为一个javascript处理函数，它会接受两个参数，第一个参数为自定义标签属性的key-value对象，第二个为<code>render</code>函数，如果该标签用于影响模板输出则应该有返回值，返回值则会直接渲染进模板。</p>
+
+<p><strong>全局宏</strong></p>
+
+<p>全局宏只需注册一次便在页面生命周期内任何地方调用模板引擎都会携带该宏</p>
+
+<pre><code>brooder.setTemplateGlobalMacro("tagname",function(attrs,render){
+    return "";
+});
+</code></pre>
+
+<p><strong>对象宏</strong></p>
+
+<p>对象宏则依赖于调用模板对象，对象被清除则宏随之消失。调用方法：</p>
+
+<pre><code>brooder.template().macro("tagname",function(attrs,render){
+    return "";
+})
+</code></pre>
+
+<blockquote>
+<p>其他功能请参见template说明</p>
+</blockquote>
+
+<h2>内建框架对象</h2>
+
+<p>Module是brooder内置框架的核心对象。Module与DOM紧密连接，Module对象是一个自包含的页面单元，并作为一个组件存在。Module只负责处理自身的逻辑而尽量不与其他Module产生依赖，Module间的交互应该通过<code>ViewEvent</code>来传递实现。</p>
+
+<h3>预置Module类型</h3>
+
+<ul>
+<li>
+<strong>request</strong> 是Module的基类，用于实现RESTful通信，任何其他Module都继承于此，故所有的Module类都具备通信能力</li>
+<li>
+<strong>view</strong> 是单独（不可包含其他Module）的View类，并拓展了大量用于DOM处理和Module间通信的功能</li>
+<li>
+<strong>viewgroup</strong> 是View的组合对象，代表view的布局，拓展了大量用于子View管理的功能</li>
+<li>
+<strong>root</strong> 是页面的根View继承与viewgroup，本身没有拓展任何viewgroup的功能</li>
+</ul>
+
+<blockquote>
+<p>Module的API请参见request,view,viewgroup,root说明</p>
+</blockquote>
+
+<h3>Module生命周期</h3>
+
+<ul>
+<li>
+<strong>创建Module对象</strong> module的创建依赖于布局（viewgroup对象的append）而不能手动创建。当module被append到布局中，module进入初始化阶段。</li>
+<li>
+<strong>初始化Module对象</strong>
+
+<ul>
+<li>继承于view的Module调用方法的顺序如下
+
+<ul>
+<li><code>onbeforeinit(option)</code></li>
+<li><code>init(option)</code></li>
+<li><code>onendinit(option)</code></li>
+<li>
+<code>onnodeinserted(dom)</code>view的dom有DOM插入时调用</li>
+<li>
+<code>onchildremove(dom)</code>view的dom有DOM删除时调用</li>
+</ul>
+</li>
+<li>继承于viewgroup的Module的回调
+
+<ul>
+<li><code>onbeforeinit(option)</code></li>
+<li>
+<code>ondomready(option)</code>view的dom可用时调用</li>
+<li>
+<code>onnodeinserted(dom)</code>view的dom有DOM插入时调用</li>
+<li><code>init(option)</code></li>
+<li><code>onendinit(option)</code></li>
+<li>
+<code>oninitchild(child)</code>子view创建时调用</li>
+<li>
+<code>onoption(ops, subview, subid)</code>处理子view初始化option时调用</li>
+<li>
+<code>onchildremove(dom)</code>view的dom有DOM删除时调用</li>
+<li>
+<code>onchildremove(child)</code>子view被移除时调用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<strong>Module销毁</strong> 当view被其父view手动移除时Moudle被销毁
+
+<ul>
+<li>
+<code>onunload()</code> 释放view所占资源或其他</li>
+</ul>
+</li>
+</ul>
+
+<h3>option来源</h3>
+
+<ul>
+<li>Module类中定义（包括继承关系）</li>
+<li>初始化Module时传入</li>
+<li>从父Module实例中option对象中同子view类名相同的属性中获取</li>
+</ul>
+
+<h3>view间通信</h3>
+
+<p>view的通信功能定义于view类中，所以任何继承于view的类都具备通信能力。使用<code>Module.dispatchEvent(eventtype,data[,true])</code>实现通信。当第三个参数为<code>true</code>（默认为true）时对象会随着view的组合树向树顶传递，否则向所有子叶子传递。</p>
+
+<p><strong>注册事件</strong></p>
+
+<ul>
+<li>定义类时注册事件,只需定义以<code>event_*[eventname]</code>为名的方法</li>
+<li>运行时注册事件，调用<code>Module.addEventListener(evnetype,fn)</code>方法</li>
+</ul>
+
+<blockquote>
+<p>viewevent请参见viewevent对象</p>
+</blockquote>
+
+<h3>finder，group与groupi</h3>
+
+<p>finder与group及groupi是将代码逻辑与DOM结构进行分离而设置的Module功能，finder或者group是一个DOM集合的包装对象，它会收集任何在模板中包含<code>data-finder</code>和<code>data-group</code>属性的DOM，该功能还需配合<code>Module.delegate()</code>方法使用，当DOM有增加或删除操作时，需要调用该方法以更新finder和group集合。group是与groupi配合使用的，以脱离DOM结构而形成一个子集合，一个group中不能包含同名groupi。</p>
+
+<pre><code>&lt;div data-find="test"&gt;&lt;/div&gt;
+&lt;div data-group="test"&gt;
+    &lt;div data-groupi="test-a"&gt;&lt;/div&gt;
+    &lt;div data-groupi="test-b"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p><strong>find和group回调</strong></p>
+
+<p>View初始化时会主动调用类中以<code>find_*[findname]</code>,<code>group_*[groupname]</code>为名的方法并传入对应的DOM</p>
+
+<h3>bind</h3>
+
+<p>bind与find类似，是分离逻辑与DOM结构的方法。模板标签中包含<code>data-bind</code>属性的NODE会注册相应事件，回调定义于类中<code>bind_*[bindname]</code>的方法。</p>
+
+<pre><code>&lt;div data-bind="click:name mouseup:name2"&gt;&lt;/div&gt;
+</code></pre>
+
+<h3>observe(observername,obj)</h3>
+
+<p>该方法是用于实现类似MVVM模式的双重绑定而设置，用于处理简单业务问题。调用该方法会将传入的对象改造成具备<code>观察者</code>能力的新对象，当该对象有变动时会将对象的具体变动信息传递出去，只需在Module定义中定义以<code>observername_objpropname_dealtype</code>为方法名的方法即可收到通知。对象的观察能力不同于浏览器内置的，它会传递更多信息，监听更多内容。</p>
+
+<pre><code>Module({
+    name:"test",
+    extend:"view",
+    init:function(){
+        this.observe("observname",{
+            aa:{
+                aaa:"aaa"
+            },
+            bb:"bb",
+            cc:[]
+        });
+    },
+    "observname_aa.aaa_edit":function(){},
+    observname_aa_edit:function(){},
+    observname_cc_add:function(){},
+    observname_cc.remove:function(){}
+});
+
+</code></pre>
+
+<h2>项目启动</h2>
+
+<p>调用<code>brooder.App()</code>返回bootstarp对象，用于配置以及启动项目。</p>
+
+<ul>
+<li>
+<strong>id</strong> 项目id</li>
+<li>
+<strong>preload</strong> 预加载资源，在项目启动前加载的资源</li>
+<li>
+<strong>basePath</strong> packet路径</li>
+<li>
+<strong>debug</strong> 是否开启debug模式，开启debug模式会方便调试，关闭则几乎禁止大部分的调试功能</li>
+<li>
+<strong>update</strong> 用于项目更新</li>
+<li>
+<strong>sourceMapping</strong> 用于项目更新</li>
+</ul>
+
+<blockquote>
+<p>很多时候我们只需要关心basePath和update属性，其他属性都交由brooderbuilder构建工具进行自动处理。</p>
+</blockquote>
+
+<p>项目启动前可以处理很多事情,比如监听预处理资源加载，处理被载入的javascript代码等，具体信息参考brooderstrap对象</p>
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

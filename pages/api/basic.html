@@ -289,116 +289,374 @@ img {
   max-width: 100%
 }
 </style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
 </head>
 <body>
 <h1>基本内容</h1>
+
 <p>这里简单介绍brooder框架的基本形态和使用方式</p>
+
 <h2>点路径</h2>
+
 <p>brooder在资源路径的写法上统一使用点路径而不使用<code>\</code>，所以请确保被使用的文件名中不带有<code>.</code>（不带后缀），不然会导致资源引用错误。</p>
+
 <h2>资源管理</h2>
+
 <p>尽量将静态资源管理托管给brooder去处理，brooder会确保资源使用的高效性，同时保证写法的简洁。</p>
+
 <p>brooder使用<code>packet</code>模块来进行资源的管理，packet是一个带有头部注解的javascript文件，头部注解标识出资源依赖的相关信息，在运行时brooder根据所使用的packet来进行资源的加载和区别使用。如果开启brooder静态缓存，brooder便会根据资源的状态选择是否从缓存中获取资源并加以使用。brooder内建资源的增量更新能力，以及应用发布规范，托管静态资源管理于brooder将会省去处理大量复杂又繁琐工作的时间和精力。</p>
+
 <p>brooder的资源管理只需要一个<code>basePath</code>属性，用于规定资源查找的项目目录，而且仅该目录下的所有资源则为brooder管理的资源。由于brooder是一种模块化开发解决方案，所以目录的组织结构应该尽量保持独立，并将所有模块使用的资源放入其中，可以不需要计较文件夹的深度以避免模块名称相同的问题（这与java的包管理机制很类似，可以创建类似<code>com.companyname.module</code>这样的包）这样在引入第三方或者进行团队开发时可以直接引入或者直接去除而不必进行再次处理，以免出现问题。</p>
+
 <h2>packet</h2>
+
 <p>packet是一个带有头部注解的javascript文件，运行时类似基于AMD或者CMD的module，但是packet比前者更为强大。packet的代码是在闭包中运行的。</p>
+
 <h3>头注解：</h3>
-<p><pre>/*!
+
+<pre><code>/*!
  * @packet test;
  * @css test.style.main;
  * @template test.todolist:newname;
  * @image test.image[jpg]
  */
-code...</pre></p>
+code...
+</code></pre>
+
 <blockquote>
 <p>头注解是放在文件头部的注释及注解写法，一个文件只能有一个头注解，其他的注解写法都会被忽略</p>
 </blockquote>
+
 <h3>内置注解类型</h3>
+
 <ul>
-<li><code>@packet</code> 该注解标识该packet的packet名，它往往是packet的第一个书写注解，它同时也是必须写的唯一注解，packet名称是文件路径+文件名（不带后缀）的点路径形式。packet中的代码是在闭包中运行的。</li>
-<li><code>@usestrict</code> true或者false，用于规定该包内的代码是否按照严格模式运行，默认以非严格模式运行。</li>
-<li><code>@css</code> 引入css文件，css路径为点路径。 </li>
-<li><code>@template</code> 引入模板文件，template路径为点路径。</li>
-<li><code>@js</code> 引入js文件，js路径为点路径。被引入的代码直接在window下运行，其与直接引入页面的方式没有差别。</li>
-<li><code>@json</code> 引入json文件，json路径为点路径。</li>
-<li><code>@text</code> 引入text文件，text路径为点路径。</li>
-<li><code>@require</code> 引入packet文件，packet路径为点路径。被引入的文件会立即被加载并执行。</li>
-<li><code>@include</code> 引入packet文件，packet路径为点路径。被引入的文件会在实际使用时被加载，而不是在packet代码执行前被加载。</li>
-<li><code>@html</code> 引入html文件，html路径为点路径。</li>
-<li><code>@image</code> 引入image文件，image路径为点路径，同时还必须指明文件的后缀<code>@image test.image[png]</code>如果不指明，默认为<code>.png</code>。</li>
+<li>
+<code>@packet</code> 该注解标识该packet的packet名，它往往是packet的第一个书写注解，它同时也是必须写的唯一注解，packet名称是文件路径+文件名（不带后缀）的点路径形式。packet中的代码是在闭包中运行的。</li>
+<li>
+<code>@usestrict</code> true或者false，用于规定该包内的代码是否按照严格模式运行，默认以非严格模式运行。</li>
+<li>
+<code>@css</code> 引入css文件，css路径为点路径。 </li>
+<li>
+<code>@template</code> 引入模板文件，template路径为点路径。</li>
+<li>
+<code>@js</code> 引入js文件，js路径为点路径。被引入的代码直接在window下运行，其与直接引入页面的方式没有差别。</li>
+<li>
+<code>@json</code> 引入json文件，json路径为点路径。</li>
+<li>
+<code>@text</code> 引入text文件，text路径为点路径。</li>
+<li>
+<code>@require</code> 引入packet文件，packet路径为点路径。被引入的文件会立即被加载并执行。</li>
+<li>
+<code>@include</code> 引入packet文件，packet路径为点路径。被引入的文件会在实际使用时被加载，而不是在packet代码执行前被加载。</li>
+<li>
+<code>@html</code> 引入html文件，html路径为点路径。</li>
+<li>
+<code>@image</code> 引入image文件，image路径为点路径，同时还必须指明文件的后缀<code>@image test.image[png]</code>如果不指明，默认为<code>.png</code>。</li>
 </ul>
+
 <blockquote>
 <p>内置注解是brooder预置的注解类型</p>
 </blockquote>
+
 <h3>短包名</h3>
+
 <p>在任意packet文件里可以通过<strong>短包名</strong>来书写packet名称。packet名称根据不同的目录结构而造成名称过长的问题，进而引入短包名来解决这样的书写过长问题。</p>
+
 <ul>
-<li><code>@</code>+尾名（包名最后一个<code>.</code>后面的字符,例如<code>test.mobi.test2</code>的短包名为<code>test2</code>）指代该包名，例如<code>&quot;@name.module&quot;</code>,如果尾名出现重复可以指代一个新名称，如<code>test.mobi.test2:newname</code>这样尾名便是<code>newname</code></li>
-<li><code>@</code>指代当前包包名，例如<code>&quot;@.module&quot;</code></li>
+<li>
+<code>@</code>+尾名（包名最后一个<code>.</code>后面的字符,例如<code>test.mobi.test2</code>的短包名为<code>test2</code>）指代该包名，例如<code>"@name.module"</code>,如果尾名出现重复可以指代一个新名称，如<code>test.mobi.test2:newname</code>这样尾名便是<code>newname</code>
+</li>
+<li>
+<code>@</code>指代当前包包名，例如<code>"@.module"</code>
+</li>
 </ul>
+
 <h3>获取资源</h3>
+
 <p>在运行时可以通过<code>module</code>对象获取相关资源，具体详见<code>packetInfo</code>对象</p>
+
 <h3>代码发布形式</h3>
+
 <p>packet内的代码是在闭包中运行的，所以任何的有效代码都可以被执行，在brooder环境内，packet内的代码可以按照以下任何方式编写。</p>
+
 <ul>
-<li><code>Module()</code>可以在packet内只定义Module</li>
-<li><code>Option()</code>可以在packet内只定义Option</li>
-<li><code>jQuery Plugin</code>可以按照jQuery Plugin类似写法发布组件</li>
-<li><code>module.exports</code>可以按照AMD&amp;CMD方式发布组件</li>
-<li><code>Plugin()</code>一种jQuery Plugin类似功能的简写方式</li>
-<li><code>Method()</code>一种jQuery Plugin（全局方式）类似功能的简写方式</li>
-<li><code>other</code>可以混合使用上面的形式</li>
+<li>
+<code>Module()</code>可以在packet内只定义Module</li>
+<li>
+<code>Option()</code>可以在packet内只定义Option</li>
+<li>
+<code>jQuery Plugin</code>可以按照jQuery Plugin类似写法发布组件</li>
+<li>
+<code>module.exports</code>可以按照AMD&amp;CMD方式发布组件</li>
+<li>
+<code>Plugin()</code>一种jQuery Plugin类似功能的简写方式</li>
+<li>
+<code>Method()</code>一种jQuery Plugin（全局方式）类似功能的简写方式</li>
+<li>
+<code>other</code>可以混合使用上面的形式</li>
 </ul>
+
 <blockquote>
 <p>虽然可以在packet内书写多种形式的代码，但建议只在一个packet内编写一种代码发布形式的代码。</p>
 </blockquote>
+
 <h2>模板</h2>
+
 <p>brooder内置一个小型模板引擎，并为内置框架提供模板支持。</p>
+
 <ul>
 <li>支持原生javascript语法</li>
 <li>支持宏（自定义标签）</li>
 </ul>
+
 <h3>内置宏</h3>
+
 <ul>
-<li><code>&lt;@include data='' template=''&gt;</code>用于引入其他模板</li>
+<li>
+<code>&lt;@include data='' template=''&gt;</code>用于引入其他模板</li>
 </ul>
+
 <h3>模板文件</h3>
+
 <p>模板文件为一个<code>.html</code>的文件，一个文件中可以编写多个可用模板，并用<code>&lt;!--[templateName]--&gt;</code>分割，<code>&lt;!--[templateName]--&gt;</code>用于标识其下模板代码的名称，并默认以该模板文件的点路径作为其命名空间。</p>
+
 <h2>内建框架</h2>
+
 <p>brooder的内建框架是朴素的，它只是面向对象的。brooder内建框架只有两种数据类型，一种为<code>Module</code>，一种为<code>Option</code>，Module相当于类，Option相当于类的实例。</p>
+
 <p>Module是面向对象的，所以它支持继承等标准面向对象的特性，这将极大的增强代码的复用和可拓展的能力。从整体上看，内建框架只是使用简单的<strong>组合模式</strong>进行Module的组织，同时Module提供大量的内建方法，这些方法可以简化开发时的基础问题，使开发者更专注于业务逻辑本身。Module虽然是朴素的，但是它仍然具备前端开发中的一些先进理念的特性，比如MVVM等，只是这样的特性并非是brooder设计的核心思考。</p>
+
 <p>Option代表着Module的一个实例，也就是说Option对象可以初始化Module。Option并非单纯的初始化配置，它支持继承，它同时具备在运行时修改Module行为的能力，所以如果认为Module是相对稳定的数据结构的话，Option则是面对处理与业务息息相关的问题而存在的。很多时候，并非需要创建过多的Module，而只需要创建Option便可以对Module进行业务化的改造。这极大的简化开发时的困难程度。</p>
+
 <p>所以使用内建框架首先会抽象出基本的类型（Module）并加以实现，并在具体业务环境下使用Option来进行局部改造，从而实现整个应用。Module是相对稳定的，具备可复用的能力，Option是与业务息息相关的，它是不稳定的。</p>
+
 <h2>css相关</h2>
+
 <p>由于brooder是模块化开发的，而且模块间可以相互组合使用，所以如果css定义过于松散就会导致模块在相互组合时造成错乱而且给后期维护带来压力。所以brooder建议css的定义应该按照模块化方式进行。</p>
+
 <ul>
 <li>使用less或者sass编写模块化样式</li>
 <li>css依赖的资源放到css同级目录</li>
 </ul>
+
 <h2>应用部署及更新策略</h2>
+
 <p>brooder的部署和更新策略需要借助brooderBuilder构建工具来完成。brooder在构建工具处理后会生成中间文件（开发者无需关注这些文件），这些文件是经过合并压缩后的中间产物，这些文件会在首次运行应用时被加载一次。后续应用一旦升级也不会重载这些文件，而只会加载被修改的文件。</p>
+
 <p>brooder在每次构建后都会生成一个新的文件包（以及一个资源表），而不是覆盖原有文件包，brooder的文件版本管理更新策略不是采用文件hash命名的方式进行，而是使用新文件包增量更新策略。在客户端看来，更多的依赖于缓存，并且更加资源配置的不同，哪里修改便重载哪里。服务器部署和更新或者回滚则只需要拷贝构建文件包，并修改承载页面的资源表便可以。</p>
+
 <blockquote>
 <p>传统的缓存策略一般使用文件hash来作为文件名，当文件修改其hash随之变动，文件名也随之改变，同时也就生成了一个新文件，新文件不会覆盖原文件，这样在更新或者版本后退时都带来好处。brooder不使用hash作为文件名，而是整体生成部署包和资源表来实现。静态资源如果托管于brooder处理，brooder在使用资源时会根据资源表来校验版本，如果有版本变动则从新的部署包中获取资源，如果版本没有变化，则直接从缓存中获取。brooder会将部分资源缓存于localStorage中，所以部分资源的使用甚至会省去http请求。</p>
 </blockquote>
+
 <h3>资源的更新策略</h3>
+
 <p>brooder对不同的资源类型进行特殊处理，而并非统一对待，所以可以根据具体情况对资源进行有效的优化管理。</p>
+
 <ul>
-<li><strong>packet</strong>:增量更新，更新的粒度取决于packet的划分粒度。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
-<li><strong>template</strong>:增量更新，更新的粒度取决于packet的划分粒度。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
-<li><strong>css:</strong>增量更新，更新的粒度取决于packet的划分粒度。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
-<li><strong>css依赖的资源</strong>：css依赖的资源随着css的变化而变化，即css依赖的资源的变动会引起css文件的变动，而brooder只会关注css的变动。</li>
-<li><strong>javascript</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从缓存中获取。</li>
-<li><strong>json</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
-<li><strong>html</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
-<li><strong>text</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
-<li><strong>image</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从缓存中获取。</li>
-<li><strong>其他资源</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从缓存中获取。</li>
+<li>
+<strong>packet</strong>:增量更新，更新的粒度取决于packet的划分粒度。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
+<li>
+<strong>template</strong>:增量更新，更新的粒度取决于packet的划分粒度。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
+<li>
+<strong>css:</strong>增量更新，更新的粒度取决于packet的划分粒度。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
+<li>
+<strong>css依赖的资源</strong>：css依赖的资源随着css的变化而变化，即css依赖的资源的变动会引起css文件的变动，而brooder只会关注css的变动。</li>
+<li>
+<strong>javascript</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从缓存中获取。</li>
+<li>
+<strong>json</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
+<li>
+<strong>html</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
+<li>
+<strong>text</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从localStorage中获取，而不发送http请求。</li>
+<li>
+<strong>image</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从缓存中获取。</li>
+<li>
+<strong>其他资源</strong>：全量更新，文件修改则完整加载新文件。如果版本未变动则直接从缓存中获取。</li>
 </ul>
+
 <blockquote>
 <p>brooderBuilder会根据项目构建配置文件对项目packet目录进行扫描，将依赖从文件中解析出来，并对这样的资源进行处理。解析出来的文件包括css，packet，template等，而这些css，packet和template将被合并压缩为一个单一文件。这个文件在程序首次载入（或者用户删除本地存储）时立即被载入解析，并写入客户端localStorage（如果可以），以提高程序的响应速度，此后一旦某些文件发生改变（根据所需资源的资源版本配置进行判断）将重新获取新的文件（brooder采取多目录文件定位而非文件hash定位方式，每次版本变动都会生成新的文件目录）以实现文件的增量更新，如果未发生版本变动则从localStorage中直接获取以使用。</p>
+
 <p>以上策略需要服务器可以开启永久缓存。服务器需要保存上线过的全部包，或者设置版本重构前端再删除。</p>
 </blockquote>
-
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
