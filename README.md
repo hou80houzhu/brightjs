@@ -1,4 +1,4 @@
-![packetjs](https://github.com/hou80houzhu/packet/raw/gh-pages/packet/opensite/pc/style/images/logo2.png) [![Build Status](https://travis-ci.org/hou80houzhu/packet.svg?branch=master)](https://travis-ci.org/hou80houzhu/packet)
+![packetjs](https://github.com/hou80houzhu/packet/raw/gh-pages/packet/opensite/pc/style/images/logo2.png) [![Build Status](https://travis-ci.org/hou80houzhu/packet.js.svg?branch=master)](https://travis-ci.org/hou80houzhu/packet.js)
 
 ###An awesome web framework.
 
