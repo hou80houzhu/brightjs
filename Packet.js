@@ -7029,6 +7029,6 @@
     };
     Packet.global = {};
     Packet.fn = query.prototype;
-    window.Packet = Packet;
+    window.packet = Packet;
     window.$ = Packet;
 })();
