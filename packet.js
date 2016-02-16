@@ -3604,12 +3604,8 @@
             } catch (e) {
                 baseMapping.currentBuild = 0;
             }
-            try {
-                window.localStorage.setItem(idcode, baseMapping.sourceMapping.build);
-            } catch (e) {
-            }
             baseMapping.update = parseInt(baseMapping.update);
-            if (baseMapping.update === 0 || baseMapping.currentBuild < baseMapping.update) {
+            if (baseMapping.update === 0 || baseMapping.currentBuild <= baseMapping.update) {
                 if (baseMapping.currentBuild !== 0) {
                     baseMapping.cacheReset = true;
                     try {
@@ -3633,6 +3629,10 @@
         packet.templatepersistence = new filepersistence("template");
         packet.codepersistence = new filepersistence("code");
         packet.otherpersistence = new filepersistence("other");
+        try {
+            window.localStorage.setItem(idcode, baseMapping.sourceMapping.build);
+        } catch (e) {
+        }
         if (baseMapping.debug) {
             Packet.debug = {
                 modules: module.factory,
@@ -4186,7 +4186,7 @@
                             }
                             break;
                         case "js":
-                            var q=value;
+                            var q = value;
                             value = {
                                 packet: value.replace(packet.issuffix, ""),
                                 path: "",
@@ -4198,8 +4198,8 @@
                                 } else {
                                     value.path = basePath + value.packet;
                                 }
-                            }else{
-                                value.path=q;
+                            } else {
+                                value.path = q;
                             }
                             break;
                         default:
