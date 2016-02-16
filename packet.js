@@ -3609,6 +3609,7 @@
             } catch (e) {
             }
             baseMapping.update = parseInt(baseMapping.update);
+            console.log("---->>"+baseMapping.currentBuild+"-----"+baseMapping.update);
             if (baseMapping.update === 0 || baseMapping.currentBuild < baseMapping.update) {
                 if (baseMapping.currentBuild !== 0) {
                     baseMapping.cacheReset = true;
@@ -3820,9 +3821,11 @@
         }
     };
     filepersistence.prototype.init = function () {
+        console.log("----->"+baseMapping.cacheReset);
         if (baseMapping.persistence) {
             if (baseMapping.cacheReset) {
                 try {
+                    console.log("----->>"+this.cacheId);
                     window.localStorage.removeItem(this.cacheId);
                 } catch (e) {
                 }
