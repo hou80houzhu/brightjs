@@ -1,13 +1,13 @@
 /*!
- * brooderjs JavaScript Library v0.12.2
- * http://rocui.com/
+ * PacketJS JavaScript Library v0.12.2
+ * http://packetjs.org/
  * Author hou80houzhu(WangJinliang)
  * licensed under the MIT licenses.
- * https://github.com/hou80houzhu/brooderjs/blob/master/LICENSE
+ * https://github.com/hou80houzhu/packet/blob/master/LICENSE
  */
 (function () {
     "use strict";
-    var brooder = function (start) {
+    var Packet = function (start) {
         return new dom(start);
     };
     var browser = (function () {
@@ -413,8 +413,8 @@
             });
         }
     };
-    brooder.json = json, brooder.is = is, brooder.browser = browser, brooder.prefix = prefix, brooder.util = util;
-    brooder.serialize = serialize, brooder.extend = brooder.json.cover, brooder.nfn = function () {};
+    Packet.json = json, Packet.is = is, Packet.browser = browser, Packet.prefix = prefix, Packet.util = util;
+    Packet.serialize = serialize, Packet.extend = Packet.json.cover, Packet.nfn = function () {};
 
     var queue = function () {
         this.list = [];
@@ -434,7 +434,7 @@
                 error: error || null
             });
         } else {
-            throw Error("[brooder]-this queue can not add task when it is not in state of init.");
+            throw Error("[Packet]-this queue can not add task when it is not in state of init.");
         }
         return this;
     };
@@ -526,7 +526,7 @@
             this.current.error && this.current.error.call(this, result, e, this.current.parameter);
         }
     };
-    brooder.queue = function () {
+    Packet.queue = function () {
         return new queue();
     };
 
@@ -655,7 +655,7 @@
         }
         return this;
     };
-    brooder.dynamicQueue = function () {
+    Packet.dynamicQueue = function () {
         return new dynamicQueue();
     };
 
@@ -794,10 +794,10 @@
             });
         }
     };
-    brooder.promise = function (fn) {
+    Packet.promise = function (fn) {
         return new promise(fn);
     };
-    brooder.all = function () {
+    Packet.all = function () {
         var ps = $.promise();
         if (arguments.length > 0) {
             var a = Array.prototype.slice.call(arguments);
@@ -815,7 +815,7 @@
         }
         return ps;
     };
-    brooder.any = function () {
+    Packet.any = function () {
         var ps = $.promise();
         if (arguments.length > 0) {
             var a = Array.prototype.slice.call(arguments);
@@ -918,10 +918,10 @@
             return ar;
         },
         queryChild: function (node, selector) {
-            var id = node.getAttribute("id") || "__brooder__";
+            var id = node.getAttribute("id") || "__Packet__";
             node.setAttribute("id", id);
             var ar = dom.util.query(node, "#" + id + ">" + selector);
-            if (id === "__brooder__") {
+            if (id === "__Packet__") {
                 node.removeAttribute("id");
             }
             return ar;
@@ -1061,7 +1061,7 @@
         var ops = {time: 200, type: "ease-out", delay: 0};
         var k = new promise();
         k.scope(this.dom);
-        brooder.extend(ops, option);
+        Packet.extend(ops, option);
         var a = prefix.fix(properties.split(","));
         for (var i = 0; i < a.length; i++) {
             var property = a[i];
@@ -1079,7 +1079,7 @@
         var ops = {time: 200, type: "ease-out", delay: 0};
         var k = new promise();
         k.scope(this.dom);
-        brooder.extend(ops, option);
+        Packet.extend(ops, option);
         this.mapping = {all: {property: "all", time: ops.time, type: ops.type, delay: ops.delay, promise: k}};
         transition.setCss.call(this);
         return k;
@@ -1947,7 +1947,7 @@
     };
     query.prototype.same = function (a) {
         var r = true;
-        a = brooder(a);
+        a = Packet(a);
         if (this.length === a.length) {
             for (var i = 0; i < this.nodes.length; i++) {
                 if (a.nodes.indexOf(this.nodes[i]) === -1) {
@@ -2028,7 +2028,7 @@
                         c = this.nodes[0].datasets[a];
                     }
                 } else if (is.isObject(a)) {
-                    brooder.extend(this.nodes[0].datasets, a);
+                    Packet.extend(this.nodes[0].datasets, a);
                 }
             } else if (arguments.length === 2) {
                 this.addClass("incache");
@@ -2263,7 +2263,7 @@
     };
     query.prototype.contains = function (a) {
         if (!this.isEmpty()) {
-            var b = brooder(a);
+            var b = Packet(a);
             if (!b.isEmpty()) {
                 return this.nodes[0].contains(b.nodes[0]);
             }
@@ -2388,7 +2388,7 @@
         return this instanceof query;
     };
     query.prototype.add = function (a) {
-        var k = brooder(a);
+        var k = Packet(a);
         this.nodes = this.nodes.concat(k.nodes);
         this.length = this.nodes.length;
         return this;
@@ -2439,7 +2439,7 @@
         return dom.util.getDom(r);
     };
     query.prototype.scrollingLeft = function (scrollLeft, time, type) {
-        var promise = brooder.promise().scope(this), ths = this;
+        var promise = Packet.promise().scope(this), ths = this;
         if (this.scrollLeft() !== scrollLeft) {
             new tween({
                 from: this.scrollLeft(),
@@ -2459,7 +2459,7 @@
         return promise;
     };
     query.prototype.scrollingTop = function (scrollTop, time, type) {
-        var promise = brooder.promise().scope(this), ths = this;
+        var promise = Packet.promise().scope(this), ths = this;
         if (this.scrollTop() !== scrollTop) {
             new tween({
                 from: this.scrollTop(),
@@ -2493,7 +2493,7 @@
             delay: 0,
             type: "ease-out"
         };
-        brooder.extend(ops, option);
+        Packet.extend(ops, option);
         cssset = prefix.fix(cssset);
         var v = "";
         for (var i in cssset) {
@@ -2503,7 +2503,7 @@
             v = v.substring(0, v.length - 1);
         }
         if (!ani) {
-            var promise = brooder.promise().scope(dom);
+            var promise = Packet.promise().scope(dom);
             var _endHandler = function (e) {
                 dom.get(0).removeEventListener(prefix.transitionEnd, _endHandler, false);
                 promise.resolve(e);
@@ -2514,7 +2514,7 @@
             ani = promise;
         } else {
             ani.then(function () {
-                var promise = brooder.promise().scope(dom);
+                var promise = Packet.promise().scope(dom);
                 var _endHandler = function (e) {
                     dom.get(0).removeEventListener(prefix.transitionEnd, _endHandler, false);
                     promise.resolve(e);
@@ -2676,7 +2676,7 @@
         return a;
     };
     windoc.prototype.scrollingLeft = function (scrollLeft, time, type) {
-        var promise = brooder.promise().scope(this), ths = this;
+        var promise = Packet.promise().scope(this), ths = this;
         if (this.scrollLeft() !== scrollLeft) {
             new tween({
                 from: this.scrollLeft(),
@@ -2696,7 +2696,7 @@
         return promise;
     };
     windoc.prototype.scrollingTop = function (scrollTop, time, type) {
-        var promise = brooder.promise().scope(this), ths = this;
+        var promise = Packet.promise().scope(this), ths = this;
         if (this.scrollTop() !== scrollTop) {
             new tween({
                 from: this.scrollTop(),
@@ -3135,7 +3135,7 @@
             this[i] = null;
         }
     };
-    brooder.tween = function (option) {
+    Packet.tween = function (option) {
         return new tween(option);
     };
 
@@ -3150,7 +3150,7 @@
         this.async = option.async === false ? false : true;
         this.timeout = option.timeout || 3000000;
         this.headers = option.headers || {};
-        this.events = brooder.extend({
+        this.events = Packet.extend({
             readystatechange: null,
             loadstart: null,
             progress: null,
@@ -3253,24 +3253,24 @@
         this.xhr.send(this.data);
         return this;
     };
-    brooder.ajax = function (option) {
+    Packet.ajax = function (option) {
         var pros = new promise();
         if (option) {
-            option.events = brooder.extend({
+            option.events = Packet.extend({
                 error: function (e) {
                     option.error && option.error.call(this, e);
                     pros.reject(e);
                 },
                 load: function (e) {
                     var status = this.response.status;
-                    if ((status >= 200 && status < 300) || status === 304) {
+                    if ((status >= 200 && status < 300) || status === 304 || status === 0) {
                         var result = this.response.response;
                         if (this.realType === "json") {
                             var txt = this.response.responseText;
                             try {
                                 result = json.parse(txt);
                             } catch (e) {
-                                throw Error("[brooder] ajax unvaliable json string,url is '" + option.url + "'");
+                                throw Error("[Packet] ajax unvaliable json string,url is '" + option.url + "'");
                             }
                         }
                         option.success && option.success.call(this, result);
@@ -3287,7 +3287,7 @@
             return pros.resolve();
         }
     };
-    brooder.request = function (option) {
+    Packet.request = function (option) {
         return new request(option);
     };
 
@@ -3352,7 +3352,7 @@
                     };
                     tpt();
                 } else {
-                    brooder.ajax({
+                    Packet.ajax({
                         url: csspath,
                         dataType: "text",
                         type: "get",
@@ -3408,13 +3408,13 @@
                     document.getElementsByTagName("head")[0].appendChild(_a);
                     loader.importsmapping.addJs(jspath);
                 } else {
-                    brooder.ajax({
+                    Packet.ajax({
                         url: jspath,
                         dataType: "text",
                         type: "get",
                         async: false,
                         success: function (e) {
-                            (new Function("try{" + e + "}catch(e){console.error('[brooder]imports: %s ,path " + jspath + "',e.message);}"))();
+                            (new Function("try{" + e + "}catch(e){console.error('[Packet]imports: %s ,path " + jspath + "',e.message);}"))();
                             if (callback) {
                                 callback();
                             }
@@ -3453,23 +3453,23 @@
             return this;
         },
         text: function (url, success, error, data) {
-            brooder.ajax({
+            Packet.ajax({
                 url: url,
                 data: data,
                 dataType: "text",
                 success: success,
-                type:"get",
+                type: "get",
                 error: error
             });
             return this;
         },
         json: function (url, success, error, data) {
-            brooder.ajax({
+            Packet.ajax({
                 url: url,
                 data: data,
                 dataType: "json",
                 success: success,
-                type:"get",
+                type: "get",
                 error: error
             });
             return this;
@@ -3508,7 +3508,7 @@
             }
         }
     };
-    brooder.loader = function () {
+    Packet.loader = function () {
         return loader;
     };
 
@@ -3538,7 +3538,7 @@
         }
     };
     var bootstrap = function (obj) {
-        brooder.extend(baseMapping, {
+        Packet.extend(baseMapping, {
             id: obj.id ? obj.id.toUpperCase() : "",
             preload: obj.preload,
             basePath: (obj.basePath[obj.basePath.length - 1] === "/" ? obj.basePath : obj.basePath + "/"),
@@ -3614,7 +3614,7 @@
                     try {
                         baseMapping.appupdate && baseMapping.appupdate({old: baseMapping.currentBuild, current: baseMapping.sourceMapping.build, update: baseMapping.update});
                     } catch (e) {
-                        console.error("[brooder] onappupdate called error " + e.message);
+                        console.error("[Packet] onappupdate called error " + e.message);
                     }
                 }
             }
@@ -3633,23 +3633,23 @@
         packet.codepersistence = new filepersistence("code");
         packet.otherpersistence = new filepersistence("other");
         if (baseMapping.debug) {
-            brooder.debug = {
+            Packet.debug = {
                 modules: module.factory,
                 options: option.options,
-                json:packet.jsonpersistence._data,
-                resource:{
-                    js:packet.jspersistence,
-                    css:packet.cssmapping,
-                    text:packet.textpersistence,
-                    html:packet.htmlpersistence,
-                    image:packet.imagepersistence
+                json: packet.jsonpersistence._data,
+                resource: {
+                    js: packet.jspersistence,
+                    css: packet.cssmapping,
+                    text: packet.textpersistence,
+                    html: packet.htmlpersistence,
+                    image: packet.imagepersistence
                 },
-                require:packet.requiremapping,
-                doms:packet.templatepersistence._data
+                require: packet.requiremapping,
+                doms: packet.templatepersistence._data
             };
         }
         var dom = null, arg = arguments.length;
-        brooder().ready(function () {
+        Packet().ready(function () {
             if (arg === 1) {
                 dom = $("body");
                 optionName = selector;
@@ -3664,20 +3664,20 @@
                     } else {
                         dom.dataset("view", "root").dataset("viewId", "root").dataset("option", "");
                     }
-                    baseMapping.debug && console.log("[brooder] version:0.10.4,debug:" + baseMapping.debug + ",basePath:" + baseMapping.basePath);
-                    var root = brooder("*[data-view='root']");
+                    baseMapping.debug && console.log("[Packet] version:0.10.4,debug:" + baseMapping.debug + ",basePath:" + baseMapping.basePath);
+                    var root = Packet("*[data-view='root']");
                     if (root.length > 0) {
                         module.getViewInstance(root, optionName, function (a) {
                             a.privator("render");
                         });
                     } else {
-                        throw Error("[brooder boot] can not find the root element.");
+                        throw Error("[Packet boot] can not find the root element.");
                     }
                 });
             });
         });
     };
-    brooder.App = function (obj) {
+    Packet.App = function (obj) {
         return new bootstrap(obj);
     };
 
@@ -3896,7 +3896,7 @@
             onimportend: baseMapping.onimportend,
             onimportprogress: baseMapping.onimportprogress
         }, ths = this;
-        brooder.extend(ops, option);
+        Packet.extend(ops, option);
         if (ops.packetName !== "") {
             var hassuffix = ops.packetName.match(packet.issuffix), suffix = null;
             if (hassuffix) {
@@ -3938,25 +3938,25 @@
                             try {
                                 d["basePath"] = ops.basepath;
                                 d["folder"] = d.path.substring(0, d.path.lastIndexOf("/")) + "/";
-                                brooder.___info = d;
+                                Packet.___info = d;
                                 new Function("$", "Module", "Option", "module", "exports", "require", "Plugin", "Method", xcode).call(
-                                        d, brooder, brooder.Module, brooder.Option, d, {},
+                                        d, Packet, Packet.Module, Packet.Option, d, {},
                                         function (packetName) {
                                             var ap = packet.requiremapping[packetName];
                                             if (ap) {
                                                 return ap.exports;
                                             } else {
-                                                throw Error("[brooder] method require() called error,packet of " + packetName + " is not required in packet of " + d.packet);
+                                                throw Error("[Packet] method require() called error,packet of " + packetName + " is not required in packet of " + d.packet);
                                             }
                                         }, function (obj) {
-                                    brooder.Plugin(obj);
+                                    Packet.Plugin(obj);
                                 }, function (obj) {
-                                    brooder.Method(obj);
+                                    Packet.Method(obj);
                                 });
-                                brooder.___info = null;
+                                Packet.___info = null;
                             } catch (e) {
-                                brooder.___info = null;
-                                console.error("[brooder] packet import error name of " + d.packet + " path of " + d.path + " Message:" + e.stack);
+                                Packet.___info = null;
+                                console.error("[Packet] packet import error name of " + d.packet + " path of " + d.path + " Message:" + e.stack);
                             }
                         }
                         packet.packetmapping.push(path);
@@ -3966,7 +3966,7 @@
                             path: ths.option.path
                         });
                     } else {
-                        throw Error("[brooder] packet _depends error,maybe has circle _depends,or some file has no packet info.");
+                        throw Error("[Packet] packet _depends error,maybe has circle _depends,or some file has no packet info.");
                     }
                     ths.clean();
                 }, ops.target);
@@ -4015,7 +4015,7 @@
         return str;
     };
     packet.pretreat = function () {
-        var ps = brooder.promise();
+        var ps = Packet.promise();
         if (baseMapping.pretreat) {
             baseMapping.pretreat.call(new pretreat(ps));
         } else {
@@ -4218,7 +4218,7 @@
             if (info._packets_[index]) {
                 return str[0] + info._packets_[index] + "." + key + str[str.length - 1];
             } else {
-                throw Error("[brooder] packet can not find with tag of " + str + ",packet is " + info.packet);
+                throw Error("[Packet] packet can not find with tag of " + str + ",packet is " + info.packet);
             }
         }).replace(packet.isCurrentTag, function (str) {
             return str[0] + info.packet + "." + str.split("\.")[1];
@@ -4227,7 +4227,7 @@
             if (info._packets_[index]) {
                 return str[0] + info._packets_[index] + str[str.length - 1];
             } else {
-                throw Error("[brooder] packet can not find with tag of " + str + ",packet is " + info.packet);
+                throw Error("[Packet] packet can not find with tag of " + str + ",packet is " + info.packet);
             }
         }).replace(packet.isOther, function (str) {
             return str.substring(1);
@@ -4293,7 +4293,7 @@
         }
     };
     packet.preload = function (fn) {
-        var queue = brooder.queue();
+        var queue = Packet.queue();
         queue.complete(function () {
             fn && fn();
         });
@@ -4350,7 +4350,7 @@
                     packet: data[i].packet
                 }) : path;
                 queue.add(function (a, b) {
-                    brooder.ajax({
+                    Packet.ajax({
                         url: b.path,
                         type: "get",
                         dataType: type,
@@ -4374,7 +4374,7 @@
         var aa = packet.getPacketInfo.call(ths, e);
         aa["parent"] = parent;
         if (aa.packet === "nopacket") {
-            console.error("[brooder] file has no packet info,path of " + pathname);
+            console.error("[Packet] file has no packet info,path of " + pathname);
         }
         try {
             e = packet.replacePacketNames.call(ths, aa, e);
@@ -4385,7 +4385,7 @@
             info: aa,
             code: e
         });
-        var queue = brooder.queue();
+        var queue = Packet.queue();
         queue.progress(function (e) {
             e["packet"] = aa.packet;
             ths.option.onimportprogress && ths.option.onimportprogress(e);
@@ -4429,7 +4429,7 @@
                     }) : path;
                     queue.add(function (a, info) {
                         if (baseMapping.persistence) {
-                            brooder.ajax({
+                            Packet.ajax({
                                 url: info.path,
                                 dataType: "text",
                                 type: "get",
@@ -4474,7 +4474,7 @@
                     packet: aa.template[i].packet
                 }) : path;
                 queue.add(function (a, info) {
-                    brooder.ajax({
+                    Packet.ajax({
                         url: info.path,
                         type: "get",
                         dataType: "text",
@@ -4616,20 +4616,24 @@
             }
         }
         return code.replace(/src=['"].+?['"]/g, function (a) {
-            var rp = a, newpath = a.substring(5, a.length - 1), _a = newpath.split("/"), name = _a[_a.length - 1].split(".")[0], done = false;
-            if (oldtemp.indexOf(name) !== -1) {
-                for (var i = 0; i < oldpaths.length; i++) {
-                    if (oldpaths[i].indexOf(name) !== -1) {
-                        rp = oldpaths[i];
-                        done = true;
-                        break;
+            if (a.indexOf("<%") === -1) {
+                var rp = a, newpath = a.substring(5, a.length - 1), _a = newpath.split("/"), name = _a[_a.length - 1].split(".")[0], done = false;
+                if (oldtemp.indexOf(name) !== -1) {
+                    for (var i = 0; i < oldpaths.length; i++) {
+                        if (oldpaths[i].indexOf(name) !== -1) {
+                            rp = oldpaths[i];
+                            done = true;
+                            break;
+                        }
                     }
                 }
+                if (!done) {
+                    rp = "src=\"" + baseMapping.basePath + a.substring(5, a.length - 1) + "\"";
+                }
+                return rp;
+            } else {
+                return a;
             }
-            if (!done) {
-                rp = "src=\"" + baseMapping.basePath + a.substring(5, a.length - 1) + "\"";
-            }
-            return rp;
         });
     };
     packet.prototype.load = function (pkt, path, fn, parent) {
@@ -4642,7 +4646,7 @@
                 path: path,
                 packet: pkt
             }) : path;
-            brooder.ajax({
+            Packet.ajax({
                 url: path,
                 dataType: "text",
                 type: "get",
@@ -4661,10 +4665,10 @@
             this[i] = null;
         }
     };
-    brooder.packet = function (option) {
+    Packet.packet = function (option) {
         new packet(option);
     };
-    brooder.source = function (a) {
+    Packet.source = function (a) {
         for (var type in a) {
             var fileload = true;
             if (packet[type + "persistence"].isLoaded()) {
@@ -4675,7 +4679,7 @@
             }
         }
     };
-    brooder._packet = packet;
+    Packet._packet = packet;
 
     var template = function (temp, macro) {
         temp = template.cache(temp);
@@ -4686,7 +4690,7 @@
         this._session = null;
         this._caching = {};
         this._macrofn = macro || {};
-        brooder.extend(this._macrofn, template.globalMacro);
+        Packet.extend(this._macrofn, template.globalMacro);
     };
     template.a = /&lt;%/g;
     template.b = /%&gt;/g;
@@ -4995,13 +4999,13 @@
             this[i] = null;
         }
     };
-    brooder.template = function () {
+    Packet.template = function () {
         var temp = Array.prototype.slice.call(arguments).join("");
         return new template(temp);
     };
-    brooder.setTemplateGlobalMacro = function (key, fn) {
+    Packet.setTemplateGlobalMacro = function (key, fn) {
         if (arguments.length === 1) {
-            brooder.extend(template.globalMacro, key);
+            Packet.extend(template.globalMacro, key);
         } else if (arguments.length === 2) {
             template.globalMacro[key] = fn;
         }
@@ -5186,21 +5190,21 @@
         var array = obj.extend;
         is.isString(obj.extend) && (array = [obj.extend]);
         a._parent = array[0];
-        var c = brooder.extend({}, brooder.json.clone(this.mapping[array[0]].prototype.__adapt__._option));
-        a._option = brooder.extend(c, a._option);
+        var c = Packet.extend({}, Packet.json.clone(this.mapping[array[0]].prototype.__adapt__._option));
+        a._option = Packet.extend(c, a._option);
         for (var i = array.length - 1; i >= 0; i--) {
             if (array[i] !== "adapt") {
                 var d = this.mapping[array[i]].prototype;
                 var __mapping = {}, __private = {}, __static = {};
-                brooder.extend(__mapping, brooder.json.clone(d.__adapt__._mapping));
-                brooder.extend(__private, d.__adapt__._private);
-                brooder.extend(__static, d.__adapt__._static);
-                brooder.extend(a._mapping, __mapping);
-                brooder.extend(a._private, __private);
-                brooder.extend(a._static, __static);
+                Packet.extend(__mapping, Packet.json.clone(d.__adapt__._mapping));
+                Packet.extend(__private, d.__adapt__._private);
+                Packet.extend(__static, d.__adapt__._static);
+                Packet.extend(a._mapping, __mapping);
+                Packet.extend(a._private, __private);
+                Packet.extend(a._static, __static);
                 var q = Object.keys(d);
                 for (var t = 0; t < q.length; t++) {
-                    if (brooder.is.isFunction(d[t])) {
+                    if (Packet.is.isFunction(d[t])) {
                         if (!factory.a.test(t)) {
                             prpt[q[t]] = d[q[t]];
                         }
@@ -5254,8 +5258,8 @@
         var clazz = this.mapping[name];
         if (clazz) {
             objx = new clazz();
-            var _opp = brooder.extend({}, brooder.json.clone(clazz.prototype.__adapt__._option));
-            objx.option = brooder.extend(_opp, option);
+            var _opp = Packet.extend({}, Packet.json.clone(clazz.prototype.__adapt__._option));
+            objx.option = Packet.extend(_opp, option);
             for (var i = clazz.prototype.__adapt__._extendslink.length - 1; i >= 0; i--) {
                 var p = this.mapping[clazz.prototype.__adapt__._extendslink[i]];
                 if (p && p.prototype["init"]) {
@@ -5273,16 +5277,16 @@
             if (sg) {
                 if (!fsingleton[type]) {
                     var objxx = new clazz();
-                    var _opp = brooder.extend({}, brooder.json.clone(clazz.prototype.__adapt__._option));
-                    brooder.extend(_opp, option);
+                    var _opp = Packet.extend({}, Packet.json.clone(clazz.prototype.__adapt__._option));
+                    Packet.extend(_opp, option);
                     objxx.option = _opp;
                     fsingleton[type] = objxx;
                 }
                 objx = fsingleton[type];
             } else {
                 objx = new clazz();
-                var _opp = brooder.extend({}, brooder.json.clone(clazz.prototype.__adapt__._option));
-                brooder.extend(_opp, option);
+                var _opp = Packet.extend({}, Packet.json.clone(clazz.prototype.__adapt__._option));
+                Packet.extend(_opp, option);
                 objx.option = _opp;
             }
         }
@@ -5370,7 +5374,7 @@
     factory.prototype.has = function (clazzType) {
         return this.mapping[clazzType] !== undefined;
     };
-    brooder.adapt = function () {
+    Packet.adapt = function () {
         return new factory();
     };
 
@@ -5642,7 +5646,7 @@
             return obj;
         }
     };
-    brooder.observe = function (name, obj, fn) {
+    Packet.observe = function (name, obj, fn) {
         return observe(name, obj, fn);
     };
 
@@ -5689,7 +5693,7 @@
                 }
             }
         },
-        factory: brooder.adapt(),
+        factory: Packet.adapt(),
         getPacketName: function (name, suffix) {
             if (name) {
                 name = name.trim();
@@ -5730,7 +5734,7 @@
                     }
                 });
             } else {
-                throw Error("[brooder] view can not init.the element has no attribute like view-*");
+                throw Error("[Packet] view can not init.the element has no attribute like view-*");
             }
         },
         add: function (obj) {
@@ -5761,7 +5765,7 @@
             if (moduleName !== undefined && moduleName !== null && moduleName !== "") {
                 if (!module.has(moduleName)) {
                     var packetName = module.getPacketName(moduleName);
-                    brooder.packet({
+                    Packet.packet({
                         packetName: packetName,
                         target: target,
                         back: function () {
@@ -5769,7 +5773,7 @@
                                 if (module.has(moduleName)) {
                                     fn(module.factory.instance(moduleName, option));
                                 } else {
-                                    throw Error("[brooder] can not find module with name of " + moduleName + ",it is not in the packet of " + module.getPacketName(moduleName) + " or the packet file inited failed.");
+                                    throw Error("[Packet] can not find module with name of " + moduleName + ",it is not in the packet of " + module.getPacketName(moduleName) + " or the packet file inited failed.");
                                 }
                             }
                         }
@@ -5780,7 +5784,7 @@
                     }
                 }
             } else {
-                throw Error("[brooder] packet name can not undefined or null or ''.");
+                throw Error("[Packet] packet name can not undefined or null or ''.");
             }
         },
         task: new dynamicQueue()
@@ -5791,7 +5795,7 @@
             if (obj.name && obj.name !== "") {
                 option.options[obj.name] = obj.option;
             } else {
-                throw Error("[brooder] option name can not null or ''");
+                throw Error("[Packet] option name can not null or ''");
             }
         },
         has: function (optionName) {
@@ -5808,7 +5812,7 @@
                     var a = option.has(optionName);
                     if (a === false) {
                         var packetName = module.getPacketName(optionName);
-                        brooder.packet({
+                        Packet.packet({
                             packetName: packetName,
                             target: target,
                             back: function () {
@@ -5817,7 +5821,7 @@
                                     if (ops) {
                                         fn(ops);
                                     } else {
-                                        throw Error("[brooder] can not find option with name of " + optionName + ",is not in the packet of " + module.getPacketName(optionName));
+                                        throw Error("[Packet] can not find option with name of " + optionName + ",is not in the packet of " + module.getPacketName(optionName));
                                     }
                                 }
                             }
@@ -5846,7 +5850,7 @@
         this.currentTarget = null;
     };
     viewevent.prototype.clone = function () {
-        return brooder.extend(new viewevnet(), this);
+        return Packet.extend(new viewevnet(), this);
     };
     viewevent.prototype.stopPropagation = function () {
         this._goon = false;
@@ -5901,7 +5905,7 @@
             try {
                 module["find_" + _name] && module["find_" + _name]($(this), module._finders);
             } catch (e) {
-                console.error("[brooder] view finder called error with module of " + module.type() + " Message:" + e.message);
+                console.error("[Packet] view finder called error with module of " + module.type() + " Message:" + e.message);
             }
         });
     };
@@ -5926,7 +5930,7 @@
                 try {
                     module["group_" + name]($(this));
                 } catch (e) {
-                    console.error("[brooder] view groups called error with module of " + module.type() + " Message:" + e.message);
+                    console.error("[Packet] view groups called error with module of " + module.type() + " Message:" + e.message);
                 }
             }
         });
@@ -5963,19 +5967,19 @@
                 ops.url = url;
             } else if (is.isObject(url)) {
                 _ok = true;
-                brooder.extend(ops, url);
+                Packet.extend(ops, url);
             }
             if (_ok) {
                 ops.data = data;
                 this.doRequest(ops, _rs);
                 return _rs;
             } else {
-                throw Error("[brooder] request parameter error");
+                throw Error("[Packet] request parameter error");
             }
         },
         doRequest: function (option, reqeustState) {
             var ths = this;
-            brooder.ajax(option).done(function (a) {
+            Packet.ajax(option).done(function (a) {
                 if (a.code && a.code === "1") {
                     reqeustState._data && reqeustState._data.call(ths, a.data);
                 } else {
@@ -6015,7 +6019,7 @@
         template: "",
         onbeforeinit: null,
         onendinit: null,
-        onunload: brooder.nfn,
+        onunload: Packet.nfn,
         onnoderemoved: null,
         onnodeinserted: null,
         onchildremove: null,
@@ -6063,7 +6067,7 @@
                         try {
                             ths.onbeforeinit(ths.option);
                         } catch (e) {
-                            console.error("[brooder] onbeforeinit called error with module of " + ths.type() + " Message:" + e.message);
+                            console.error("[Packet] onbeforeinit called error with module of " + ths.type() + " Message:" + e.message);
                         }
                     }
                     if (ths.className && ths.className !== "") {
@@ -6073,14 +6077,14 @@
                         try {
                             ths.init(ths.option);
                         } catch (e) {
-                            console.error("[brooder] init called error with module of " + ths.type() + " Message:" + e.stack);
+                            console.error("[Packet] init called error with module of " + ths.type() + " Message:" + e.stack);
                         }
                     }
                     if (typeof ths.onendinit === 'function') {
                         try {
                             ths.onendinit(ths.option);
                         } catch (e) {
-                            console.error("[brooder] onendinit called error with module of " + ths.type() + " Message:" + e.message);
+                            console.error("[Packet] onendinit called error with module of " + ths.type() + " Message:" + e.message);
                         }
                     }
                     fn && fn();
@@ -6103,7 +6107,7 @@
         postData: function (ops) {
             ops["dataType"] = "json";
             var ths = this;
-            brooder.ajax(ops).done(function (a) {
+            Packet.ajax(ops).done(function (a) {
                 if (a.code && a.code === "1") {
                     ops.back && ops.back.call(ths, a.data);
                 } else {
@@ -6194,18 +6198,18 @@
             try {
                 ths.onbeforerender && ths.onbeforerender();
             } catch (e) {
-                console.error("[brooder] onbeforerender called error with module of " + ths.type() + " Message:" + e.message);
+                console.error("[Packet] onbeforerender called error with module of " + ths.type() + " Message:" + e.message);
             }
             try {
-                brooder.template(ths.template).renderTo(ths.dom, data);
+                Packet.template(ths.template).renderTo(ths.dom, data);
                 ths.delegate();
             } catch (e) {
-                console.error("[brooder] render called error with module of " + ths.type() + " Message:" + e.message);
+                console.error("[Packet] render called error with module of " + ths.type() + " Message:" + e.message);
             }
             try {
                 ths.onendrender && ths.onendrender();
             } catch (e) {
-                console.error("[brooder] onendrender called error with module of " + ths.type() + " Message:" + e.message);
+                console.error("[Packet] onendrender called error with module of " + ths.type() + " Message:" + e.message);
             }
             setTimeout(function () {
                 ps.resolve();
@@ -6214,7 +6218,7 @@
         },
         original: function (methods) {
             var a = Object.getPrototypeOf(this)[methods];
-            if (brooder.is.isFunction(a)) {
+            if (Packet.is.isFunction(a)) {
                 var b = Array.prototype.slice.call(arguments);
                 b.splice(0, 1);
                 return a.apply(this, b);
@@ -6226,7 +6230,7 @@
             var t = this.parentView, r = null;
             while (t) {
                 var a = t[methodName];
-                if (a && brooder.is.isFunction(a)) {
+                if (a && Packet.is.isFunction(a)) {
                     var b = Array.prototype.slice.call(arguments);
                     b.splice(0, 1);
                     r = a.apply(t, b);
@@ -6250,7 +6254,7 @@
             return b;
         },
         parentViews: function (level) {
-            level = brooder.is.isAvalid(level) ? (brooder.is.isNumber(level) ? level : parseInt(level)) : 0;
+            level = Packet.is.isAvalid(level) ? (Packet.is.isNumber(level) ? level : parseInt(level)) : 0;
             var b = this.parentView, c = level - 1;
             while (b && c > 0) {
                 c--;
@@ -6313,11 +6317,11 @@
             return this;
         },
         getUUID: function () {
-            return brooder.util.uuid();
+            return Packet.util.uuid();
         },
         observe: function (name, obj) {
             var ths = this;
-            return brooder.observe(name, obj, function (e) {
+            return Packet.observe(name, obj, function (e) {
                 var p = name + "_" + e.object.getPath().name + (e.property ? "." + e.property : "") + "_" + e.type;
                 if (ths[p]) {
                     ths[p](e);
@@ -6325,28 +6329,28 @@
             });
         },
         getStaticJson: function (packet) {
-            var ps = brooder.promise().scope(this);
+            var ps = Packet.promise().scope(this);
             filepersistence.getStaitcFile("json", packet, function (data) {
                 ps.resolve(data);
             });
             return ps;
         },
         getStaticHtml: function (packet) {
-            var ps = brooder.promise().scope(this);
+            var ps = Packet.promise().scope(this);
             filepersistence.getStaitcFile("html", packet, function (data) {
                 ps.resolve(data);
             });
             return ps;
         },
         getStaticText: function (packet) {
-            var ps = brooder.promise().scope(this);
+            var ps = Packet.promise().scope(this);
             filepersistence.getStaitcFile("text", packet, function (data) {
                 ps.resolve(data);
             });
             return ps;
         },
         getStaticImage: function (packet) {
-            var ps = brooder.promise().scope(this);
+            var ps = Packet.promise().scope(this);
             filepersistence.getStaitcFile("image", packet, function (data) {
                 ps.resolve(data);
             });
@@ -6359,7 +6363,7 @@
             try {
                 this.onunload();
             } catch (e) {
-                console.error("[brooder] onunload called error with module of " + this.type() + " Message:" + e.stack);
+                console.error("[Packet] onunload called error with module of " + this.type() + " Message:" + e.stack);
             }
             this._finders.length = 0;
             this._groups.length = 0;
@@ -6371,7 +6375,7 @@
                     try {
                         parentview.onchildremove && parentview.onchildremove(this);
                     } catch (e) {
-                        console.error("[brooder] onchildremove called error with module of " + parentview.type() + " Message:" + e.stack);
+                        console.error("[Packet] onchildremove called error with module of " + parentview.type() + " Message:" + e.stack);
                     }
                 }
             }
@@ -6422,7 +6426,7 @@
                 this._groups = new delegater();
                 this._handlers = {};
                 this.children = [];
-                var ths = this, optionName = this.dom.dataset("option"), queue = brooder.queue();
+                var ths = this, optionName = this.dom.dataset("option"), queue = Packet.queue();
                 if (this.dom.hasClass("_futuretochange_")) {
                     this.dom.removeClass("_futuretochange_");
                     var prps = this.__adapt__._factory.mapping[this.__adapt__._type].prototype;
@@ -6462,17 +6466,17 @@
                             try {
                                 ths.onbeforeinit(ths.option);
                             } catch (e) {
-                                console.error("[brooder] onbeforeinit called error with module of " + ths.type() + " Message:" + e.stack);
+                                console.error("[Packet] onbeforeinit called error with module of " + ths.type() + " Message:" + e.stack);
                             }
                         }
                         var str = ths.layout;
                         if (str === "" && ths.dom.children().length > 0) {
                             str = ths.dom.html();
                         }
-                        if (brooder.is.isString(str)) {
+                        if (Packet.is.isString(str)) {
                             try {
-                                var temp = brooder.template(str);
-                                temp.macro(brooder.extend({
+                                var temp = Packet.template(str);
+                                temp.macro(Packet.extend({
                                     module: function (attrs, render) {
                                         var type = attrs["type"], option = attrs["option"], id = attrs["id"];
                                         var prps = {tagName: "div", fullClassName: "_futuretochange_"};
@@ -6494,7 +6498,7 @@
                                 ths.dom.html(str);
                                 temp.flush(ths.dom);
                             } catch (e) {
-                                console.error("[brooder] parse layout called error with module of " + ths.type() + " Message:" + e.stack);
+                                console.error("[Packet] parse layout called error with module of " + ths.type() + " Message:" + e.stack);
                                 ths.dom.html("");
                             }
                         }
@@ -6502,14 +6506,14 @@
                             try {
                                 ths.ondomready(ths.option);
                             } catch (e) {
-                                console.error("[brooder] ondomready called error with module of " + ths.type() + " Message:" + e.stack);
+                                console.error("[Packet] ondomready called error with module of " + ths.type() + " Message:" + e.stack);
                             }
                         }
                         if (typeof ths.onnodeinserted === 'function') {
                             try {
                                 ths.onnodeinserted(ths.dom);
                             } catch (e) {
-                                console.error("[brooder] onnodeinserted called error with module of " + ths.type() + " Message:" + e.stack);
+                                console.error("[Packet] onnodeinserted called error with module of " + ths.type() + " Message:" + e.stack);
                             }
                         }
                         queue.complete(function (a) {
@@ -6523,14 +6527,14 @@
                                 try {
                                     a.init(a.option);
                                 } catch (e) {
-                                    console.error("[brooder] init called error with module of " + ths.type() + " Message:" + e.stack);
+                                    console.error("[Packet] init called error with module of " + ths.type() + " Message:" + e.stack);
                                 }
                             }
                             if (typeof a.onendinit === 'function') {
                                 try {
                                     a.onendinit(a.option);
                                 } catch (e) {
-                                    console.error("[brooder] onendinit called error with module of " + ths.type() + " Message:" + e.stack);
+                                    console.error("[Packet] onendinit called error with module of " + ths.type() + " Message:" + e.stack);
                                 }
                             }
                             fn && fn();
@@ -6543,24 +6547,24 @@
                                     try {
                                         aa.oninitchild({id: subid, type: subview});
                                     } catch (e) {
-                                        console.error("[brooder] oninitchild called error with module of " + ths.type() + " Message:" + e.stack);
+                                        console.error("[Packet] oninitchild called error with module of " + ths.type() + " Message:" + e.stack);
                                     }
                                 }
                                 module.get(aa.type(), subview, null, function (k) {
                                     for (var i = k.__adapt__._extendslink.length - 1; i >= 0; i--) {
-                                        brooder.extend(ops, aa.option[k.__adapt__._extendslink[i]]);
+                                        Packet.extend(ops, aa.option[k.__adapt__._extendslink[i]]);
                                     }
-                                    brooder.extend(ops, aa.option[subid]);
+                                    Packet.extend(ops, aa.option[subid]);
                                     var tops = null;
                                     if (typeof aa.onoption === 'function') {
                                         try {
                                             tops = aa.onoption.call(aa, ops, subview, subid);
-                                            brooder.extend(ops, tops);
+                                            Packet.extend(ops, tops);
                                         } catch (e) {
-                                            console.error("[brooder] onoption called error with module of " + ths.type() + " Message:" + e.stack);
+                                            console.error("[Packet] onoption called error with module of " + ths.type() + " Message:" + e.stack);
                                         }
                                     }
-                                    brooder.extend(k.option, ops);
+                                    Packet.extend(k.option, ops);
                                     if (!dom.data("-view-")) {
                                         var obj = k;
                                         obj.dom = dom;
@@ -6575,7 +6579,7 @@
                                 });
                             }, function () {
                                 this.next(ths);
-                            }, brooder(this));
+                            }, Packet(this));
                         });
                         queue.run(ths);
                     });
@@ -6587,7 +6591,7 @@
             return this;
         },
         _addChild: function (option, callback) {
-            var ths = this, ops = brooder.extend({type: null,
+            var ths = this, ops = Packet.extend({type: null,
                 option: "",
                 parameters: null,
                 id: this.getId() + "-" + this.children.length,
@@ -6608,8 +6612,8 @@
                         ths.children.splice(xindex, 0, sobj);
                     }
                     var cln = sobj.__adapt__._factory.mapping[sobj.__adapt__._type].prototype.fullClassName;
-                    var coner = brooder(ops.container);
-                    var pdom = brooder("<" + sobj.tagName + " class='" + cln + "' data-parent-view='" + ths.getId() + "' data-view='" + ops.type + "' data-view-id='" + ops.id + "' data-option='" + (is.isObject(ops.option) ? "" : ops.option) + "'></" + sobj.tagName + ">");
+                    var coner = Packet(ops.container);
+                    var pdom = Packet("<" + sobj.tagName + " class='" + cln + "' data-parent-view='" + ths.getId() + "' data-view='" + ops.type + "' data-view-id='" + ops.id + "' data-option='" + (is.isObject(ops.option) ? "" : ops.option) + "'></" + sobj.tagName + ">");
                     if (is.isNumber(ops.domIndex)) {
                         var p = coner.children(ops.domIndex);
                         if (p.length > 0) {
@@ -6622,11 +6626,11 @@
                     }
                     var opss = {};
                     for (var i = sobj.__adapt__._extendslink.length - 1; i >= 0; i--) {
-                        brooder.extend(opss, ths.option[sobj.__adapt__._extendslink[i]]);
+                        Packet.extend(opss, ths.option[sobj.__adapt__._extendslink[i]]);
                     }
-                    brooder.extend(opss, brooder.json.clone(sobj.__adapt__._option));
-                    brooder.extend(opss, ths.option[ops.id]);
-                    brooder.extend(opss, ths.option[ops.type]);
+                    Packet.extend(opss, Packet.json.clone(sobj.__adapt__._option));
+                    Packet.extend(opss, ths.option[ops.id]);
+                    Packet.extend(opss, ths.option[ops.type]);
                     if (is.isObject(ops.option)) {
                         var tp = {};
                         tp.override = ops.option.override || {};
@@ -6639,7 +6643,7 @@
                                 }
                             }
                         }
-                        sobj.option = brooder.extend(opss, tp);
+                        sobj.option = Packet.extend(opss, tp);
                         for (var i in sobj.option.override) {
                             if (!module.regs.a.test(i)) {
                                 sobj[i] = sobj.option.override[i];
@@ -6658,7 +6662,7 @@
                             try {
                                 ths.oninitchild({id: sobj.getId(), type: sobj.type()});
                             } catch (e) {
-                                console.error("[brooder] oninitchild called error with module of " + ths.type() + " [" + e.message + "]");
+                                console.error("[Packet] oninitchild called error with module of " + ths.type() + " [" + e.message + "]");
                             }
                         }
                         callback && callback.call(sobj);
@@ -6703,7 +6707,7 @@
             return r;
         },
         getChildAt: function (index) {
-            if (brooder.is.isNumber(index) && index >= 0 && index < this.children.length) {
+            if (Packet.is.isNumber(index) && index >= 0 && index < this.children.length) {
                 return this.children[index];
             } else {
                 return null;
@@ -6724,7 +6728,7 @@
             return this.children.indexOf(view) !== -1;
         },
         getFirstChild: function (type) {
-            if (brooder.is.isAvalid(type)) {
+            if (Packet.is.isAvalid(type)) {
                 return this.getChildrenByType(type)[0];
             } else {
                 return this.children[0];
@@ -6732,7 +6736,7 @@
         },
         getLastChild: function (type) {
             var r = null;
-            if (brooder.is.isAvalid(type)) {
+            if (Packet.is.isAvalid(type)) {
                 var a = this.getChildrenByType(type);
                 if (a.length > 0) {
                     r = a[a.length - 1];
@@ -6769,7 +6773,7 @@
             if (child) {
                 this.privator("addChild", null, {
                     type: this.name,
-                    option: brooder.extend({}, this.option),
+                    option: Packet.extend({}, this.option),
                     parameters: this.parameters,
                     id: id || (this.getId() + "-" + this.children.length),
                     container: this.dom.parent()
@@ -6783,7 +6787,7 @@
             return this;
         },
         removeChildAt: function (index) {
-            if (brooder.is.isNumber(index) && index > 0 && index < this.children.length) {
+            if (Packet.is.isNumber(index) && index > 0 && index < this.children.length) {
                 this.children[index].remove();
             }
             return this;
@@ -6807,7 +6811,7 @@
             try {
                 this.onunload();
             } catch (e) {
-                console.error("[brooder] onunload called error with module of " + this.type() + " Message:" + e.stack);
+                console.error("[Packet] onunload called error with module of " + this.type() + " Message:" + e.stack);
             }
             var parentview = this.parentView;
             if (parentview && parentview.children) {
@@ -6817,7 +6821,7 @@
                     try {
                         parentview.onchildremove && parentview.onchildremove(this);
                     } catch (e) {
-                        console.error("[brooder] onchildremove called error with module of " + parentview.type() + " Message:" + e.stack);
+                        console.error("[Packet] onchildremove called error with module of " + parentview.type() + " Message:" + e.stack);
                     }
                 }
             }
@@ -6851,7 +6855,7 @@
                     }
                 }, {childList: true, subtree: true});
             }
-            console.log("[brooder] root view init.");
+            console.log("[Packet] root view init.");
         }
     });
 
@@ -6864,7 +6868,7 @@
         }
     };
 
-    brooder.Plugin = function (obj) {
+    Packet.Plugin = function (obj) {
         if (obj && obj.name && obj.name !== "") {
             var a = new Function("dom", "option", "this.__name__='" + obj.name + "';this.dom=dom;this.option=$.extend({},this.option,option);dom.data('" + obj.name + "',this);this.init&&this.init(dom,option);");
             a.prototype = new plugin();
@@ -6882,7 +6886,7 @@
             };
         }
     };
-    brooder.Method = function (obj) {
+    Packet.Method = function (obj) {
         if (obj && obj.name && obj.name !== "") {
             $[obj.name] = function (option) {
                 if (is.isFunction(obj.action)) {
@@ -6912,7 +6916,7 @@
             return r;
         };
     }
-    brooder.overrideRequest = function (obj) {
+    Packet.overrideRequest = function (obj) {
         var request = module.factory.get("request");
         var view = module.factory.get("view");
         var group = module.factory.get("viewgroup");
@@ -6926,7 +6930,7 @@
             }
         }
     };
-    brooder.overrideView = function (obj) {
+    Packet.overrideView = function (obj) {
         var view = module.factory.get("view");
         var group = module.factory.get("viewgroup");
         var root = module.factory.get("root");
@@ -6938,7 +6942,7 @@
             }
         }
     };
-    brooder.overrideViewGroup = function (obj) {
+    Packet.overrideViewGroup = function (obj) {
         var group = module.factory.get("viewgroup");
         for (var i in obj) {
             if (i !== "init" && i !== "option" && i !== "extend") {
@@ -6946,7 +6950,7 @@
             }
         }
     };
-    brooder.overrideRoot = function (obj) {
+    Packet.overrideRoot = function (obj) {
         var group = module.factory.get("root");
         for (var i in obj) {
             if (i !== "init" && i !== "option" && i !== "extend") {
@@ -6954,7 +6958,7 @@
             }
         }
     };
-    brooder.Option = function (obj) {
+    Packet.Option = function (obj) {
         if (!is.isString(obj)) {
             var optionx = obj.option, extend = [];
             if (obj.extend) {
@@ -6967,9 +6971,9 @@
             for (var i = 0; i < extend.length; i++) {
                 var a = option.has(extend[i]);
                 if (a) {
-                    brooder.extend(optionx, json.clone(a));
+                    Packet.extend(optionx, json.clone(a));
                 } else {
-                    throw Error("[brooder ] can not find option with name of " + extend[i]);
+                    throw Error("[Packet ] can not find option with name of " + extend[i]);
                 }
             }
             for (var i in obj.override) {
@@ -6986,8 +6990,8 @@
                     }
                 }
             }
-            if (brooder.___info) {
-                obj.name = (brooder.___info.packet ? brooder.___info.packet + "." : "") + obj.name;
+            if (Packet.___info) {
+                obj.name = (Packet.___info.packet ? Packet.___info.packet + "." : "") + obj.name;
             }
             option.add(obj);
         } else {
@@ -6999,32 +7003,32 @@
             }
         }
     };
-    brooder.Module = function (obj) {
-        if (brooder.___info) {
-            obj.packet = brooder.___info.packet;
+    Packet.Module = function (obj) {
+        if (Packet.___info) {
+            obj.packet = Packet.___info.packet;
         }
         module.add(obj);
     };
-    brooder.override = function (name, obj) {
+    Packet.override = function (name, obj) {
         if (is.isString(name)) {
             if (is.isObject(obj)) {
                 if (!_override[name]) {
-                    _override[name] = brooder.extend(new query(), obj);
+                    _override[name] = Packet.extend(new query(), obj);
                 } else {
-                    brooder.extend(_override[name], obj);
+                    Packet.extend(_override[name], obj);
                 }
             }
         }
     };
-    brooder.toggle = function (name) {
+    Packet.toggle = function (name) {
         if (is.isString(name)) {
             _override[name] && (dom.prototype = _override[name]);
         } else {
             dom.prototype = new query();
         }
     };
-    brooder.global = {};
-    brooder.fn = query.prototype;
-    window.brooder = brooder;
-    window.$ = brooder;
+    Packet.global = {};
+    Packet.fn = query.prototype;
+    window.Packet = Packet;
+    window.$ = Packet;
 })();
