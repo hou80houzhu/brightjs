@@ -72,7 +72,7 @@ Module({
         this._running = false;
         this._currentpage = "";
         var qq = [
-            {pagename: "about", width: 400, type: "@.page"},
+            {pagename: "about", width: 400, type: "@.aboutpage"},
             {pagename: "start", width: 600, type: "@.page"},
             {pagename: "todo", width: 800, type: "@.todolistpage"},
             {pagename: "demo", width: 300, type: "@.page"},
@@ -193,7 +193,7 @@ Module({
         $.loader().text(url, function (data) {
             var n = data.match(/<body>[\S\s]*?<\/body>/);
             if (n) {
-                data = "<div class='content-p-code'>"+n[0].substring(6, n[0].length - 7)+"</div>";
+                data = "<div class='content-p-code'>" + n[0].substring(6, n[0].length - 7) + "</div>";
             }
             ths.finders("content").html(data);
             ths.setScroll();
@@ -243,6 +243,20 @@ Module({
     },
     checkPath: function (path) {
         return this.option.path === path;
+    }
+});
+
+//<!-- Place this tag right after the last button or just before your close body tag. -->
+//<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+
+Module({
+    name: "aboutpage",
+    extend: "@.page",
+    init: function () {
+        this.superClass("init");
+        $.loader().js("https://buttons.github.io/buttons.js",null,null,{
+            id:"github-bjs"
+        });
     }
 });
 Module({

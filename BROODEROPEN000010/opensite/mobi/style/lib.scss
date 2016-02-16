@@ -1,0 +1,52 @@
+@mixin transition($args:all ease-in .5s){
+    -webkit-transition:$args;
+    -moz-transition:$args;
+    transition:$args;
+}
+@mixin boxSizing($type:border-box){
+    -webkit-box-sizing:$type;
+    -moz-box-sizing:$type;
+    box-sizing:$type;
+}
+@mixin flexBox($direction:no,$justify:no,$align:no,$wrap:no,$alignContent:no){
+    display:-webkit-flex;
+    display:-moz-flex;
+    display:flex;
+    @if $direction != "no"{
+        -webkit-flex-direction:$direction;
+        -moz-flex-direction:$direction;
+        flex-direction:$direction;
+    } 
+    @if $justify!="no"{
+        -webkit-justify-content:$justify;
+        -moz-justify-content:$justify;
+        justify-content:$justify;
+    }
+    @if $align!="no"{
+        -webkit-align-items: $align;
+        -moz-align-items: $align;
+        align-items: $align;
+    }
+    @if $wrap!="no"{
+        -webkit-flex-wrap:$wrap;
+        -moz-flex-wrap:$wrap;
+        flex-wrap:$wrap;
+    }
+    @if $alignContent!="no"{
+        -webkit-align-content: $alignContent;
+        -moz-align-content: $alignContent;
+        align-content: $alignContent;
+    }
+}
+@mixin flexItem($flex:no,$alignSelf:no){
+    @if $flex!="no"{
+        -webkit-flex:$flex;
+        -moz-flex:$flex;
+        flex:$flex;
+    }
+    @if $alignSelf!="no"{
+        -webkit-align-self: $alignSelf;
+        -moz-align-self: $alignSelf;
+        align-self: $alignSelf;
+    }
+}
