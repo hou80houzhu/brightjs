@@ -1,16 +1,16 @@
 @font-face {
-    font-family: 'broodermobi';
-    src:url('fonts/broodermobi.eot?-uppm5s');
-    src:url('fonts/broodermobi.eot?#iefix-uppm5s') format('embedded-opentype'),
-        url('fonts/broodermobi.ttf?-uppm5s') format('truetype'),
-        url('fonts/broodermobi.woff?-uppm5s') format('woff'),
-        url('fonts/broodermobi.svg?-uppm5s#broodermobi') format('svg');
+    font-family: 'packet';
+    src:url('fonts/packet.eot?-uppm5s');
+    src:url('fonts/packet.eot?#iefix-uppm5s') format('embedded-opentype'),
+        url('fonts/packet.ttf?-uppm5s') format('truetype'),
+        url('fonts/packet.woff?-uppm5s') format('woff'),
+        url('fonts/packet.svg?-uppm5s#packet') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 .fa {
-    font-family: 'broodermobi';
+    font-family: 'packet';
     speak: none;
     font-style: normal;
     font-weight: normal;

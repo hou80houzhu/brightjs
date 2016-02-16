@@ -470,11 +470,11 @@ vertical-align:1px;
 <body>
 <h1>核心功能</h1>
 
-<p>这里简单介绍brooder框架中最为重要的内置对象的基本信息。</p>
+<p>这里简单介绍packet框架中最为重要的内置对象的基本信息。</p>
 
 <h2>面向对象</h2>
 
-<p>adapt是brooder框架中所有与面向对象相关的基础。</p>
+<p>adapt是packet框架中所有与面向对象相关的基础。</p>
 
 <blockquote>
 <p>具体信息请参考adapt对象的说明</p>
@@ -482,7 +482,7 @@ vertical-align:1px;
 
 <h2>模板引擎</h2>
 
-<p><code>brooder.template()</code> 是brooder的内置模板引擎，用于处理插值运算。它是轻量级的，并且具备自定义标签的能力</p>
+<p><code>packet.template()</code> 是packet的内置模板引擎，用于处理插值运算。它是轻量级的，并且具备自定义标签的能力</p>
 
 <h3>语法</h3>
 
@@ -500,13 +500,13 @@ vertical-align:1px;
 
 <h3>宏</h3>
 
-<p><code>brooder.template</code> 支持自定义标签（宏），单标签宏的写法为<code>&lt;@tagname prop=""... /&gt;</code>，带标签体的宏写法<code>&lt;@tagname prop=""...&gt;body&lt;/@tagname&gt;</code>。宏实际上为一个javascript处理函数，它会接受两个参数，第一个参数为自定义标签属性的key-value对象，第二个为<code>render</code>函数，如果该标签用于影响模板输出则应该有返回值，返回值则会直接渲染进模板。</p>
+<p><code>packet.template</code> 支持自定义标签（宏），单标签宏的写法为<code>&lt;@tagname prop=""... /&gt;</code>，带标签体的宏写法<code>&lt;@tagname prop=""...&gt;body&lt;/@tagname&gt;</code>。宏实际上为一个javascript处理函数，它会接受两个参数，第一个参数为自定义标签属性的key-value对象，第二个为<code>render</code>函数，如果该标签用于影响模板输出则应该有返回值，返回值则会直接渲染进模板。</p>
 
 <p><strong>全局宏</strong></p>
 
 <p>全局宏只需注册一次便在页面生命周期内任何地方调用模板引擎都会携带该宏</p>
 
-<pre><code>brooder.setTemplateGlobalMacro("tagname",function(attrs,render){
+<pre><code>packet.setTemplateGlobalMacro("tagname",function(attrs,render){
     return "";
 });
 </code></pre>
@@ -515,7 +515,7 @@ vertical-align:1px;
 
 <p>对象宏则依赖于调用模板对象，对象被清除则宏随之消失。调用方法：</p>
 
-<pre><code>brooder.template().macro("tagname",function(attrs,render){
+<pre><code>packet.template().macro("tagname",function(attrs,render){
     return "";
 })
 </code></pre>
@@ -526,7 +526,7 @@ vertical-align:1px;
 
 <h2>内建框架对象</h2>
 
-<p>Module是brooder内置框架的核心对象。Module与DOM紧密连接，Module对象是一个自包含的页面单元，并作为一个组件存在。Module只负责处理自身的逻辑而尽量不与其他Module产生依赖，Module间的交互应该通过<code>ViewEvent</code>来传递实现。</p>
+<p>Module是packet内置框架的核心对象。Module与DOM紧密连接，Module对象是一个自包含的页面单元，并作为一个组件存在。Module只负责处理自身的逻辑而尽量不与其他Module产生依赖，Module间的交互应该通过<code>ViewEvent</code>来传递实现。</p>
 
 <h3>预置Module类型</h3>
 
@@ -669,7 +669,7 @@ vertical-align:1px;
 
 <h2>项目启动</h2>
 
-<p>调用<code>brooder.App()</code>返回bootstarp对象，用于配置以及启动项目。</p>
+<p>调用<code>packet.App()</code>返回bootstarp对象，用于配置以及启动项目。</p>
 
 <ul>
 <li>
@@ -687,10 +687,10 @@ vertical-align:1px;
 </ul>
 
 <blockquote>
-<p>很多时候我们只需要关心basePath和update属性，其他属性都交由brooderbuilder构建工具进行自动处理。</p>
+<p>很多时候我们只需要关心basePath和update属性，其他属性都交由packetbuilder构建工具进行自动处理。</p>
 </blockquote>
 
-<p>项目启动前可以处理很多事情,比如监听预处理资源加载，处理被载入的javascript代码等，具体信息参考brooderstrap对象</p>
+<p>项目启动前可以处理很多事情,比如监听预处理资源加载，处理被载入的javascript代码等，具体信息参考packetstrap对象</p>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

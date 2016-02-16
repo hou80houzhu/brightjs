@@ -1,5 +1,5 @@
 #serialize
-数据序列化模块`brooder.serialize`
+数据序列化模块`packet.serialize`
 
 ##postData(object)
 将object序列化为可以作为http请求的数据格式，可以包含满足`XMLHttpRequest Level2`的任何数据类型。

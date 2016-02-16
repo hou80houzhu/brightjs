@@ -1,18 +1,18 @@
 
 # 核心功能
 
-这里简单介绍brooder框架中最为重要的内置对象的基本信息。
+这里简单介绍packet框架中最为重要的内置对象的基本信息。
 
 
 ## 面向对象
 
-adapt是brooder框架中所有与面向对象相关的基础。
+adapt是packet框架中所有与面向对象相关的基础。
 
 > 具体信息请参考adapt对象的说明
 
 ## 模板引擎
 
-`brooder.template()` 是brooder的内置模板引擎，用于处理插值运算。它是轻量级的，并且具备自定义标签的能力
+`packet.template()` 是packet的内置模板引擎，用于处理插值运算。它是轻量级的，并且具备自定义标签的能力
 
 ### 语法
 
@@ -24,7 +24,7 @@ adapt是brooder框架中所有与面向对象相关的基础。
 
 ### 宏
 
-`brooder.template` 支持自定义标签（宏），单标签宏的写法为`<@tagname prop=""... />`，带标签体的宏写法`<@tagname prop=""...>body</@tagname>`。宏实际上为一个javascript处理函数，它会接受两个参数，第一个参数为自定义标签属性的key-value对象，第二个为`render`函数，如果该标签用于影响模板输出则应该有返回值，返回值则会直接渲染进模板。
+`packet.template` 支持自定义标签（宏），单标签宏的写法为`<@tagname prop=""... />`，带标签体的宏写法`<@tagname prop=""...>body</@tagname>`。宏实际上为一个javascript处理函数，它会接受两个参数，第一个参数为自定义标签属性的key-value对象，第二个为`render`函数，如果该标签用于影响模板输出则应该有返回值，返回值则会直接渲染进模板。
 
 
 **全局宏**
@@ -32,7 +32,7 @@ adapt是brooder框架中所有与面向对象相关的基础。
 全局宏只需注册一次便在页面生命周期内任何地方调用模板引擎都会携带该宏
 
 ```
-brooder.setTemplateGlobalMacro("tagname",function(attrs,render){
+packet.setTemplateGlobalMacro("tagname",function(attrs,render){
 	return "";
 });
 ```
@@ -42,7 +42,7 @@ brooder.setTemplateGlobalMacro("tagname",function(attrs,render){
 对象宏则依赖于调用模板对象，对象被清除则宏随之消失。调用方法：
 
 ```
-brooder.template().macro("tagname",function(attrs,render){
+packet.template().macro("tagname",function(attrs,render){
     return "";
 })
 ```
@@ -51,7 +51,7 @@ brooder.template().macro("tagname",function(attrs,render){
 
 ## 内建框架对象
 
-Module是brooder内置框架的核心对象。Module与DOM紧密连接，Module对象是一个自包含的页面单元，并作为一个组件存在。Module只负责处理自身的逻辑而尽量不与其他Module产生依赖，Module间的交互应该通过`ViewEvent`来传递实现。
+Module是packet内置框架的核心对象。Module与DOM紧密连接，Module对象是一个自包含的页面单元，并作为一个组件存在。Module只负责处理自身的逻辑而尽量不与其他Module产生依赖，Module间的交互应该通过`ViewEvent`来传递实现。
 
 ### 预置Module类型
 
@@ -154,7 +154,7 @@ Module({
 
 ## 项目启动
 
-调用`brooder.App()`返回bootstarp对象，用于配置以及启动项目。
+调用`packet.App()`返回bootstarp对象，用于配置以及启动项目。
 
 - **id** 项目id
 - **preload** 预加载资源，在项目启动前加载的资源
@@ -163,6 +163,6 @@ Module({
 - **update** 用于项目更新
 - **sourceMapping** 用于项目更新
 
-> 很多时候我们只需要关心basePath和update属性，其他属性都交由brooderbuilder构建工具进行自动处理。
+> 很多时候我们只需要关心basePath和update属性，其他属性都交由packetbuilder构建工具进行自动处理。
 
-项目启动前可以处理很多事情,比如监听预处理资源加载，处理被载入的javascript代码等，具体信息参考brooderstrap对象
+项目启动前可以处理很多事情,比如监听预处理资源加载，处理被载入的javascript代码等，具体信息参考packetstrap对象

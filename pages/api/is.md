@@ -1,5 +1,5 @@
 #is
-数据类型判断模块`brooder.is`
+数据类型判断模块`packet.is`
 
 ##isFunction(object)
 判断传入的对象是否为Function类型

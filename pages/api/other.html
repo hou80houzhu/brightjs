@@ -470,11 +470,11 @@ vertical-align:1px;
 <body>
 <h1>其他功能</h1>
 
-<p>这里简单介绍brooder框架提供的辅助性的功能。</p>
+<p>这里简单介绍packet框架提供的辅助性的功能。</p>
 
 <h2>DOM处理</h2>
 
-<p>brooder提供类似jQuery的内置DOM处理对象，API的设计也参考于jQuery</p>
+<p>packet提供类似jQuery的内置DOM处理对象，API的设计也参考于jQuery</p>
 
 <blockquote>
 <p>具体信息请参考query对象</p>
@@ -482,7 +482,7 @@ vertical-align:1px;
 
 <h2>异步编程</h2>
 
-<p>brooder提供常用于异步编程的支持</p>
+<p>packet提供常用于异步编程的支持</p>
 
 <ul>
 <li>
@@ -499,7 +499,7 @@ vertical-align:1px;
 
 <h2>transition</h2>
 
-<p>brooder提供对css3 transition的封装，并于brooder query对象合并，brooder的内置动画也都完全通过css3 transition来实现。</p>
+<p>packet提供对css3 transition的封装，并于packet query对象合并，packet的内置动画也都完全通过css3 transition来实现。</p>
 
 <pre><code>$("body").transition().all().done(function(){
     $(this).css("background","yellow");
@@ -508,14 +508,14 @@ vertical-align:1px;
 
 <h2>transform</h2>
 
-<p>brooder提供对css3 transform的封装，并于brooder query对象合并。</p>
+<p>packet提供对css3 transform的封装，并于packet query对象合并。</p>
 
 <pre><code>$("body").transform().x("-100%");
 </code></pre>
 
 <h2>缓动</h2>
 
-<p>brooder提供基于数学运算的缓动算法，用于实现css3无法实现的缓动处理。</p>
+<p>packet提供基于数学运算的缓动算法，用于实现css3无法实现的缓动处理。</p>
 
 <blockquote>
 <p>具体信息请参考tween对象</p>
@@ -523,7 +523,7 @@ vertical-align:1px;
 
 <h2>网络通信</h2>
 
-<p>brooder的通信功能由request对象提供，该对象是一个对新标准的XMLHttpRequest对象的封装，可以提交文件。</p>
+<p>packet的通信功能由request对象提供，该对象是一个对新标准的XMLHttpRequest对象的封装，可以提交文件。</p>
 
 <blockquote>
 <p>具体信息请参考request对象</p>
@@ -531,7 +531,7 @@ vertical-align:1px;
 
 <h2>override</h2>
 
-<p>override是覆盖brooder的默认方法实现的方法途径，它会生成一个新的副本，并且可以通过<code>brooder.toggle()</code>方法进行切换。</p>
+<p>override是覆盖packet的默认方法实现的方法途径，它会生成一个新的副本，并且可以通过<code>packet.toggle()</code>方法进行切换。</p>
 
 <blockquote>
 <p>具体信息请参考override和toggle</p>
