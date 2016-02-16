@@ -224,6 +224,11 @@ Module({
         option: ""
     },
     layout: module.getTemplate("@template", "mainwindow"),
+    init:function(){
+        $.loader().js("https://buttons.github.io/buttons.js",null,null,{
+            id:"github-bjs"
+        });
+    },
     group_btns: function (dom) {
         var ths = this;
         dom.items().each(function () {
