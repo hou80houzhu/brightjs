@@ -31,11 +31,6 @@ packet is also suitable for any scene of web development, support highly customi
 [Click to read more,demos,samples,documents,tools...](http://hou80houzhu.github.io/packetjs/ "Read More,Demos,Documents")
 
 
-##A sample
-
-![packetjs](https://github.com/hou80houzhu/packetjs/raw/master/images/video.gif)
-
-
 ##What is in
 
 There are two samples(admin&todolist),packet core library and an chrome    extenstion(builded only for packet) in the master branch. the documentation site is in the gh-pages branch.the documentation site is a sample too.
