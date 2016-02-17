@@ -78,6 +78,7 @@ Module({
             {pagename: "demo", width: 300, type: "@.page"},
             {pagename: "api", width: 300, type: "@.apipage"},
             {pagename: "tools", width: 400, type: "@.page"},
+            {pagename: "donate", width: 300, type: "@.page"},
             {pagename: "question", width: 700, type: "@.page"},
             {pagename: "end", width: $(window).width() - 700 - 260, type: "@.page"}
         ];
@@ -147,6 +148,7 @@ Module({
     },
     event_togglePage: function (e) {
         this.getChildAt(0).gotoPage(e.data);
+        e.stopPropagation();
     }
 });
 Module({
@@ -246,9 +248,6 @@ Module({
     }
 });
 
-//<!-- Place this tag right after the last button or just before your close body tag. -->
-//<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
-
 Module({
     name: "aboutpage",
     extend: "@.page",
@@ -256,6 +255,13 @@ Module({
         this.superClass("init");
         $.loader().js("https://buttons.github.io/buttons.js",null,null,{
             id:"github-bjs"
+        });
+    },
+    find_donate:function(dom){
+        var ths=this;
+        dom.click(function(e){
+            ths.dispatchEvent("togglePage","donate");
+            e.stopPropagation();
         });
     }
 });

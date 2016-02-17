@@ -219,15 +219,12 @@ Module({
         ],
         rightBtns: [
         ],
-        title: "Packet",
+        title: "PacketJS",
         inner: "",
         option: ""
     },
     layout: module.getTemplate("@template", "mainwindow"),
-    init:function(){
-        $.loader().js("https://buttons.github.io/buttons.js",null,null,{
-            id:"github-bjs"
-        });
+    init: function () {
     },
     group_btns: function (dom) {
         var ths = this;
@@ -484,8 +481,24 @@ Module({
     },
     event_touchlist: function (e) {
         e.stopPropagation();
+    },
+    event_datalistlitedone: function (e) {
+        $.loader().js("https://buttons.github.io/buttons.js", null, null, {
+            id: "github-bjs"
+        });
+        this.dom.find(".tdonate").button(function () {
+            this.dispatchEvent("menuclick", {
+                view: "opensite.mobi.main.sublistwin",
+                info: {
+                    title: "Donate",
+                    page: "donate"
+                }
+            });
+        }.bind(this));
+        e.stopPropagation();
     }
 });
+
 
 Module({
     name: "todo",
