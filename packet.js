@@ -3593,7 +3593,7 @@
     };
     bootstrap.prototype.boot = function (selector, optionName) {
         if (baseMapping.persistence) {
-            var idcode = "BROODERBUILD[" + baseMapping.id + "]";
+            var idcode = "PACKETBUILD[" + baseMapping.id + "]";
             try {
                 var a = window.localStorage.getItem(idcode);
                 var b = a.match(/[0-9]+/), c = 0;
@@ -3604,8 +3604,9 @@
             } catch (e) {
                 baseMapping.currentBuild = 0;
             }
+            var cid = parseInt(baseMapping.sourceMapping.build.substring(baseMapping.id.length));
             baseMapping.update = parseInt(baseMapping.update);
-            if (baseMapping.update === 0 || baseMapping.currentBuild <= baseMapping.update) {
+            if (baseMapping.update === 0 || baseMapping.currentBuild <= baseMapping.update || baseMapping.currentBuild > cid) {
                 if (baseMapping.currentBuild !== 0) {
                     baseMapping.cacheReset = true;
                     try {
@@ -3752,7 +3753,7 @@
 
     var filepersistence = function (type) {
         this.type = type;
-        this.cacheId = "BROODERCACHE[" + baseMapping.id + ":" + this.type.toUpperCase() + "]";
+        this.cacheId = "PACKETCACHE[" + baseMapping.id + ":" + this.type.toUpperCase() + "]";
         this._data = {};
         this.currentTempHash = baseMapping.sourceMapping ? (baseMapping.sourceMapping[this.type] || {}) : {};
         this.init();
