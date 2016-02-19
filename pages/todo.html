@@ -1,12 +1,12 @@
 <div class="todo">
     <div class="content-title-h1">TODO List Sample</div>
     <p class="content-p">
-        packet是浏览器端javascript开发框架，是web前端整体解决方案
+        Simply to create a TODOlist sample
     </p>
     <div class="content-title-h2">Sample Show</div>
     <div class="demoshowloading" data-find="demo"><div class='fa-spin' style='display:inline-block;'><i class='fa fa-repeat'></i></div> Loading...</div>
     <div class="demoshow"></div>
-    <div class="content-title-h2">Step1.创建HTML模板(todo.html)</div>
+    <div class="content-title-h2">Step1. Create HTML template(todo.html)</div>
     <div class="content-p-code">
         <pre class="line-numbers" data-language="html"><code class="language-html">&lt;!--[todolist]--&gt;
 &lt;div class="todolisthead"&gt;
@@ -26,7 +26,7 @@
     &lt;%}%&gt;
 &lt;/div&gt;</code></pre>
     </div>
-    <div class="content-title-h2">Step2.创建样式文件(main.scss)</div>
+    <div class="content-title-h2">Step2. Create a style file(main.scss)</div>
     <div class="content-p-code">
         <pre class="line-numbers" data-language="scss"><code class="language-scss">.todolist{
     .todolisthead{
@@ -66,7 +66,7 @@
     }
 }</code></pre>
     </div>
-    <div class="content-title-h2">Step3.创建Javascript文件(test.js)</div>
+    <div class="content-title-h2">Step3. Create Javascript file(test.js)</div>
     <div class="content-p-code">
         <pre class="line-numbers" data-language="javascript"><code class="language-javascript">/*!
  * @packet test;
@@ -83,12 +83,12 @@ Module({
             template:module.getTemplate("@todolist","todolistlist"),
             list:[]
         };
-        //监听this.data变化
+        //Observe this.data
         this.observe("data",this.data);
-        //渲染模板
+        //Render template
         this.render(this.data);
     },
-    /*模板中包含data-find='btn'的标签在渲染模板时的回调，并传入该dom*/
+    /*Template contains the data-find='btn'tag in the template when the callback, and the incoming DOM*/
     find_btn:function(dom){
         var ths=this;
         dom.click(function(){
@@ -100,22 +100,22 @@ Module({
             }
         });
     },
-    /*模板中包含data-group='item'的标签在渲染模板时的回调，并传入该dom*/
+    /*Template contains the data-group='item'tag in the template when the callback, and the incoming DOM*/
     group_item:function(dom,group){
         group.get("btn").click(function(){
             $(this).group().cache().remove();
         });
     },
-    /*当监听的数据this.data中的list属性有添加数据操作时的回调*/
+    /*When listening to the data this.data in the list attribute to add data operation callback*/
     "data_list_add":function(e){
-        //将新添加的数据渲染进dom
+        //Render the newly added data into the DOM
         $.template(this.data.template).renderAppendTo(this.finders("body"),[e.value]);
-        //重新关联数据与dom
+        //Re associate data with DOM
         this.delegate();
     },
-    /*当监听的数据this.data中的list属性有删除数据操作时的回调*/
+    /*When listening to the data list in the this.data attribute data is deleted when the callback*/
     "data_list_remove":function(e){
-        //将dom中指定数据从dom中移除
+        //Removes the specified data from the DOM in the DOM
         this.groups().eq(e.value[0].getIndex()).remove();
         this.delegate();
     }
@@ -124,9 +124,9 @@ Option({
     name: "root",
     option: {
         override: {
-            /*当root初始化完成时的回调*/
+            /*When root is initialized, the callback is completed.*/
             onendinit: function () {
-                //将todolist module添加到root中
+                //add todolist module to the root module
                 this.addChild({
                     type: "@.todolist"
                 });
@@ -135,7 +135,7 @@ Option({
     }
 });</code></pre>
     </div>
-    <div class="content-title-h2">Step4.创建入口文件(index.html)</div>
+    <div class="content-title-h2">Step4. Create index file(index.html)</div>
     <div class="content-p-code">
         <pre class="line-numbers" data-language="html"><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -154,11 +154,11 @@ Option({
     &lt;/body&gt;
 &lt;/html&gt;</code></pre>
     </div>
-    <div class="content-title-h2">Step5.运行程序</div>
+    <div class="content-title-h2">Step5. Run the program.</div>
     <p class="content-p">
-        将文件部署到任一web服务器下并访问index.html。本地直接打开是无法运行的。
+        The file to any web server deployment and access index.html. Local direct open is not running.
     </p>
     <p class="content-p">
-        <a href='#' class="content-btn">下载todolist demo源文件</a>
+        <a href='#' class="content-btn">DownLoad todolist demo Source</a>
     </p>
 </div>

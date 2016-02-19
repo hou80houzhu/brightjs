@@ -1,36 +1,36 @@
 <div class="question">
-    <div class="content-title-h1">常见问题</div>
+    <div class="content-title-h1">Q&A</div>
     <p class="content-p">
-        下面列出常见的使用问题
+        Common usage problems
     </p>
     <div class="question-list">
-        <div class="question-title"><i class="fa fa-paper-clip"></i> App更新设置问题</div>
+        <div class="question-title"><i class="fa fa-paper-clip"></i> App update settings</div>
         <div class="question-ans">
-            App的更新通过packet.App()方法传入的sourceMapping以及update属性进行控制，当没有传入sourceMapping的时候，packet不会对应用进行本地缓存处理，此时如果服务器开启缓存，packet只会从缓存中获取资源使应用无法进行更新；如果服务器开启缓存必须传入sourceMapping以使packet实现对应用资源的控制以完成更新。当传入sourceMapping后，update用于控制那个build之前的版本进行全量更新，以便用于删除服务器无用build版本（客户端从缓存中获取资源，服务器也必须保证其存在）。服务器如果不开启缓存并且没有传入sourceMapping时，无论update为何值时packet总会获取新资源。
+            App updates through packet.App () method so that the incoming sourceMapping and update attribute control. When no incoming sourceMapping, the packet is not going on Application of local cache processing. At this time if the server caching enabled, packet will only from the cache access to resources make the application could not be updated. If the server opens the cache must be passed in sourceMapping made to realize the application source control to complete the update packet. When after the introduction of sourceMapping and update for the build control prior to version update the full amount, in order to delete useless server build version (the client from the cache access to resources, the server must also ensure its existence). Server if you do not open the cache and did not pass into the sourceMapping, regardless of the value of packet when update will always get new resources.
         </div>
-        <div class="question-title"><i class="fa fa-paper-clip"></i> 模板语法</div>
+        <div class="question-title"><i class="fa fa-paper-clip"></i> Template syntax</div>
         <div class="question-ans">
-            packet内置模板支持原生javascript语法，但javascript表达式必须用";"结束（原生语法可写可不写），赋值语句必须用";"结束。
+            PacketJS built-in templates supports native javascript syntax, but javascript expression must be ";" End (native syntax to write from time to write), the assignment must be ";" End.
         </div>
-        <div class="question-title"><i class="fa fa-paper-clip"></i> jQuery语法</div>
+        <div class="question-title"><i class="fa fa-paper-clip"></i> jQuery like</div>
         <div class="question-ans">
-            packet内置DOM处理API，并作为packet DOM处理的一个模块，这些API的设计参考了jquery，但实现方式与jquery完全不同，所以在使用这些API时应该参考packet DOM处理API而不要参考jquery API，以免因其差别而导致错误。
+            PacketJS built DOM processing API, and as a module packet DOM processing, design of these API reference jquery, jquery but the way to achieve completely different, so when using these API Reference should handle packet DOM API and not by reference jquery API, so as not to cause errors due to difference.
         </div>
-        <div class="question-title"><i class="fa fa-paper-clip"></i> 本地缓存失效</div>
+        <div class="question-title"><i class="fa fa-paper-clip"></i> Local cache invalidation</div>
         <div class="question-ans">
-            packet是使用浏览器本地存储API对应用资源进行相应的缓存，所以需要保证浏览器本地存储API可用才能进行缓存，很多时候浏览器的隐私模式开启或者用户对浏览器的设置导致浏览器本地存储API不可用，此时应用依旧会正常使用，但每次都会拿到新的资源。
+            PacketJS using browser local storage APIs for application resources corresponding cache, so it is necessary to ensure that the browser local storage API is available to cache, often browser's privacy mode is turned on or the user's browser settings cause the browser local storage API is not available, then the application will still work properly, but every time to get new resources.
         </div>
-        <div class="question-title"><i class="fa fa-paper-clip"></i> 程序发布形式</div>
+        <div class="question-title"><i class="fa fa-paper-clip"></i> Program release form</div>
         <div class="question-ans">
-            packet多种程序发布形式包括CMD&AMD标准形式以及各种内置的数据类型形式，以及多种形式的混合形式，至于最终发布形式这需要看具体的程序功能而定，比如与DOM相关则发布为Module形式为最佳。
+            PacketJS includes a variety of programs released in the form of CMD AMD standard form as well as various forms of built-in data types, as well as various forms of hybrid forms, as the final release in the form of a specific need to see this program the functions, such as DOM associated with the release of Module form is the best.
         </div>
-        <div class="question-title"><i class="fa fa-paper-clip"></i> 模块粒度</div>
+        <div class="question-title"><i class="fa fa-paper-clip"></i> Granularity of the modules</div>
         <div class="question-ans">
-            packet的packet可以容纳多个Module，也就是说一个packet的js文件中可以定义多个Module或者其他功能，但考虑到后期构建以及增量更新粒度问题，建议保证js文件粒度的最小化以保证增量更新粒度的最小化，同时也可以保证程序结构的清晰，当然无论怎样都不会影响程序的正常执行。
+            packet can accommodate multiple Module, that is to say a packet js file can define multiple Module or other features, but considering the late and build incremental update size problem, we recommend to ensure a minimum of js file size to ensure an incremental update particle size minimized, but can also ensure a clear program structure, of course, no matter what will not affect the normal execution of the program.
         </div>
-        <div class="question-title"><i class="fa fa-paper-clip"></i> 关于定制</div>
+        <div class="question-title"><i class="fa fa-paper-clip"></i> About Custom</div>
         <div class="question-ans">
-            packet虽然定义了一些基本的数据类型和开发架构，但packet并非强制用户使用这些预置的部分，packet本身提供了大量的用于前端开发的基本工具支持，包括dom处理，资源管理以及类似强类型语言的面向对象的设计支持，所以用户可以凭借这些工具而从新构建起专属的开发框架以满足最个性化的需求。
+            While PacketJS defines some basic data types and development framework, but PacketJS not force users to use these pre-part, PacketJS itself provides a number of basic support for front-end development tools, including dom processing, resource management, and similar strong type object-oriented design language support, so users can rely on these tools and build an exclusive new development framework to meet the most individual needs.
         </div>
     </div>
 </div>
