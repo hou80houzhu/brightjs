@@ -1,7 +1,7 @@
 /*!
  * AxesJS JavaScript Library v0.12.2
  * http://axesjs.org/
- * Author hou80houzhu(WangJinliang)
+ * Author WangJinliang(hou80houzhu)
  * licensed under the MIT licenses.
  * https://github.com/hou80houzhu/axesjs/blob/master/LICENSE
  */
