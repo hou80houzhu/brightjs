@@ -1,0 +1,5 @@
+/*!
+ * @packet demo.todolist.todolist;
+ * @css demo.todolist.main;
+ * @template demo.todolist.todolist;
+ */Module({name:"todolist",extend:"view",className:"todolist",template:module.getTemplate("@todolist","todolist"),init:function(){this.data={template:module.getTemplate("@todolist","todolistlist"),list:[]},this.observe("data",this.data),this.render(this.data)},find_btn:function(t){var e=this;t.click(function(){var t=e.finders("input").val();""!==t&&e.data.list.push({name:t})})},group_item:function(t){t.items("btn").click(function(){$(this).group().cache().remove()})},data_list_add:function(t){$.template(this.data.template).renderAppendTo(this.finders("body"),[t.value]),this.delegate()},data_list_remove:function(t){this.groups().eq(t.value[0].getIndex()).remove(),this.delegate()}}),Option({name:"root",option:{override_onendinit:function(){this.addChild({type:"@.todolist"})}}});
