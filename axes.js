@@ -1,9 +1,9 @@
 /*!
- * axesjs JavaScript Library v0.12.2
- * http://packetjs.org/
+ * AxesJS JavaScript Library v0.12.2
+ * http://axesjs.org/
  * Author hou80houzhu(WangJinliang)
  * licensed under the MIT licenses.
- * https://github.com/hou80houzhu/packet/blob/master/LICENSE
+ * https://github.com/hou80houzhu/axesjs/blob/master/LICENSE
  */
 (function () {
     "use strict";
