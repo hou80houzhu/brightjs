@@ -1,19 +1,19 @@
 {
-  "name" : "brooderjs",
+  "name" : "axesjs",
   "description" : "A awesome frontend framework",
   "version" : "0.0.1",
-  "main" : "./brooder.js",
+  "main" : "./axes.js",
   "author" : {
     "name" : "hou80houzhu",
     "email" : "hou80houzhu@vip.qq.com"
   },
-  "keywords" : [ "brooder,frontend,framework" ],
+  "keywords" : [ "axesjs,frontend,framework" ],
   "licenses" : {
     "type" : "MIT"
   },
   "repository" : {
     "type" : "git",
-    "url" : "https://github.com/hou80houzhu/brooderjs"
+    "url" : "https://github.com/hou80houzhu/axesjs"
   },
   "scripts" : {
   }
