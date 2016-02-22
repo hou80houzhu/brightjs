@@ -1,9 +1,9 @@
 /*!
- * axesjs JavaScript Library v0.12.2
- * http://packetjs.org/
- * Author hou80houzhu(WangJinliang)
+ * AxesJS JavaScript Library v0.12.2
+ * http://axesjs.org/
+ * Author WangJinliang(hou80houzhu)
  * licensed under the MIT licenses.
- * https://github.com/hou80houzhu/packet/blob/master/LICENSE
+ * https://github.com/hou80houzhu/axesjs/blob/master/LICENSE
  */
 (function () {
     "use strict";
@@ -3987,9 +3987,9 @@
     packet.isNote = /\/\*[\w\W]*?\*\//;
     packet.isNoteall = /\/\*[\w\W]*?\*\//g;
     packet.isInfo = /@([\s\S]*?);/g;
-    packet.isaxesTag = /["\']@[A-Za-z0-9_\[\]-]+\.[A-Za-z0-9_-]*["\']/g;
+    packet.isPacketTag = /["\']@[A-Za-z0-9_\[\]-]+\.[A-Za-z0-9_-]*["\']/g;
     packet.isCurrentTag = /["\']@\.[A-Za-z0-9_-]+["\']/g;
-    packet.isaxes = /["\']@[A-Za-z0-9_\[\]-]+["\']/g;
+    packet.isPacket = /["\']@[A-Za-z0-9_\[\]-]+["\']/g;
     packet.isOther = /["\']\\@[A-Za-z0-9_-]+["\']/g;
     packet.isNotep = /\<\!\-\-\[[0-9a-zA-Z-_]*?\]\-\-\>/;
     packet.isNotes = /\<\!\-\-\[[0-9a-zA-Z-_]*?\]\-\-\>/g;
@@ -4079,7 +4079,7 @@
         }
         return k;
     };
-    packet.getaxesInfo = function (str) {
+    packet.getPacketInfo = function (str) {
         var a = str.match(packet.isNote), basepath = this.option.basepath, n = new packetInfo();
         if (a && a.length > 0) {
             var b = a[0];
@@ -4217,8 +4217,8 @@
         }
         return n;
     };
-    packet.replaceaxesNames = function (info, code) {
-        return code.replace(packet.isaxesTag, function (str) {
+    packet.replacePacketNames = function (info, code) {
+        return code.replace(packet.isPacketTag, function (str) {
             var a = str.split("\."), index = 0, key = a[1].substring(0, a[1].length - 1), index = a[0].substring(2);
             if (info._packets_[index]) {
                 return str[0] + info._packets_[index] + "." + key + str[str.length - 1];
@@ -4227,7 +4227,7 @@
             }
         }).replace(packet.isCurrentTag, function (str) {
             return str[0] + info.packet + "." + str.split("\.")[1];
-        }).replace(packet.isaxes, function (str) {
+        }).replace(packet.isPacket, function (str) {
             var index = str.substring(2, str.length - 1);
             if (info._packets_[index]) {
                 return str[0] + info._packets_[index] + str[str.length - 1];
@@ -4376,13 +4376,13 @@
     };
     packet.load = function (e, fn, parent, pathname) {
         var ths = this;
-        var aa = packet.getaxesInfo.call(ths, e);
+        var aa = packet.getPacketInfo.call(ths, e);
         aa["parent"] = parent;
         if (aa.packet === "nopacket") {
             console.error("[axes] file has no packet info,path of " + pathname);
         }
         try {
-            e = packet.replaceaxesNames.call(ths, aa, e);
+            e = packet.replacePacketNames.call(ths, aa, e);
         } catch (e) {
             console.error(e.stack);
         }
