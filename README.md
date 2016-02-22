@@ -1,4 +1,4 @@
-![packetjs](https://github.com/hou80houzhu/packet/raw/gh-pages/packet/opensite/pc/style/images/logo2.png) [![Build Status](https://travis-ci.org/hou80houzhu/packet.js.svg?branch=master)](https://travis-ci.org/hou80houzhu/packet.js)
+![axesjs](https://github.com/hou80houzhu/packet/raw/gh-pages/packet/opensite/pc/style/images/logo2.png) [![Build Status](https://travis-ci.org/hou80houzhu/axesjs.svg?branch=master)](https://travis-ci.org/hou80houzhu/axesjs)
 
 ###An awesome web framework.
 
@@ -9,15 +9,15 @@ packet is also suitable for any scene of web development, support highly customi
 **packet includs**
  
 - Frontend UI framework
-  - [packetjs and modules](http://packetjs.org "packetjs and modules")
+  - [axesjs and modules](http://axesjs.org "axesjs and modules")
 - Nodejs web server 
   - [corgiserver](https://github.com/hou80houzhu/corgiserver "corgiserver")
 - Java server framework
-  - [packetServer](https://github.com/hou80houzhu/packetServer "packetServer")
+  - [packetServer](https://github.com/hou80houzhu/axeserver "Axeserver")
 - Project building tools
-  - [packetbuilder](https://github.com/hou80houzhu/packetbuilder "packetbuilder")
+  - [packetbuilder](https://github.com/hou80houzhu/axesbuilder "AxesBuilder")
 - Browser debugging extension.
-  - [packetToolkit](https://github.com/hou80houzhu/packetToolkit "packetToolkit")
+  - [packetToolkit](https://github.com/hou80houzhu/axestoolkit "AxesToolkit")
 
 **packet supports**
 
@@ -28,7 +28,7 @@ packet is also suitable for any scene of web development, support highly customi
 - And you would like...
 
 
-[Click to read more,demos,samples,documents,tools...](http://hou80houzhu.github.io/packetjs/ "Read More,Demos,Documents")
+[Click to read more,demos,samples,documents,tools...](http://axesjs.org/ "Read More,Demos,Documents")
 
 
 ##What is in
@@ -57,4 +57,4 @@ install the chrome extenstion and debug the samples.
 
 ##Read More...
 
-[Click to read more,demos,samples,documents,tools...](http://hou80houzhu.github.io/packetjs/ "Read More,Demos,Documents")
+[Click to read more,demos,samples,documents,tools...](http://axesjs.org/ "Read More,Demos,Documents")
