@@ -9,7 +9,7 @@ axesjs is also suitable for any scene of web development, support highly customi
 **axesjs includs**
  
 - Frontend UI framework
-  - [axesjs and modules](http://axesjs.org "axesjs and modules")
+  - [AxesJS and modules](http://axesjs.org "AxesJS and modules")
 - Nodejs web server 
   - [corgiserver](https://github.com/hou80houzhu/corgiserver "corgiserver")
 - Java server framework
