@@ -219,7 +219,7 @@ Module({
         ],
         rightBtns: [
         ],
-        title: "PacketJS",
+        title: "AxesJS",
         inner: "",
         option: ""
     },
