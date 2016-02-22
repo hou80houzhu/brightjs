@@ -13,11 +13,11 @@ packet is also suitable for any scene of web development, support highly customi
 - Nodejs web server 
   - [corgiserver](https://github.com/hou80houzhu/corgiserver "corgiserver")
 - Java server framework
-  - [packetServer](https://github.com/hou80houzhu/axeserver "Axeserver")
+  - [Axeserver](https://github.com/hou80houzhu/axeserver "Axeserver")
 - Project building tools
-  - [packetbuilder](https://github.com/hou80houzhu/axesbuilder "AxesBuilder")
+  - [AxesBuilder](https://github.com/hou80houzhu/axesbuilder "AxesBuilder")
 - Browser debugging extension.
-  - [packetToolkit](https://github.com/hou80houzhu/axestoolkit "AxesToolkit")
+  - [AxesToolkit](https://github.com/hou80houzhu/axestoolkit "AxesToolkit")
 
 **packet supports**
 
