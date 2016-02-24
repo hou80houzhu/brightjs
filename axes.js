@@ -3761,6 +3761,16 @@
     filepersistence.getStaitcFile = function (type, packetis, fn) {
         var a = packet[type + "persistence"];
         if (a && type === "json" || type === "html" || type === "text" || type === "image") {
+            var path = filepersistence.getStaticPath(type, packetis), has = true;
+            if (!path) {
+                has = false;
+                path = baseMapping.basePath + packetis.replace(/\./g, "/") + "." + type;
+            }
+            if (!has) {
+                if (baseMapping.sourceMapping && baseMapping.sourceMapping[type][packetis]) {
+                    a.set(packetis, baseMapping.sourceMapping[type][packetis], path).save();
+                }
+            }
             loader[type](filepersistence.getStaticPath(type, packetis), function (e) {
                 fn && fn(e);
             });
@@ -3768,12 +3778,12 @@
     };
     filepersistence.getStaticPath = function (type, packetis) {
         var a = packet[type + "persistence"], path = null;
-        if (baseMapping.sourceMapping[type] && baseMapping.sourceMapping[type][packetis]) {
+        if (baseMapping.sourceMapping && baseMapping.sourceMapping[type] && baseMapping.sourceMapping[type][packetis]) {
             if (a.check(packetis)) {
                 path = a.get(packetis);
             } else {
                 if (type !== "json" && type !== "text" && type !== "html") {
-                    var u = packetis.match(packet.issuffix), suffix = "";
+                    var u = packetis.match(packet.issuffix), suffix = "." + type;
                     if (type === "image") {
                         suffix = "png";
                     }
@@ -3788,7 +3798,7 @@
             }
         } else {
             if (type !== "json" && type !== "text" && type !== "html") {
-                var u = packetis.match(packet.issuffix), suffix = "";
+                var u = packetis.match(packet.issuffix), suffix = "." + type;
                 if (type === "image") {
                     suffix = "png";
                 }
@@ -6362,7 +6372,7 @@
             return ps;
         },
         getStaticPath: function (type, packet) {
-            return filepersistence.getStaitcFile(type, packet);
+            return filepersistence.getStaticPath(type, packet);
         },
         clean: function () {
             try {
@@ -6402,11 +6412,11 @@
             }
             return r;
         },
-        groups: function () {
+        groups: function (name) {
             var r = $();
             for (var i = 0; i < this._groups._data.length; i++) {
                 if (arguments.length === 1) {
-                    if (this._finders._data[i].data("-group-") && this._finders._data[i].data("-group-").name === name) {
+                    if (this._groups._data[i].data("-group-") && this._groups._data[i].data("-group-").name === name) {
                         r.add(this._groups._data[i]);
                     }
                 } else {
