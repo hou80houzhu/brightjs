@@ -425,6 +425,7 @@
         this._progress = null;
         this._complete = null;
         this.result = null;
+        this._scope = null;
     };
     queue.prototype.add = function (fn, error, parameter) {
         if (this.state === "init") {
@@ -437,6 +438,14 @@
             throw Error("[axes]-this queue can not add task when it is not in state of init.");
         }
         return this;
+    };
+    queue.prototype.scope = function (a) {
+        if (arguments.length === 0) {
+            return this._scope;
+        } else {
+            this._scope = arguments[0];
+            return this;
+        }
     };
     queue.prototype.next = function (data) {
         this._progress && this._progress.call(this, {
@@ -471,6 +480,7 @@
         this.length === null;
         this.state = "init";
         this.result = null;
+        this._scope = null;
         return this;
     };
     queue.prototype.clean = function () {
@@ -502,6 +512,13 @@
         if (this.state === "end") {
             this._complete.call(this, this.result);
         }
+        return this;
+    };
+    queue.prototype.end = function (a) {
+        this.state = "end";
+        this.result = a;
+        this._complete.call(this, this.result);
+        this.reset();
         return this;
     };
     queue._fire = function (result) {
