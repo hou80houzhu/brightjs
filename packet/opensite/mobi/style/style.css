@@ -1,16 +1,16 @@
 @font-face {
-    font-family: 'packet';
-    src:url('fonts/packet.eot?-uppm5s');
-    src:url('fonts/packet.eot?#iefix-uppm5s') format('embedded-opentype'),
-        url('fonts/packet.ttf?-uppm5s') format('truetype'),
-        url('fonts/packet.woff?-uppm5s') format('woff'),
-        url('fonts/packet.svg?-uppm5s#packet') format('svg');
+    font-family: 'bright';
+    src:url('fonts/bright.eot?-uppm5s');
+    src:url('fonts/bright.eot?#iefix-uppm5s') format('embedded-opentype'),
+        url('fonts/bright.ttf?-uppm5s') format('truetype'),
+        url('fonts/bright.woff?-uppm5s') format('woff'),
+        url('fonts/bright.svg?-uppm5s#bright') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 .fa {
-    font-family: 'packet';
+    font-family: 'bright';
     speak: none;
     font-style: normal;
     font-weight: normal;

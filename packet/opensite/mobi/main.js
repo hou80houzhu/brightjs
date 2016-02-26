@@ -219,7 +219,7 @@ Module({
         ],
         rightBtns: [
         ],
-        title: "AxesJS",
+        title: "BrightJS",
         inner: "",
         option: ""
     },
