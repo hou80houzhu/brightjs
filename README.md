@@ -1,15 +1,15 @@
-![axesjs](https://github.com/hou80houzhu/axesjs/raw/gh-pages/packet/opensite/pc/style/images/logo2.png) [![Build Status](https://travis-ci.org/hou80houzhu/axesjs.svg?branch=master)](https://travis-ci.org/hou80houzhu/axesjs)
+![BrightJS](https://github.com/hou80houzhu/brightjs/raw/gh-pages/packet/opensite/pc/style/images/logo2.png) [![Build Status](https://travis-ci.org/hou80houzhu/brightjs.svg?branch=master)](https://travis-ci.org/hou80houzhu/brightjs)
 
 ###An awesome web framework.
 
-axesjs is a complete web development solution,designed for the design and development of large projects.
+BrightJS is a complete web development solution,designed for the design and development of large projects.
 
-axesjs is also suitable for any scene of web development, support highly customizable, focusing on software engineering and design, high performance, and have the best developer friendly. 
+BrightJS is also suitable for any scene of web development, support highly customizable, focusing on software engineering and design, high performance, and have the best developer friendly. 
 
-**axesjs includs**
+**BrightJS includs**
  
 - Frontend UI framework
-  - [AxesJS and modules](http://axesjs.org "AxesJS and modules")
+  - [AxesJS and modules](http://brightjs.org "AxesJS and modules")
 - Nodejs web server 
   - [corgiserver](https://github.com/hou80houzhu/corgiserver "corgiserver")
 - Java server framework
@@ -19,7 +19,7 @@ axesjs is also suitable for any scene of web development, support highly customi
 - Browser debugging extension.
   - [AxesToolkit](https://github.com/hou80houzhu/axestoolkit "AxesToolkit")
 
-**axesjs supports**
+**BrightJS supports**
 
 - Desktop Admin system UI framework
 - Mobile high-end imitation native (operating experience to maintain the native application)app UI framework
@@ -28,12 +28,12 @@ axesjs is also suitable for any scene of web development, support highly customi
 - And you would like...
 
 
-[Click to read more,demos,samples,documents,tools...](http://axesjs.org/ "Read More,Demos,Documents")
+[Click to read more,demos,samples,documents,tools...](http://brightjs.org/ "Read More,Demos,Documents")
 
 
 ##What is in
 
-There are two samples(admin&todolist),axesjs core library and an chrome    extenstion(builded only for axesjs) in the master branch. the documentation site is in the gh-pages branch.the documentation site is a sample too.
+There are two samples(admin&todolist),BrightJS core library and an chrome    extenstion(builded only for BrightJS) in the master branch. the documentation site is in the gh-pages branch.the documentation site is a sample too.
 
 ##How to run the samples
 
@@ -53,8 +53,8 @@ Accessed through a modern browser
 
 install the chrome extenstion and debug the samples.
 
-> Run axesjs samples,you should deployment the samples before accessing from a browser,you can not open directly from the local.
+> Run BrightJS samples,you should deployment the samples before accessing from a browser,you can not open directly from the local.
 
 ##Read More...
 
-[Click to read more,demos,samples,documents,tools...](http://axesjs.org/ "Read More,Demos,Documents")
+[Click to read more,demos,samples,documents,tools...](http://brightjs.org/ "Read More,Demos,Documents")

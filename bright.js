@@ -1,13 +1,13 @@
 /*!
- * AxesJS JavaScript Library v0.12.2
- * http://axesjs.org/
+ * BrightJS JavaScript Library v0.12.2
+ * http://brightjs.org/
  * Author WangJinliang(hou80houzhu)
  * licensed under the MIT licenses.
- * https://github.com/hou80houzhu/axesjs/blob/master/LICENSE
+ * https://github.com/hou80houzhu/brightjs/blob/master/LICENSE
  */
 (function () {
     "use strict";
-    var axes = function (start) {
+    var bright = function (start) {
         return new dom(start);
     };
     var browser = (function () {
@@ -413,8 +413,8 @@
             });
         }
     };
-    axes.json = json, axes.is = is, axes.browser = browser, axes.prefix = prefix, axes.util = util;
-    axes.serialize = serialize, axes.extend = axes.json.cover, axes.nfn = function () {};
+    bright.json = json, bright.is = is, bright.browser = browser, bright.prefix = prefix, bright.util = util;
+    bright.serialize = serialize, bright.extend = bright.json.cover, bright.nfn = function () {};
 
     var queue = function () {
         this.list = [];
@@ -435,7 +435,7 @@
                 error: error || null
             });
         } else {
-            throw Error("[axes]-this queue can not add task when it is not in state of init.");
+            throw Error("[bright]-this queue can not add task when it is not in state of init.");
         }
         return this;
     };
@@ -543,7 +543,7 @@
             this.current.error && this.current.error.call(this, result, e, this.current.parameter);
         }
     };
-    axes.queue = function () {
+    bright.queue = function () {
         return new queue();
     };
 
@@ -672,7 +672,7 @@
         }
         return this;
     };
-    axes.dynamicQueue = function () {
+    bright.dynamicQueue = function () {
         return new dynamicQueue();
     };
 
@@ -811,10 +811,10 @@
             });
         }
     };
-    axes.promise = function (fn) {
+    bright.promise = function (fn) {
         return new promise(fn);
     };
-    axes.all = function () {
+    bright.all = function () {
         var ps = $.promise();
         if (arguments.length > 0) {
             var a = Array.prototype.slice.call(arguments);
@@ -832,7 +832,7 @@
         }
         return ps;
     };
-    axes.any = function () {
+    bright.any = function () {
         var ps = $.promise();
         if (arguments.length > 0) {
             var a = Array.prototype.slice.call(arguments);
@@ -935,10 +935,10 @@
             return ar;
         },
         queryChild: function (node, selector) {
-            var id = node.getAttribute("id") || "__axes__";
+            var id = node.getAttribute("id") || "__bright__";
             node.setAttribute("id", id);
             var ar = dom.util.query(node, "#" + id + ">" + selector);
-            if (id === "__axes__") {
+            if (id === "__bright__") {
                 node.removeAttribute("id");
             }
             return ar;
@@ -1078,7 +1078,7 @@
         var ops = {time: 200, type: "ease-out", delay: 0};
         var k = new promise();
         k.scope(this.dom);
-        axes.extend(ops, option);
+        bright.extend(ops, option);
         var a = prefix.fix(properties.split(","));
         for (var i = 0; i < a.length; i++) {
             var property = a[i];
@@ -1096,7 +1096,7 @@
         var ops = {time: 200, type: "ease-out", delay: 0};
         var k = new promise();
         k.scope(this.dom);
-        axes.extend(ops, option);
+        bright.extend(ops, option);
         this.mapping = {all: {property: "all", time: ops.time, type: ops.type, delay: ops.delay, promise: k}};
         transition.setCss.call(this);
         return k;
@@ -1964,7 +1964,7 @@
     };
     query.prototype.same = function (a) {
         var r = true;
-        a = axes(a);
+        a = bright(a);
         if (this.length === a.length) {
             for (var i = 0; i < this.nodes.length; i++) {
                 if (a.nodes.indexOf(this.nodes[i]) === -1) {
@@ -2045,7 +2045,7 @@
                         c = this.nodes[0].datasets[a];
                     }
                 } else if (is.isObject(a)) {
-                    axes.extend(this.nodes[0].datasets, a);
+                    bright.extend(this.nodes[0].datasets, a);
                 }
             } else if (arguments.length === 2) {
                 this.addClass("incache");
@@ -2280,7 +2280,7 @@
     };
     query.prototype.contains = function (a) {
         if (!this.isEmpty()) {
-            var b = axes(a);
+            var b = bright(a);
             if (!b.isEmpty()) {
                 return this.nodes[0].contains(b.nodes[0]);
             }
@@ -2405,7 +2405,7 @@
         return this instanceof query;
     };
     query.prototype.add = function (a) {
-        var k = axes(a);
+        var k = bright(a);
         this.nodes = this.nodes.concat(k.nodes);
         this.length = this.nodes.length;
         return this;
@@ -2456,7 +2456,7 @@
         return dom.util.getDom(r);
     };
     query.prototype.scrollingLeft = function (scrollLeft, time, type) {
-        var promise = axes.promise().scope(this), ths = this;
+        var promise = bright.promise().scope(this), ths = this;
         if (this.scrollLeft() !== scrollLeft) {
             new tween({
                 from: this.scrollLeft(),
@@ -2476,7 +2476,7 @@
         return promise;
     };
     query.prototype.scrollingTop = function (scrollTop, time, type) {
-        var promise = axes.promise().scope(this), ths = this;
+        var promise = bright.promise().scope(this), ths = this;
         if (this.scrollTop() !== scrollTop) {
             new tween({
                 from: this.scrollTop(),
@@ -2510,7 +2510,7 @@
             delay: 0,
             type: "ease-out"
         };
-        axes.extend(ops, option);
+        bright.extend(ops, option);
         cssset = prefix.fix(cssset);
         var v = "";
         for (var i in cssset) {
@@ -2520,7 +2520,7 @@
             v = v.substring(0, v.length - 1);
         }
         if (!ani) {
-            var promise = axes.promise().scope(dom);
+            var promise = bright.promise().scope(dom);
             var _endHandler = function (e) {
                 dom.get(0).removeEventListener(prefix.transitionEnd, _endHandler, false);
                 promise.resolve(e);
@@ -2531,7 +2531,7 @@
             ani = promise;
         } else {
             ani.then(function () {
-                var promise = axes.promise().scope(dom);
+                var promise = bright.promise().scope(dom);
                 var _endHandler = function (e) {
                     dom.get(0).removeEventListener(prefix.transitionEnd, _endHandler, false);
                     promise.resolve(e);
@@ -2693,7 +2693,7 @@
         return a;
     };
     windoc.prototype.scrollingLeft = function (scrollLeft, time, type) {
-        var promise = axes.promise().scope(this), ths = this;
+        var promise = bright.promise().scope(this), ths = this;
         if (this.scrollLeft() !== scrollLeft) {
             new tween({
                 from: this.scrollLeft(),
@@ -2713,7 +2713,7 @@
         return promise;
     };
     windoc.prototype.scrollingTop = function (scrollTop, time, type) {
-        var promise = axes.promise().scope(this), ths = this;
+        var promise = bright.promise().scope(this), ths = this;
         if (this.scrollTop() !== scrollTop) {
             new tween({
                 from: this.scrollTop(),
@@ -3152,7 +3152,7 @@
             this[i] = null;
         }
     };
-    axes.tween = function (option) {
+    bright.tween = function (option) {
         return new tween(option);
     };
 
@@ -3167,7 +3167,7 @@
         this.async = option.async === false ? false : true;
         this.timeout = option.timeout || 3000000;
         this.headers = option.headers || {};
-        this.events = axes.extend({
+        this.events = bright.extend({
             readystatechange: null,
             loadstart: null,
             progress: null,
@@ -3270,10 +3270,10 @@
         this.xhr.send(this.data);
         return this;
     };
-    axes.ajax = function (option) {
+    bright.ajax = function (option) {
         var pros = new promise();
         if (option) {
-            option.events = axes.extend({
+            option.events = bright.extend({
                 error: function (e) {
                     option.error && option.error.call(this, e);
                     pros.reject(e);
@@ -3287,7 +3287,7 @@
                             try {
                                 result = json.parse(txt);
                             } catch (e) {
-                                throw Error("[axes] ajax unvaliable json string,url is '" + option.url + "'");
+                                throw Error("[bright] ajax unvaliable json string,url is '" + option.url + "'");
                             }
                         }
                         option.success && option.success.call(this, result);
@@ -3304,7 +3304,7 @@
             return pros.resolve();
         }
     };
-    axes.request = function (option) {
+    bright.request = function (option) {
         return new request(option);
     };
 
@@ -3369,7 +3369,7 @@
                     };
                     tpt();
                 } else {
-                    axes.ajax({
+                    bright.ajax({
                         url: csspath,
                         dataType: "text",
                         type: "get",
@@ -3426,13 +3426,13 @@
                     document.getElementsByTagName("head")[0].appendChild(_a);
                     loader.importsmapping.addJs(jspath);
                 } else {
-                    axes.ajax({
+                    bright.ajax({
                         url: jspath,
                         dataType: "text",
                         type: "get",
                         async: false,
                         success: function (e) {
-                            (new Function("try{" + e + "}catch(e){console.error('[axes]imports: %s ,path " + jspath + "',e.message);}"))();
+                            (new Function("try{" + e + "}catch(e){console.error('[bright]imports: %s ,path " + jspath + "',e.message);}"))();
                             if (callback) {
                                 callback();
                             }
@@ -3471,7 +3471,7 @@
             return this;
         },
         text: function (url, success, error, data) {
-            axes.ajax({
+            bright.ajax({
                 url: url,
                 data: data,
                 dataType: "text",
@@ -3482,7 +3482,7 @@
             return this;
         },
         json: function (url, success, error, data) {
-            axes.ajax({
+            bright.ajax({
                 url: url,
                 data: data,
                 dataType: "json",
@@ -3526,7 +3526,7 @@
             }
         }
     };
-    axes.loader = function () {
+    bright.loader = function () {
         return loader;
     };
 
@@ -3556,7 +3556,7 @@
         }
     };
     var bootstrap = function (obj) {
-        axes.extend(baseMapping, {
+        bright.extend(baseMapping, {
             id: obj.id ? obj.id.toUpperCase() : "",
             preload: obj.preload,
             basePath: (obj.basePath[obj.basePath.length - 1] === "/" ? obj.basePath : obj.basePath + "/"),
@@ -3629,7 +3629,7 @@
                     try {
                         baseMapping.appupdate && baseMapping.appupdate({old: baseMapping.currentBuild, current: baseMapping.sourceMapping.build, update: baseMapping.update});
                     } catch (e) {
-                        console.error("[axes] onappupdate called error " + e.message);
+                        console.error("[bright] onappupdate called error " + e.message);
                     }
                 }
             }
@@ -3652,7 +3652,7 @@
         } catch (e) {
         }
         if (baseMapping.debug) {
-            axes.debug = {
+            bright.debug = {
                 modules: module.factory,
                 options: option.options,
                 json: packet.jsonpersistence._data,
@@ -3668,7 +3668,7 @@
             };
         }
         var dom = null, arg = arguments.length;
-        axes().ready(function () {
+        bright().ready(function () {
             if (arg === 1) {
                 dom = $("body");
                 optionName = selector;
@@ -3683,20 +3683,20 @@
                     } else {
                         dom.dataset("view", "root").dataset("viewId", "root").dataset("option", "");
                     }
-                    baseMapping.debug && console.log("[axes] version:0.10.4,debug:" + baseMapping.debug + ",basePath:" + baseMapping.basePath);
-                    var root = axes("*[data-view='root']");
+                    baseMapping.debug && console.log("[bright] version:0.10.4,debug:" + baseMapping.debug + ",basePath:" + baseMapping.basePath);
+                    var root = bright("*[data-view='root']");
                     if (root.length > 0) {
                         module.getViewInstance(root, optionName, function (a) {
                             a.privator("render");
                         });
                     } else {
-                        throw Error("[axes boot] can not find the root element.");
+                        throw Error("[bright boot] can not find the root element.");
                     }
                 });
             });
         });
     };
-    axes.App = function (obj) {
+    bright.App = function (obj) {
         return new bootstrap(obj);
     };
 
@@ -3925,7 +3925,7 @@
             onimportend: baseMapping.onimportend,
             onimportprogress: baseMapping.onimportprogress
         }, ths = this;
-        axes.extend(ops, option);
+        bright.extend(ops, option);
         if (ops.packetName !== "") {
             var hassuffix = ops.packetName.match(packet.issuffix), suffix = null;
             if (hassuffix) {
@@ -3967,25 +3967,25 @@
                             try {
                                 d["basePath"] = ops.basepath;
                                 d["folder"] = d.path.substring(0, d.path.lastIndexOf("/")) + "/";
-                                axes.___info = d;
+                                bright.___info = d;
                                 new Function("$", "Module", "Option", "module", "exports", "require", "Plugin", "Method", xcode).call(
-                                        d, axes, axes.Module, axes.Option, d, {},
+                                        d, bright, bright.Module, bright.Option, d, {},
                                         function (packetName) {
                                             var ap = packet.requiremapping[packetName];
                                             if (ap) {
                                                 return ap.exports;
                                             } else {
-                                                throw Error("[axes] method require() called error,packet of " + packetName + " is not required in packet of " + d.packet);
+                                                throw Error("[bright] method require() called error,packet of " + packetName + " is not required in packet of " + d.packet);
                                             }
                                         }, function (obj) {
-                                    axes.Plugin(obj);
+                                    bright.Plugin(obj);
                                 }, function (obj) {
-                                    axes.Method(obj);
+                                    bright.Method(obj);
                                 });
-                                axes.___info = null;
+                                bright.___info = null;
                             } catch (e) {
-                                axes.___info = null;
-                                console.error("[axes] packet import error name of " + d.packet + " path of " + d.path + " Message:" + e.stack);
+                                bright.___info = null;
+                                console.error("[bright] packet import error name of " + d.packet + " path of " + d.path + " Message:" + e.stack);
                             }
                         }
                         packet.packetmapping.push(path);
@@ -3995,7 +3995,7 @@
                             path: ths.option.path
                         });
                     } else {
-                        throw Error("[axes] packet _depends error,maybe has circle _depends,or some file has no packet info.");
+                        throw Error("[bright] packet _depends error,maybe has circle _depends,or some file has no packet info.");
                     }
                     ths.clean();
                 }, ops.target);
@@ -4044,7 +4044,7 @@
         return str;
     };
     packet.pretreat = function () {
-        var ps = axes.promise();
+        var ps = bright.promise();
         if (baseMapping.pretreat) {
             baseMapping.pretreat.call(new pretreat(ps));
         } else {
@@ -4250,7 +4250,7 @@
             if (info._packets_[index]) {
                 return str[0] + info._packets_[index] + "." + key + str[str.length - 1];
             } else {
-                throw Error("[axes] packet can not find with tag of " + str + ",packet is " + info.packet);
+                throw Error("[bright] packet can not find with tag of " + str + ",packet is " + info.packet);
             }
         }).replace(packet.isCurrentTag, function (str) {
             return str[0] + info.packet + "." + str.split("\.")[1];
@@ -4259,7 +4259,7 @@
             if (info._packets_[index]) {
                 return str[0] + info._packets_[index] + str[str.length - 1];
             } else {
-                throw Error("[axes] packet can not find with tag of " + str + ",packet is " + info.packet);
+                throw Error("[bright] packet can not find with tag of " + str + ",packet is " + info.packet);
             }
         }).replace(packet.isOther, function (str) {
             return str.substring(1);
@@ -4325,7 +4325,7 @@
         }
     };
     packet.preload = function (fn) {
-        var queue = axes.queue();
+        var queue = bright.queue();
         queue.complete(function () {
             fn && fn();
         });
@@ -4382,7 +4382,7 @@
                     packet: data[i].packet
                 }) : path;
                 queue.add(function (a, b) {
-                    axes.ajax({
+                    bright.ajax({
                         url: b.path,
                         type: "get",
                         dataType: type,
@@ -4406,7 +4406,7 @@
         var aa = packet.getPacketInfo.call(ths, e);
         aa["parent"] = parent;
         if (aa.packet === "nopacket") {
-            console.error("[axes] file has no packet info,path of " + pathname);
+            console.error("[bright] file has no packet info,path of " + pathname);
         }
         try {
             e = packet.replacePacketNames.call(ths, aa, e);
@@ -4417,7 +4417,7 @@
             info: aa,
             code: e
         });
-        var queue = axes.queue();
+        var queue = bright.queue();
         queue.progress(function (e) {
             e["packet"] = aa.packet;
             ths.option.onimportprogress && ths.option.onimportprogress(e);
@@ -4461,7 +4461,7 @@
                     }) : path;
                     queue.add(function (a, info) {
                         if (baseMapping.persistence) {
-                            axes.ajax({
+                            bright.ajax({
                                 url: info.path,
                                 dataType: "text",
                                 type: "get",
@@ -4506,7 +4506,7 @@
                     packet: aa.template[i].packet
                 }) : path;
                 queue.add(function (a, info) {
-                    axes.ajax({
+                    bright.ajax({
                         url: info.path,
                         type: "get",
                         dataType: "text",
@@ -4678,7 +4678,7 @@
                 path: path,
                 packet: pkt
             }) : path;
-            axes.ajax({
+            bright.ajax({
                 url: path,
                 dataType: "text",
                 type: "get",
@@ -4697,10 +4697,10 @@
             this[i] = null;
         }
     };
-    axes.packet = function (option) {
+    bright.packet = function (option) {
         new packet(option);
     };
-    axes.source = function (a) {
+    bright.source = function (a) {
         for (var type in a) {
             var fileload = true;
             if (packet[type + "persistence"].isLoaded()) {
@@ -4711,7 +4711,7 @@
             }
         }
     };
-    axes._packet = packet;
+    bright._packet = packet;
 
     var template = function (temp, macro) {
         temp = template.cache(temp);
@@ -4722,7 +4722,7 @@
         this._session = null;
         this._caching = {};
         this._macrofn = macro || {};
-        axes.extend(this._macrofn, template.globalMacro);
+        bright.extend(this._macrofn, template.globalMacro);
     };
     template.a = /&lt;%/g;
     template.b = /%&gt;/g;
@@ -5031,13 +5031,13 @@
             this[i] = null;
         }
     };
-    axes.template = function () {
+    bright.template = function () {
         var temp = Array.prototype.slice.call(arguments).join("");
         return new template(temp);
     };
-    axes.setTemplateGlobalMacro = function (key, fn) {
+    bright.setTemplateGlobalMacro = function (key, fn) {
         if (arguments.length === 1) {
-            axes.extend(template.globalMacro, key);
+            bright.extend(template.globalMacro, key);
         } else if (arguments.length === 2) {
             template.globalMacro[key] = fn;
         }
@@ -5222,21 +5222,21 @@
         var array = obj.extend;
         is.isString(obj.extend) && (array = [obj.extend]);
         a._parent = array[0];
-        var c = axes.extend({}, axes.json.clone(this.mapping[array[0]].prototype.__adapt__._option));
-        a._option = axes.extend(c, a._option);
+        var c = bright.extend({}, bright.json.clone(this.mapping[array[0]].prototype.__adapt__._option));
+        a._option = bright.extend(c, a._option);
         for (var i = array.length - 1; i >= 0; i--) {
             if (array[i] !== "adapt") {
                 var d = this.mapping[array[i]].prototype;
                 var __mapping = {}, __private = {}, __static = {};
-                axes.extend(__mapping, axes.json.clone(d.__adapt__._mapping));
-                axes.extend(__private, d.__adapt__._private);
-                axes.extend(__static, d.__adapt__._static);
-                axes.extend(a._mapping, __mapping);
-                axes.extend(a._private, __private);
-                axes.extend(a._static, __static);
+                bright.extend(__mapping, bright.json.clone(d.__adapt__._mapping));
+                bright.extend(__private, d.__adapt__._private);
+                bright.extend(__static, d.__adapt__._static);
+                bright.extend(a._mapping, __mapping);
+                bright.extend(a._private, __private);
+                bright.extend(a._static, __static);
                 var q = Object.keys(d);
                 for (var t = 0; t < q.length; t++) {
-                    if (axes.is.isFunction(d[t])) {
+                    if (bright.is.isFunction(d[t])) {
                         if (!factory.a.test(t)) {
                             prpt[q[t]] = d[q[t]];
                         }
@@ -5290,8 +5290,8 @@
         var clazz = this.mapping[name];
         if (clazz) {
             objx = new clazz();
-            var _opp = axes.extend({}, axes.json.clone(clazz.prototype.__adapt__._option));
-            objx.option = axes.extend(_opp, option);
+            var _opp = bright.extend({}, bright.json.clone(clazz.prototype.__adapt__._option));
+            objx.option = bright.extend(_opp, option);
             for (var i = clazz.prototype.__adapt__._extendslink.length - 1; i >= 0; i--) {
                 var p = this.mapping[clazz.prototype.__adapt__._extendslink[i]];
                 if (p && p.prototype["init"]) {
@@ -5309,16 +5309,16 @@
             if (sg) {
                 if (!fsingleton[type]) {
                     var objxx = new clazz();
-                    var _opp = axes.extend({}, axes.json.clone(clazz.prototype.__adapt__._option));
-                    axes.extend(_opp, option);
+                    var _opp = bright.extend({}, bright.json.clone(clazz.prototype.__adapt__._option));
+                    bright.extend(_opp, option);
                     objxx.option = _opp;
                     fsingleton[type] = objxx;
                 }
                 objx = fsingleton[type];
             } else {
                 objx = new clazz();
-                var _opp = axes.extend({}, axes.json.clone(clazz.prototype.__adapt__._option));
-                axes.extend(_opp, option);
+                var _opp = bright.extend({}, bright.json.clone(clazz.prototype.__adapt__._option));
+                bright.extend(_opp, option);
                 objx.option = _opp;
             }
         }
@@ -5406,7 +5406,7 @@
     factory.prototype.has = function (clazzType) {
         return this.mapping[clazzType] !== undefined;
     };
-    axes.adapt = function () {
+    bright.adapt = function () {
         return new factory();
     };
 
@@ -5678,7 +5678,7 @@
             return obj;
         }
     };
-    axes.observe = function (name, obj, fn) {
+    bright.observe = function (name, obj, fn) {
         return observe(name, obj, fn);
     };
 
@@ -5725,8 +5725,8 @@
                 }
             }
         },
-        factory: axes.adapt(),
-        getaxesName: function (name, suffix) {
+        factory: bright.adapt(),
+        getbrightName: function (name, suffix) {
             if (name) {
                 name = name.trim();
                 if (name !== "") {
@@ -5766,7 +5766,7 @@
                     }
                 });
             } else {
-                throw Error("[axes] view can not init.the element has no attribute like view-*");
+                throw Error("[bright] view can not init.the element has no attribute like view-*");
             }
         },
         add: function (obj) {
@@ -5796,8 +5796,8 @@
         get: function (target, moduleName, option, fn) {
             if (moduleName !== undefined && moduleName !== null && moduleName !== "") {
                 if (!module.has(moduleName)) {
-                    var packetName = module.getaxesName(moduleName);
-                    axes.packet({
+                    var packetName = module.getbrightName(moduleName);
+                    bright.packet({
                         packetName: packetName,
                         target: target,
                         back: function () {
@@ -5805,7 +5805,7 @@
                                 if (module.has(moduleName)) {
                                     fn(module.factory.instance(moduleName, option));
                                 } else {
-                                    throw Error("[axes] can not find module with name of " + moduleName + ",it is not in the packet of " + module.getaxesName(moduleName) + " or the packet file inited failed.");
+                                    throw Error("[bright] can not find module with name of " + moduleName + ",it is not in the packet of " + module.getbrightName(moduleName) + " or the packet file inited failed.");
                                 }
                             }
                         }
@@ -5816,7 +5816,7 @@
                     }
                 }
             } else {
-                throw Error("[axes] packet name can not undefined or null or ''.");
+                throw Error("[bright] packet name can not undefined or null or ''.");
             }
         },
         task: new dynamicQueue()
@@ -5827,7 +5827,7 @@
             if (obj.name && obj.name !== "") {
                 option.options[obj.name] = obj.option;
             } else {
-                throw Error("[axes] option name can not null or ''");
+                throw Error("[bright] option name can not null or ''");
             }
         },
         has: function (optionName) {
@@ -5843,8 +5843,8 @@
                 if (optionName[0] !== "{" && optionName[0] !== "[") {
                     var a = option.has(optionName);
                     if (a === false) {
-                        var packetName = module.getaxesName(optionName);
-                        axes.packet({
+                        var packetName = module.getbrightName(optionName);
+                        bright.packet({
                             packetName: packetName,
                             target: target,
                             back: function () {
@@ -5853,7 +5853,7 @@
                                     if (ops) {
                                         fn(ops);
                                     } else {
-                                        throw Error("[axes] can not find option with name of " + optionName + ",is not in the packet of " + module.getaxesName(optionName));
+                                        throw Error("[bright] can not find option with name of " + optionName + ",is not in the packet of " + module.getbrightName(optionName));
                                     }
                                 }
                             }
@@ -5882,7 +5882,7 @@
         this.currentTarget = null;
     };
     viewevent.prototype.clone = function () {
-        return axes.extend(new viewevnet(), this);
+        return bright.extend(new viewevnet(), this);
     };
     viewevent.prototype.stopPropagation = function () {
         this._goon = false;
@@ -5937,7 +5937,7 @@
             try {
                 module["find_" + _name] && module["find_" + _name]($(this), module._finders);
             } catch (e) {
-                console.error("[axes] view finder called error with module of " + module.type() + " Message:" + e.message);
+                console.error("[bright] view finder called error with module of " + module.type() + " Message:" + e.message);
             }
         });
     };
@@ -5962,7 +5962,7 @@
                 try {
                     module["group_" + name]($(this));
                 } catch (e) {
-                    console.error("[axes] view groups called error with module of " + module.type() + " Message:" + e.message);
+                    console.error("[bright] view groups called error with module of " + module.type() + " Message:" + e.message);
                 }
             }
         });
@@ -5999,19 +5999,19 @@
                 ops.url = url;
             } else if (is.isObject(url)) {
                 _ok = true;
-                axes.extend(ops, url);
+                bright.extend(ops, url);
             }
             if (_ok) {
                 ops.data = data;
                 this.doRequest(ops, _rs);
                 return _rs;
             } else {
-                throw Error("[axes] request parameter error");
+                throw Error("[bright] request parameter error");
             }
         },
         doRequest: function (option, reqeustState) {
             var ths = this;
-            axes.ajax(option).done(function (a) {
+            bright.ajax(option).done(function (a) {
                 if (a.code && a.code === "1") {
                     reqeustState._data && reqeustState._data.call(ths, a.data);
                 } else {
@@ -6051,7 +6051,7 @@
         template: "",
         onbeforeinit: null,
         onendinit: null,
-        onunload: axes.nfn,
+        onunload: bright.nfn,
         onnoderemoved: null,
         onnodeinserted: null,
         onchildremove: null,
@@ -6099,7 +6099,7 @@
                         try {
                             ths.onbeforeinit(ths.option);
                         } catch (e) {
-                            console.error("[axes] onbeforeinit called error with module of " + ths.type() + " Message:" + e.message);
+                            console.error("[bright] onbeforeinit called error with module of " + ths.type() + " Message:" + e.message);
                         }
                     }
                     if (ths.className && ths.className !== "") {
@@ -6109,14 +6109,14 @@
                         try {
                             ths.init(ths.option);
                         } catch (e) {
-                            console.error("[axes] init called error with module of " + ths.type() + " Message:" + e.stack);
+                            console.error("[bright] init called error with module of " + ths.type() + " Message:" + e.stack);
                         }
                     }
                     if (typeof ths.onendinit === 'function') {
                         try {
                             ths.onendinit(ths.option);
                         } catch (e) {
-                            console.error("[axes] onendinit called error with module of " + ths.type() + " Message:" + e.message);
+                            console.error("[bright] onendinit called error with module of " + ths.type() + " Message:" + e.message);
                         }
                     }
                     fn && fn();
@@ -6139,7 +6139,7 @@
         postData: function (ops) {
             ops["dataType"] = "json";
             var ths = this;
-            axes.ajax(ops).done(function (a) {
+            bright.ajax(ops).done(function (a) {
                 if (a.code && a.code === "1") {
                     ops.back && ops.back.call(ths, a.data);
                 } else {
@@ -6230,18 +6230,18 @@
             try {
                 ths.onbeforerender && ths.onbeforerender();
             } catch (e) {
-                console.error("[axes] onbeforerender called error with module of " + ths.type() + " Message:" + e.message);
+                console.error("[bright] onbeforerender called error with module of " + ths.type() + " Message:" + e.message);
             }
             try {
-                axes.template(ths.template).renderTo(ths.dom, data);
+                bright.template(ths.template).renderTo(ths.dom, data);
                 ths.delegate();
             } catch (e) {
-                console.error("[axes] render called error with module of " + ths.type() + " Message:" + e.message);
+                console.error("[bright] render called error with module of " + ths.type() + " Message:" + e.message);
             }
             try {
                 ths.onendrender && ths.onendrender();
             } catch (e) {
-                console.error("[axes] onendrender called error with module of " + ths.type() + " Message:" + e.message);
+                console.error("[bright] onendrender called error with module of " + ths.type() + " Message:" + e.message);
             }
             setTimeout(function () {
                 ps.resolve();
@@ -6250,7 +6250,7 @@
         },
         original: function (methods) {
             var a = Object.getPrototypeOf(this)[methods];
-            if (axes.is.isFunction(a)) {
+            if (bright.is.isFunction(a)) {
                 var b = Array.prototype.slice.call(arguments);
                 b.splice(0, 1);
                 return a.apply(this, b);
@@ -6262,7 +6262,7 @@
             var t = this.parentView, r = null;
             while (t) {
                 var a = t[methodName];
-                if (a && axes.is.isFunction(a)) {
+                if (a && bright.is.isFunction(a)) {
                     var b = Array.prototype.slice.call(arguments);
                     b.splice(0, 1);
                     r = a.apply(t, b);
@@ -6286,7 +6286,7 @@
             return b;
         },
         parentViews: function (level) {
-            level = axes.is.isAvalid(level) ? (axes.is.isNumber(level) ? level : parseInt(level)) : 0;
+            level = bright.is.isAvalid(level) ? (bright.is.isNumber(level) ? level : parseInt(level)) : 0;
             var b = this.parentView, c = level - 1;
             while (b && c > 0) {
                 c--;
@@ -6349,11 +6349,11 @@
             return this;
         },
         getUUID: function () {
-            return axes.util.uuid();
+            return bright.util.uuid();
         },
         observe: function (name, obj) {
             var ths = this;
-            return axes.observe(name, obj, function (e) {
+            return bright.observe(name, obj, function (e) {
                 var p = name + "_" + e.object.getPath().name + (e.property ? "." + e.property : "") + "_" + e.type;
                 if (ths[p]) {
                     ths[p](e);
@@ -6361,28 +6361,28 @@
             });
         },
         getStaticJson: function (packet) {
-            var ps = axes.promise().scope(this);
+            var ps = bright.promise().scope(this);
             filepersistence.getStaitcFile("json", packet, function (data) {
                 ps.resolve(data);
             });
             return ps;
         },
         getStaticHtml: function (packet) {
-            var ps = axes.promise().scope(this);
+            var ps = bright.promise().scope(this);
             filepersistence.getStaitcFile("html", packet, function (data) {
                 ps.resolve(data);
             });
             return ps;
         },
         getStaticText: function (packet) {
-            var ps = axes.promise().scope(this);
+            var ps = bright.promise().scope(this);
             filepersistence.getStaitcFile("text", packet, function (data) {
                 ps.resolve(data);
             });
             return ps;
         },
         getStaticImage: function (packet) {
-            var ps = axes.promise().scope(this);
+            var ps = bright.promise().scope(this);
             filepersistence.getStaitcFile("image", packet, function (data) {
                 ps.resolve(data);
             });
@@ -6395,7 +6395,7 @@
             try {
                 this.onunload();
             } catch (e) {
-                console.error("[axes] onunload called error with module of " + this.type() + " Message:" + e.stack);
+                console.error("[bright] onunload called error with module of " + this.type() + " Message:" + e.stack);
             }
             this._finders.length = 0;
             this._groups.length = 0;
@@ -6407,7 +6407,7 @@
                     try {
                         parentview.onchildremove && parentview.onchildremove(this);
                     } catch (e) {
-                        console.error("[axes] onchildremove called error with module of " + parentview.type() + " Message:" + e.stack);
+                        console.error("[bright] onchildremove called error with module of " + parentview.type() + " Message:" + e.stack);
                     }
                 }
             }
@@ -6458,7 +6458,7 @@
                 this._groups = new delegater();
                 this._handlers = {};
                 this.children = [];
-                var ths = this, optionName = this.dom.dataset("option"), queue = axes.queue();
+                var ths = this, optionName = this.dom.dataset("option"), queue = bright.queue();
                 if (this.dom.hasClass("_futuretochange_")) {
                     this.dom.removeClass("_futuretochange_");
                     var prps = this.__adapt__._factory.mapping[this.__adapt__._type].prototype;
@@ -6498,17 +6498,17 @@
                             try {
                                 ths.onbeforeinit(ths.option);
                             } catch (e) {
-                                console.error("[axes] onbeforeinit called error with module of " + ths.type() + " Message:" + e.stack);
+                                console.error("[bright] onbeforeinit called error with module of " + ths.type() + " Message:" + e.stack);
                             }
                         }
                         var str = ths.layout;
                         if (str === "" && ths.dom.children().length > 0) {
                             str = ths.dom.html();
                         }
-                        if (axes.is.isString(str)) {
+                        if (bright.is.isString(str)) {
                             try {
-                                var temp = axes.template(str);
-                                temp.macro(axes.extend({
+                                var temp = bright.template(str);
+                                temp.macro(bright.extend({
                                     module: function (attrs, render) {
                                         var type = attrs["type"], option = attrs["option"], id = attrs["id"];
                                         var prps = {tagName: "div", fullClassName: "_futuretochange_"};
@@ -6530,7 +6530,7 @@
                                 ths.dom.html(str);
                                 temp.flush(ths.dom);
                             } catch (e) {
-                                console.error("[axes] parse layout called error with module of " + ths.type() + " Message:" + e.stack);
+                                console.error("[bright] parse layout called error with module of " + ths.type() + " Message:" + e.stack);
                                 ths.dom.html("");
                             }
                         }
@@ -6538,14 +6538,14 @@
                             try {
                                 ths.ondomready(ths.option);
                             } catch (e) {
-                                console.error("[axes] ondomready called error with module of " + ths.type() + " Message:" + e.stack);
+                                console.error("[bright] ondomready called error with module of " + ths.type() + " Message:" + e.stack);
                             }
                         }
                         if (typeof ths.onnodeinserted === 'function') {
                             try {
                                 ths.onnodeinserted(ths.dom);
                             } catch (e) {
-                                console.error("[axes] onnodeinserted called error with module of " + ths.type() + " Message:" + e.stack);
+                                console.error("[bright] onnodeinserted called error with module of " + ths.type() + " Message:" + e.stack);
                             }
                         }
                         queue.complete(function (a) {
@@ -6559,14 +6559,14 @@
                                 try {
                                     a.init(a.option);
                                 } catch (e) {
-                                    console.error("[axes] init called error with module of " + ths.type() + " Message:" + e.stack);
+                                    console.error("[bright] init called error with module of " + ths.type() + " Message:" + e.stack);
                                 }
                             }
                             if (typeof a.onendinit === 'function') {
                                 try {
                                     a.onendinit(a.option);
                                 } catch (e) {
-                                    console.error("[axes] onendinit called error with module of " + ths.type() + " Message:" + e.stack);
+                                    console.error("[bright] onendinit called error with module of " + ths.type() + " Message:" + e.stack);
                                 }
                             }
                             fn && fn();
@@ -6579,24 +6579,24 @@
                                     try {
                                         aa.oninitchild({id: subid, type: subview});
                                     } catch (e) {
-                                        console.error("[axes] oninitchild called error with module of " + ths.type() + " Message:" + e.stack);
+                                        console.error("[bright] oninitchild called error with module of " + ths.type() + " Message:" + e.stack);
                                     }
                                 }
                                 module.get(aa.type(), subview, null, function (k) {
                                     for (var i = k.__adapt__._extendslink.length - 1; i >= 0; i--) {
-                                        axes.extend(ops, aa.option[k.__adapt__._extendslink[i]]);
+                                        bright.extend(ops, aa.option[k.__adapt__._extendslink[i]]);
                                     }
-                                    axes.extend(ops, aa.option[subid]);
+                                    bright.extend(ops, aa.option[subid]);
                                     var tops = null;
                                     if (typeof aa.onoption === 'function') {
                                         try {
                                             tops = aa.onoption.call(aa, ops, subview, subid);
-                                            axes.extend(ops, tops);
+                                            bright.extend(ops, tops);
                                         } catch (e) {
-                                            console.error("[axes] onoption called error with module of " + ths.type() + " Message:" + e.stack);
+                                            console.error("[bright] onoption called error with module of " + ths.type() + " Message:" + e.stack);
                                         }
                                     }
-                                    axes.extend(k.option, ops);
+                                    bright.extend(k.option, ops);
                                     if (!dom.data("-view-")) {
                                         var obj = k;
                                         obj.dom = dom;
@@ -6611,7 +6611,7 @@
                                 });
                             }, function () {
                                 this.next(ths);
-                            }, axes(this));
+                            }, bright(this));
                         });
                         queue.run(ths);
                     });
@@ -6623,7 +6623,7 @@
             return this;
         },
         _addChild: function (option, callback) {
-            var ths = this, ops = axes.extend({type: null,
+            var ths = this, ops = bright.extend({type: null,
                 option: "",
                 parameters: null,
                 id: this.getId() + "-" + this.children.length,
@@ -6644,8 +6644,8 @@
                         ths.children.splice(xindex, 0, sobj);
                     }
                     var cln = sobj.__adapt__._factory.mapping[sobj.__adapt__._type].prototype.fullClassName;
-                    var coner = axes(ops.container);
-                    var pdom = axes("<" + sobj.tagName + " class='" + cln + "' data-parent-view='" + ths.getId() + "' data-view='" + ops.type + "' data-view-id='" + ops.id + "' data-option='" + (is.isObject(ops.option) ? "" : ops.option) + "'></" + sobj.tagName + ">");
+                    var coner = bright(ops.container);
+                    var pdom = bright("<" + sobj.tagName + " class='" + cln + "' data-parent-view='" + ths.getId() + "' data-view='" + ops.type + "' data-view-id='" + ops.id + "' data-option='" + (is.isObject(ops.option) ? "" : ops.option) + "'></" + sobj.tagName + ">");
                     if (is.isNumber(ops.domIndex)) {
                         var p = coner.children(ops.domIndex);
                         if (p.length > 0) {
@@ -6658,11 +6658,11 @@
                     }
                     var opss = {};
                     for (var i = sobj.__adapt__._extendslink.length - 1; i >= 0; i--) {
-                        axes.extend(opss, ths.option[sobj.__adapt__._extendslink[i]]);
+                        bright.extend(opss, ths.option[sobj.__adapt__._extendslink[i]]);
                     }
-                    axes.extend(opss, axes.json.clone(sobj.__adapt__._option));
-                    axes.extend(opss, ths.option[ops.id]);
-                    axes.extend(opss, ths.option[ops.type]);
+                    bright.extend(opss, bright.json.clone(sobj.__adapt__._option));
+                    bright.extend(opss, ths.option[ops.id]);
+                    bright.extend(opss, ths.option[ops.type]);
                     if (is.isObject(ops.option)) {
                         var tp = {};
                         tp.override = ops.option.override || {};
@@ -6675,7 +6675,7 @@
                                 }
                             }
                         }
-                        sobj.option = axes.extend(opss, tp);
+                        sobj.option = bright.extend(opss, tp);
                         for (var i in sobj.option.override) {
                             if (!module.regs.a.test(i)) {
                                 sobj[i] = sobj.option.override[i];
@@ -6694,7 +6694,7 @@
                             try {
                                 ths.oninitchild({id: sobj.getId(), type: sobj.type()});
                             } catch (e) {
-                                console.error("[axes] oninitchild called error with module of " + ths.type() + " [" + e.message + "]");
+                                console.error("[bright] oninitchild called error with module of " + ths.type() + " [" + e.message + "]");
                             }
                         }
                         callback && callback.call(sobj);
@@ -6739,7 +6739,7 @@
             return r;
         },
         getChildAt: function (index) {
-            if (axes.is.isNumber(index) && index >= 0 && index < this.children.length) {
+            if (bright.is.isNumber(index) && index >= 0 && index < this.children.length) {
                 return this.children[index];
             } else {
                 return null;
@@ -6760,7 +6760,7 @@
             return this.children.indexOf(view) !== -1;
         },
         getFirstChild: function (type) {
-            if (axes.is.isAvalid(type)) {
+            if (bright.is.isAvalid(type)) {
                 return this.getChildrenByType(type)[0];
             } else {
                 return this.children[0];
@@ -6768,7 +6768,7 @@
         },
         getLastChild: function (type) {
             var r = null;
-            if (axes.is.isAvalid(type)) {
+            if (bright.is.isAvalid(type)) {
                 var a = this.getChildrenByType(type);
                 if (a.length > 0) {
                     r = a[a.length - 1];
@@ -6805,7 +6805,7 @@
             if (child) {
                 this.privator("addChild", null, {
                     type: this.name,
-                    option: axes.extend({}, this.option),
+                    option: bright.extend({}, this.option),
                     parameters: this.parameters,
                     id: id || (this.getId() + "-" + this.children.length),
                     container: this.dom.parent()
@@ -6819,7 +6819,7 @@
             return this;
         },
         removeChildAt: function (index) {
-            if (axes.is.isNumber(index) && index > 0 && index < this.children.length) {
+            if (bright.is.isNumber(index) && index > 0 && index < this.children.length) {
                 this.children[index].remove();
             }
             return this;
@@ -6843,7 +6843,7 @@
             try {
                 this.onunload();
             } catch (e) {
-                console.error("[axes] onunload called error with module of " + this.type() + " Message:" + e.stack);
+                console.error("[bright] onunload called error with module of " + this.type() + " Message:" + e.stack);
             }
             var parentview = this.parentView;
             if (parentview && parentview.children) {
@@ -6853,7 +6853,7 @@
                     try {
                         parentview.onchildremove && parentview.onchildremove(this);
                     } catch (e) {
-                        console.error("[axes] onchildremove called error with module of " + parentview.type() + " Message:" + e.stack);
+                        console.error("[bright] onchildremove called error with module of " + parentview.type() + " Message:" + e.stack);
                     }
                 }
             }
@@ -6887,7 +6887,7 @@
                     }
                 }, {childList: true, subtree: true});
             }
-            console.log("[axes] root view init.");
+            console.log("[bright] root view init.");
         }
     });
 
@@ -6900,7 +6900,7 @@
         }
     };
 
-    axes.Plugin = function (obj) {
+    bright.Plugin = function (obj) {
         if (obj && obj.name && obj.name !== "") {
             var a = new Function("dom", "option", "this.__name__='" + obj.name + "';this.dom=dom;this.option=$.extend({},this.option,option);dom.data('" + obj.name + "',this);this.init&&this.init(dom,option);");
             a.prototype = new plugin();
@@ -6918,7 +6918,7 @@
             };
         }
     };
-    axes.Method = function (obj) {
+    bright.Method = function (obj) {
         if (obj && obj.name && obj.name !== "") {
             $[obj.name] = function (option) {
                 if (is.isFunction(obj.action)) {
@@ -6948,7 +6948,7 @@
             return r;
         };
     }
-    axes.overrideRequest = function (obj) {
+    bright.overrideRequest = function (obj) {
         var request = module.factory.get("request");
         var view = module.factory.get("view");
         var group = module.factory.get("viewgroup");
@@ -6962,7 +6962,7 @@
             }
         }
     };
-    axes.overrideView = function (obj) {
+    bright.overrideView = function (obj) {
         var view = module.factory.get("view");
         var group = module.factory.get("viewgroup");
         var root = module.factory.get("root");
@@ -6974,7 +6974,7 @@
             }
         }
     };
-    axes.overrideViewGroup = function (obj) {
+    bright.overrideViewGroup = function (obj) {
         var group = module.factory.get("viewgroup");
         for (var i in obj) {
             if (i !== "init" && i !== "option" && i !== "extend") {
@@ -6982,7 +6982,7 @@
             }
         }
     };
-    axes.overrideRoot = function (obj) {
+    bright.overrideRoot = function (obj) {
         var group = module.factory.get("root");
         for (var i in obj) {
             if (i !== "init" && i !== "option" && i !== "extend") {
@@ -6990,7 +6990,7 @@
             }
         }
     };
-    axes.Option = function (obj) {
+    bright.Option = function (obj) {
         if (!is.isString(obj)) {
             var optionx = obj.option, extend = [];
             if (obj.extend) {
@@ -7003,9 +7003,9 @@
             for (var i = 0; i < extend.length; i++) {
                 var a = option.has(extend[i]);
                 if (a) {
-                    axes.extend(optionx, json.clone(a));
+                    bright.extend(optionx, json.clone(a));
                 } else {
-                    throw Error("[axes ] can not find option with name of " + extend[i]);
+                    throw Error("[bright ] can not find option with name of " + extend[i]);
                 }
             }
             for (var i in obj.override) {
@@ -7022,8 +7022,8 @@
                     }
                 }
             }
-            if (axes.___info) {
-                obj.name = (axes.___info.packet ? axes.___info.packet + "." : "") + obj.name;
+            if (bright.___info) {
+                obj.name = (bright.___info.packet ? bright.___info.packet + "." : "") + obj.name;
             }
             option.add(obj);
         } else {
@@ -7035,32 +7035,32 @@
             }
         }
     };
-    axes.Module = function (obj) {
-        if (axes.___info) {
-            obj.packet = axes.___info.packet;
+    bright.Module = function (obj) {
+        if (bright.___info) {
+            obj.packet = bright.___info.packet;
         }
         module.add(obj);
     };
-    axes.override = function (name, obj) {
+    bright.override = function (name, obj) {
         if (is.isString(name)) {
             if (is.isObject(obj)) {
                 if (!_override[name]) {
-                    _override[name] = axes.extend(new query(), obj);
+                    _override[name] = bright.extend(new query(), obj);
                 } else {
-                    axes.extend(_override[name], obj);
+                    bright.extend(_override[name], obj);
                 }
             }
         }
     };
-    axes.toggle = function (name) {
+    bright.toggle = function (name) {
         if (is.isString(name)) {
             _override[name] && (dom.prototype = _override[name]);
         } else {
             dom.prototype = new query();
         }
     };
-    axes.global = {};
-    axes.fn = query.prototype;
-    window.axes = axes;
-    window.$ = axes;
+    bright.global = {};
+    bright.fn = query.prototype;
+    window.bright = bright;
+    window.$ = bright;
 })();
