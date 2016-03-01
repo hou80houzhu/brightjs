@@ -3158,6 +3158,7 @@
 
     var request = function (option) {
         this.mimeType = null;
+        this.iscache = option.cahce || false;
         this.data = option.data || "";
         this.url = option.url || "";
         this.realURL = option.url || "";
@@ -3270,35 +3271,53 @@
         this.xhr.send(this.data);
         return this;
     };
+    request.cache = {};
     bright.ajax = function (option) {
-        var pros = new promise();
+        var pros = new promise(), done = true;
         if (option) {
-            option.events = bright.extend({
-                error: function (e) {
-                    option.error && option.error.call(this, e);
-                    pros.reject(e);
-                },
-                load: function (e) {
-                    var status = this.response.status;
-                    if ((status >= 200 && status < 300) || status === 304 || status === 0) {
-                        var result = this.response.response;
-                        if (this.realType === "json") {
-                            var txt = this.response.responseText;
-                            try {
-                                result = json.parse(txt);
-                            } catch (e) {
-                                throw Error("[bright] ajax unvaliable json string,url is '" + option.url + "'");
-                            }
-                        }
-                        option.success && option.success.call(this, result);
-                        pros.resolve(result);
-                    } else {
-                        option.error && option.error.call(this, e);
-                        pros.reject(this.response);
+            if (option.cache) {
+                var key = option.url;
+                try {
+                    key += ":" + window.JSON.stringify(option.data);
+                    option.cacheKey = key;
+                    if (request.cache[key]) {
+                        done = false;
+                        pros.resolve(request.cache[key]);
                     }
+                } catch (e) {
                 }
-            }, option.events);
-            new request(option).fire();
+            }
+            if (done) {
+                option.events = bright.extend({
+                    error: function (e) {
+                        option.error && option.error.call(this, e);
+                        pros.reject(e);
+                    },
+                    load: function (e) {
+                        var status = this.response.status;
+                        if ((status >= 200 && status < 300) || status === 304 || status === 0) {
+                            var result = this.response.response;
+                            if (this.realType === "json") {
+                                var txt = this.response.responseText;
+                                try {
+                                    result = json.parse(txt);
+                                } catch (e) {
+                                    throw Error("[bright] ajax unvaliable json string,url is '" + option.url + "'");
+                                }
+                            }
+                            if (option.cache && option.cacheKey) {
+                                request.cache[option.cacheKey] = result;
+                            }
+                            option.success && option.success.call(this, result);
+                            pros.resolve(result);
+                        } else {
+                            option.error && option.error.call(this, e);
+                            pros.reject(this.response);
+                        }
+                    }
+                }, option.events);
+                new request(option).fire();
+            }
             return pros;
         } else {
             return pros.resolve();
@@ -5986,14 +6005,14 @@
 
     module.add({
         name: "request",
-        request: function (url, data, type) {
+        request: function (url, data, option) {
             var _rs = this.getRequestState(), _ok = false;
             var ops = {
                 url: "",
-                type: type || "post",
                 dataType: "json",
                 data: ""
             };
+            bright.extend(ops, option);
             if (is.isString(url)) {
                 _ok = true;
                 ops.url = url;
@@ -6024,17 +6043,33 @@
         getRequest: function (url, data) {
             return this.request(url, data, "get");
         },
-        postRequest: function (url, data) {
-            return this.request(url, data, "post");
+        postRequest: function (url, data, option) {
+            if (!option) {
+                option = {};
+            }
+            option.type = "post";
+            return this.request(url, data, option);
         },
-        putRequest: function (url, data) {
-            return this.request(url, data, "put");
+        putRequest: function (url, data, option) {
+            if (!option) {
+                option = {};
+            }
+            option.type = "post";
+            return this.request(url, data, option);
         },
-        deleteRequest: function (url, data) {
-            return this.request(url, data, "delete");
+        deleteRequest: function (url, data, option) {
+            if (!option) {
+                option = {};
+            }
+            option.type = "post";
+            return this.request(url, data, option);
         },
-        patchRequest: function (url, data) {
-            return this.request(url, data, "patch");
+        patchRequest: function (url, data, option) {
+            if (!option) {
+                option = {};
+            }
+            option.type = "post";
+            return this.request(url, data, option);
         },
         getRequestState: function () {
             return new requestState();
