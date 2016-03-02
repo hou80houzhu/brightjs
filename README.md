@@ -9,15 +9,15 @@ BrightJS is also suitable for any scene of web development, support highly custo
 **BrightJS includs**
  
 - Frontend UI framework
-  - [AxesJS and modules](http://brightjs.org "AxesJS and modules")
+  - [BrightJS and modules](http://brightjs.org "BrightJS and modules")
 - Nodejs web server 
   - [corgiserver](https://github.com/hou80houzhu/corgiserver "corgiserver")
 - Java server framework
-  - [Axeserver](https://github.com/hou80houzhu/axeserver "Axeserver")
+  - [Brighterver](https://github.com/hou80houzhu/brightserver "Brighterver")
 - Project building tools
-  - [AxesBuilder](https://github.com/hou80houzhu/axesbuilder "AxesBuilder")
+  - [BrightBuilder](https://github.com/hou80houzhu/brightbuilder "BrightBuilder")
 - Browser debugging extension.
-  - [AxesToolkit](https://github.com/hou80houzhu/axestoolkit "AxesToolkit")
+  - [BrightToolkit](https://github.com/hou80houzhu/brighttoolkit "BrightToolkit")
 
 **BrightJS supports**
 
