@@ -5907,37 +5907,6 @@
         this._goon = false;
     };
 
-    var requestState = function () {
-        this._data = null;
-        this._bad = null;
-        this._offline = null;
-        this._error = null;
-    };
-    requestState.prototype.data = function (fn) {
-        if (is.isFunction(fn)) {
-            this._data = fn;
-        }
-        return this;
-    };
-    requestState.prototype.bad = function (fn) {
-        if (is.isFunction(fn)) {
-            this._bad = fn;
-        }
-        return this;
-    };
-    requestState.prototype.offline = function (fn) {
-        if (is.isFunction(fn)) {
-            this._offline = fn;
-        }
-        return this;
-    };
-    requestState.prototype.error = function (fn) {
-        if (is.isFunction(fn)) {
-            this._error = fn;
-        }
-        return this;
-    };
-
     var delegater = function () {
         this._data = [];
     };
@@ -6006,7 +5975,8 @@
     module.add({
         name: "request",
         request: function (url, data, option) {
-            var _rs = this.getRequestState(), _ok = false;
+            var _rs = bright.promise(), _ok = false;
+            _rs.scope(this);
             var ops = {
                 url: "",
                 dataType: "json",
@@ -6028,16 +5998,15 @@
                 throw Error("[bright] request parameter error");
             }
         },
-        doRequest: function (option, reqeustState) {
-            var ths = this;
+        doRequest: function (option, promise) {
             bright.ajax(option).done(function (a) {
                 if (a.code && a.code === "1") {
-                    reqeustState._data && reqeustState._data.call(ths, a.data);
+                    promise.resolve(a.data);
                 } else {
-                    reqeustState._bad && reqeustState._bad.call(ths, a);
+                    promise.reject(a);
                 }
             }).fail(function (e) {
-                reqeustState._error && reqeustState._error.call(ths, e);
+                promise.reject(e);
             });
         },
         getRequest: function (url, data) {
@@ -6070,9 +6039,6 @@
             }
             option.type = "post";
             return this.request(url, data, option);
-        },
-        getRequestState: function () {
-            return new requestState();
         }
     });
     module.add({
