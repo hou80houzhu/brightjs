@@ -34,7 +34,6 @@ Module({
 //                console.log("net error");
 //            }
 //        });
-        
         this.postRequest("data/test.json").then(function(){
             return this.postRequest("data/test2.json");
         }).done(function(data){
