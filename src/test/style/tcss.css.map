@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,UAAS;EACL,OAAO,EAAC,CAAC;EACT,MAAM,EAAC,CAAC;;AAEZ,IAAI;EACA,WAAW,EAAC,IAAI;EAChB,KAAK,EAAC,KAAK;EACX,UAAU,EAAC,OAAO;EAClB,KAAK,EAAC,KAAK;EACX,UAAU,EAAE,MAAM;EAClB,qBAAqB,EAAE,GAAG",
-"sources": ["tcss.scss"],
-"names": [],
-"file": "tcss.css"
-}

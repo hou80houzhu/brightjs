@@ -1,0 +1,271 @@
+@mixin userSelect(){
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+@mixin middle(){
+    display: -webkit-box;
+    -webkit-box-orient:horizontal;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    display: -ms-flexbox;
+    -ms-flex-pack: center;
+    -ms-flex-align: center;
+}
+@mixin transition($args...){
+    -webkit-transition:$args;
+    -moz-transition:$args;
+    transition:$args;
+}
+@mixin translate($left:0,$right:0){
+    -webkit-transform: translate($left,$right);
+    -moz-transform: translate($left,$right);
+    transform: translate($left,$right);
+}
+@mixin translateX($left:0){
+    -webkit-transform: translateX($left);
+    -moz-transform: translateX($left);
+    transform: translateX($left);
+}
+@mixin translateY($right:0){
+    -webkit-transform: translateY($right);
+    -moz-transform: translateY($right);
+    transform: translateY($right);
+}
+@mixin rotate($deg:0){
+    -webkit-transform:rotate($deg);
+    -moz-transform:rotate($deg);
+    transform:rotate($deg);
+}
+@mixin scale($x:0,$y:0){
+    -webkit-transform: scale($x,$y);
+    -moz-transform: scale($x,$y);
+    transform: scale($x,$y);
+}
+@mixin skew($deg:0){
+    -webkit-transform: skew($deg);
+    -moz-transform: skew($deg);
+    transform: skew($deg);
+}
+@mixin radius($top:5px,$right:5px,$bottom:5px,$left:5px){
+    -webkit-border-radius: $top $right $bottom $left;
+    -moz-border-radius: $top $right $bottom $left;
+    border-radius: $top $right $bottom $left;
+}
+@mixin radiusSame($all:5px){
+    -webkit-border-radius: $all $all $all $all;
+    -moz-border-radius: $all $all $all $all;
+    border-radius: $all $all $all $all;
+}
+@mixin boxShadow($a:0,$b:0,$c:5px,$d:#D7D7D7,$inset:no){
+    @if $inset=="no"{
+        -webkit-box-shadow: $a $b $c $d;
+        -moz-box-shadow: $a $b $c $d;
+        box-shadow: $a $b $c $d;
+    }@else{
+        -webkit-box-shadow: $a $b $c $d inset;
+        -moz-box-shadow: $a $b $c $d inset;
+        box-shadow: $a $b $c $d inset;
+    }
+}
+@mixin boxShadowIn($a...){
+    -webkit-box-shadow: $a;
+    -moz-box-shadow: $a;
+    box-shadow: $a;
+}
+
+@mixin textShadow($a:0,$b:0,$c:5px,$d:#D7D7D7){
+    -webkit-text-shadow: $a $b $c $d;
+    -moz-text-shadow: $a $b $c $d;
+    text-shadow: $a $b $c $d;
+}
+@mixin boxSizing($type:border-box){
+    -webkit-box-sizing:$type;
+    -moz-box-sizing:$type;
+    box-sizing:$type;
+}
+@mixin animate($name,$during:1s,$count:1,$direction:normal,$type:ease-in-out){
+    -webkit-animation-name: $name; 
+    -webkit-animation-duration: $during; 
+    -webkit-animation-iteration-count: $count; 
+    -webkit-animation-direction: $direction; 
+    -webkit-animation-timing-function: $type;
+}
+@mixin position($a:0,$b:0,$c:0,$d:0){
+    position:absolute;
+    top:$a;
+    right:$b;
+    bottom:$c;
+    left:$d;
+}
+@mixin positionAuto($a:auto,$b:auto,$c:auto,$d:auto){
+    top:$a;
+    right:$b;
+    bottom:$c;
+    left:$d;
+}
+@mixin keyframes($name){
+    @-webkit-keyframes dropdown {
+        @content;
+    }
+    @-moz-keyframes dropdown {
+        @content;
+    }
+    @keyframes dropdown {
+        @content;
+    }
+}
+
+@mixin flexBoxWrap(){
+    -webkit-flex-wrap:wrap;
+    -moz-flex-wrap:wrap;
+    flex-wrap:wrap;
+}
+@mixin flexBox($direction:no,$justify:no,$align:no,$wrap:no,$alignContent:no){
+    display:-webkit-flex;
+    display:-moz-flex;
+    display:flex;
+    @if $direction != "no"{
+        -webkit-flex-direction:$direction;
+        -moz-flex-direction:$direction;
+        flex-direction:$direction;
+    } 
+    @if $justify!="no"{
+        -webkit-justify-content:$justify;
+        -moz-justify-content:$justify;
+        justify-content:$justify;
+    }
+    @if $align!="no"{
+        -webkit-align-items: $align;
+        -moz-align-items: $align;
+        align-items: $align;
+    }
+    @if $wrap!="no"{
+        -webkit-flex-wrap:$wrap;
+        -moz-flex-wrap:$wrap;
+        flex-wrap:$wrap;
+    }
+    @if $alignContent!="no"{
+        -webkit-align-content: $alignContent;
+        -moz-align-content: $alignContent;
+        align-content: $alignContent;
+    }
+}
+@mixin flexItem($flex:no,$alignSelf:no){
+    @if $flex!="no"{
+        -webkit-flex:$flex;
+        -moz-flex:$flex;
+        flex:$flex;
+    }
+    @if $alignSelf!="no"{
+        -webkit-align-self: $alignSelf;
+        -moz-align-self: $alignSelf;
+        align-self: $alignSelf;
+    }
+}
+@mixin mediaquery($min:no,$max:no){
+    @if $min!="no"{
+        @if $max!="no"{
+            @media only screen and (min-width: $min) and (max-width: $max) {
+                @content;
+            }
+        }@else{
+            @media only screen and (min-width: $min){
+                @content;
+            }
+        }
+    }@else{
+        @if $max!="no"{
+            @media only screen and (max-width: $max) {
+                @content;
+            }
+        }
+    }
+}
+@mixin span($num:12,$margin:5px){
+    @for $i from 1 through $num{
+        @for $t from $i through $num{
+            .row{
+                &>.span#{$i}-#{$t}{
+                    padding:$margin;
+                    min-height:10px;
+                    width:percentage($i/$t);
+                    @include boxSizing();
+                }
+            }
+        }
+    }
+}
+@mixin flexGrid($spanNum:12,$minHeight:5px,$grap:5px,$maxWidth:1024px){
+    .row{
+        @include flexBox(no,no,no,wrap);
+        min-height:$minHeight;
+        width:100%;
+        &.midd{
+            width:$maxWidth;
+            margin:0 auto;
+        }
+    }
+    @include span($spanNum,$grap);
+    @each $vals in (1024,1920),(768,1024),(480,768),(100,480){
+        @include mediaquery(nth($vals,1)+px,nth($vals,2)+px){
+            $c:nth($vals,2);
+            @if $c==1920{
+                $c:"Max";
+            }
+            .on#{$c}-show{
+                display:block;
+            }
+            .on#{$c}-hide{
+                display:none;
+            }
+            .row{
+                @if $c!="Max"{
+                    &.midd{
+                        width:100%;
+                    }
+                }
+                @for $i from 1 through $spanNum/2{
+                    &>*[class*='span']{
+                        &.on#{$c}-span-#{$i}{
+                            @include flexItem(inherit);
+                            width:percentage(100/$i/100);
+                        }
+                    }
+                }
+                @for $i from 1 through $spanNum/2{
+                    &.on#{$c}-col-#{$i}{
+                        &>*[class*='span']{
+                            @include flexItem(inherit);
+                            width:percentage(100/$i/100);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@mixin tipBorder($position:top,$color:#2C2929,$size:5px){
+    @if $position!="left"{
+        border-left:$size solid transparent;
+    }@else{
+        border-left:$size solid $color;
+    }
+    @if $position!="right"{
+        border-right:$size solid transparent;
+    }@else{
+        border-right:$size solid $color;
+    }
+    @if $position!="top"{
+        border-top:$size solid transparent;
+    }@else{
+        border-top:$size solid $color;
+    }
+    @if $position!="bottom"{
+        border-bottom:$size solid transparent;
+    }@else{
+        border-bottom:$size solid $color;
+    }
+}

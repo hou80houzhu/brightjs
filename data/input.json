@@ -1,0 +1,132 @@
+{
+    "code": "1",
+    "data": {
+        "taskcode": "00000000000000000000",
+        "time": 60,
+        "else": "",
+        "inputs": [
+            {
+                "type": "text",
+                "desc": "请输入图片中手写文字",
+                "images": [
+                    {
+                        "big": "bcps/imagetemp/010.jpg",
+                        "thumb": "bcps/imagetemp/010.jpg"
+                    }
+                ]
+            },
+            {
+                "type": "text",
+                "desc": "请输入图片中的数字串，最少16位",
+                "images": [
+                    {
+                        "big": "bcps/imagetemp/003.jpg",
+                        "thumb": "bcps/imagetemp/003.jpg"
+                    },
+                    {
+                        "big": "bcps/imagetemp/010.jpg",
+                        "thumb": "bcps/imagetemp/010.jpg"
+                    },
+                    {
+                        "big": "bcps/imagetemp/010.jpg",
+                        "thumb": "bcps/imagetemp/010.jpg"
+                    }
+                ]
+            },
+            {
+                "type": "text",
+                "desc": "请输入图片中显示的日期。格式为：yyyy-dd-mm。举例：2014-02-05",
+                "images": [
+                    {
+                        "big": "bcps/imagetemp/001.jpg",
+                        "thumb": "bcps/imagetemp/001.jpg"
+                    }
+                ]
+            },
+            {
+                "type": "select",
+                "desc": "请根据图片中勾选的信息选择值",
+                "values": [
+                    {
+                        "name": "现金汇款"
+                    },
+                    {
+                        "name": "转账汇款"
+                    }
+                ],
+                "images": [
+                    {
+                        "big": "bcps/imagetemp/013.jpg",
+                        "thumb": "bcps/imagetemp/013.jpg"
+                    }
+                ]
+            },
+            {
+                "type": "text",
+                "desc": "请根据图片输入金额",
+                "images": [
+                    {
+                        "big": "bcps/imagetemp/011.jpg",
+                        "thumb": "bcps/imagetemp/011.jpg"
+                    }
+                ]
+            },
+            {
+                "type": "multi",
+                "desc": "how to input this",
+                "inputs": [
+                    {
+                        "type": "textarea",
+                        "desc": "请根据图片输入“联系电话”",
+                        "images": [
+                            {
+                                "big": "bcps/imagetemp/020.jpg",
+                                "thumb": "bcps/imagetemp/020.jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "textarea",
+                        "desc": "请根据图片输入“地址及邮编”",
+                        "images": [
+                            {
+                                "big": "bcps/imagetemp/020.jpg",
+                                "thumb": "bcps/imagetemp/020.jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "textarea",
+                        "desc": "请根据图片输入“姓名”",
+                        "images": [
+                            {
+                                "big": "bcps/imagetemp/020.jpg",
+                                "thumb": "bcps/imagetemp/020.jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "textarea",
+                        "desc": "请根据图片输入“证件名称”",
+                        "images": [
+                            {
+                                "big": "bcps/imagetemp/020.jpg",
+                                "thumb": "bcps/imagetemp/020.jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "textarea",
+                        "desc": "请根据图片输入“证件号码”",
+                        "images": [
+                            {
+                                "big": "bcps/imagetemp/020.jpg",
+                                "thumb": "bcps/imagetemp/020.jpg"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
