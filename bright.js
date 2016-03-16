@@ -1,5 +1,5 @@
 /*!
- * BrightJS JavaScript Library v0.12.2
+ * BrightJS JavaScript Library v1.0.2
  * http://brightjs.org/
  * Author WangJinliang(hou80houzhu)
  * licensed under the MIT licenses.
