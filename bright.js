@@ -3158,7 +3158,6 @@
 
     var request = function (option) {
         this.mimeType = null;
-        this.iscache = option.cahce || false;
         this.data = option.data || "";
         this.url = option.url || "";
         this.realURL = option.url || "";
@@ -3271,53 +3270,35 @@
         this.xhr.send(this.data);
         return this;
     };
-    request.cache = {};
     bright.ajax = function (option) {
-        var pros = new promise(), done = true;
+        var pros = new promise();
         if (option) {
-            if (option.cache) {
-                var key = option.url;
-                try {
-                    key += ":" + window.JSON.stringify(option.data);
-                    option.cacheKey = key;
-                    if (request.cache[key]) {
-                        done = false;
-                        pros.resolve(request.cache[key]);
-                    }
-                } catch (e) {
-                }
-            }
-            if (done) {
-                option.events = bright.extend({
-                    error: function (e) {
-                        option.error && option.error.call(this, e);
-                        pros.reject(e);
-                    },
-                    load: function (e) {
-                        var status = this.response.status;
-                        if ((status >= 200 && status < 300) || status === 304 || status === 0) {
-                            var result = this.response.response;
-                            if (this.realType === "json") {
-                                var txt = this.response.responseText;
-                                try {
-                                    result = json.parse(txt);
-                                } catch (e) {
-                                    throw Error("[bright] ajax unvaliable json string,url is '" + option.url + "'");
-                                }
+            option.events = bright.extend({
+                error: function (e) {
+                    option.error && option.error.call(this, e);
+                    pros.reject(e);
+                },
+                load: function (e) {
+                    var status = this.response.status;
+                    if ((status >= 200 && status < 300) || status === 304 || status === 0) {
+                        var result = this.response.response;
+                        if (this.realType === "json") {
+                            var txt = this.response.responseText;
+                            try {
+                                result = json.parse(txt);
+                            } catch (e) {
+                                throw Error("[bright] ajax unvaliable json string,url is '" + option.url + "'");
                             }
-                            if (option.cache && option.cacheKey) {
-                                request.cache[option.cacheKey] = result;
-                            }
-                            option.success && option.success.call(this, result);
-                            pros.resolve(result);
-                        } else {
-                            option.error && option.error.call(this, e);
-                            pros.reject(this.response);
                         }
+                        option.success && option.success.call(this, result);
+                        pros.resolve(result);
+                    } else {
+                        option.error && option.error.call(this, e);
+                        pros.reject(this.response);
                     }
-                }, option.events);
-                new request(option).fire();
-            }
+                }
+            }, option.events);
+            new request(option).fire();
             return pros;
         } else {
             return pros.resolve();
@@ -5907,6 +5888,37 @@
         this._goon = false;
     };
 
+    var requestState = function () {
+        this._data = null;
+        this._bad = null;
+        this._offline = null;
+        this._error = null;
+    };
+    requestState.prototype.data = function (fn) {
+        if (is.isFunction(fn)) {
+            this._data = fn;
+        }
+        return this;
+    };
+    requestState.prototype.bad = function (fn) {
+        if (is.isFunction(fn)) {
+            this._bad = fn;
+        }
+        return this;
+    };
+    requestState.prototype.offline = function (fn) {
+        if (is.isFunction(fn)) {
+            this._offline = fn;
+        }
+        return this;
+    };
+    requestState.prototype.error = function (fn) {
+        if (is.isFunction(fn)) {
+            this._error = fn;
+        }
+        return this;
+    };
+
     var delegater = function () {
         this._data = [];
     };
@@ -5974,15 +5986,14 @@
 
     module.add({
         name: "request",
-        request: function (url, data, option) {
-            var _rs = bright.promise(), _ok = false;
-            _rs.scope(this);
+        request: function (url, data, type) {
+            var _rs = this.getRequestState(), _ok = false;
             var ops = {
                 url: "",
+                type: type || "post",
                 dataType: "json",
                 data: ""
             };
-            bright.extend(ops, option);
             if (is.isString(url)) {
                 _ok = true;
                 ops.url = url;
@@ -5998,47 +6009,35 @@
                 throw Error("[bright] request parameter error");
             }
         },
-        doRequest: function (option, promise) {
+        doRequest: function (option, reqeustState) {
+            var ths = this;
             bright.ajax(option).done(function (a) {
                 if (a.code && a.code === "1") {
-                    promise.resolve(a.data);
+                    reqeustState._data && reqeustState._data.call(ths, a.data);
                 } else {
-                    promise.reject(a);
+                    reqeustState._bad && reqeustState._bad.call(ths, a);
                 }
             }).fail(function (e) {
-                promise.reject(e);
+                reqeustState._error && reqeustState._error.call(ths, e);
             });
         },
         getRequest: function (url, data) {
             return this.request(url, data, "get");
         },
-        postRequest: function (url, data, option) {
-            if (!option) {
-                option = {};
-            }
-            option.type = "post";
-            return this.request(url, data, option);
+        postRequest: function (url, data) {
+            return this.request(url, data, "post");
         },
-        putRequest: function (url, data, option) {
-            if (!option) {
-                option = {};
-            }
-            option.type = "post";
-            return this.request(url, data, option);
+        putRequest: function (url, data) {
+            return this.request(url, data, "put");
         },
-        deleteRequest: function (url, data, option) {
-            if (!option) {
-                option = {};
-            }
-            option.type = "post";
-            return this.request(url, data, option);
+        deleteRequest: function (url, data) {
+            return this.request(url, data, "delete");
         },
-        patchRequest: function (url, data, option) {
-            if (!option) {
-                option = {};
-            }
-            option.type = "post";
-            return this.request(url, data, option);
+        patchRequest: function (url, data) {
+            return this.request(url, data, "patch");
+        },
+        getRequestState: function () {
+            return new requestState();
         }
     });
     module.add({

@@ -59,14 +59,14 @@
         if (obj.type && obj.type !== "") {
             return factory.create(obj.type, obj);
         } else {
-            throw Error("[brooder]has no layout with type of " + obj.type);
+            throw Error("[bright]has no layout with type of " + obj.type);
         }
     };
     $.region = function(obj) {
         if (obj.type && obj.type !== "") {
             return factory.create(obj.type, obj);
         } else {
-            throw Error("[brooder]has no region with type of " + obj.type);
+            throw Error("[bright]has no region with type of " + obj.type);
         }
     };
     $.item = function(obj) {
@@ -78,7 +78,7 @@
     $.defregion = function(obj) {
         factory.def(obj);
     };
-})(brooder);
+})(bright);
 (function($) {
     $.deflayout({
         name: "gridlayout",
@@ -122,4 +122,4 @@
                 })})
         ]
     });
-})(brooder);
+})(bright);

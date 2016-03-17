@@ -18,7 +18,7 @@ Module({
                 "<div class='bar play'></div>" +
                 "</div>" +
                 "<div class='time'>00:00</div>");
-        var a = require("brooder.util.media");
+        var a = require("bright.util.media");
         this.audio = a.audio({
             onloadstart: function (e) {
                 console.log("onloadstart");

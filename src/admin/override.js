@@ -7,4 +7,4 @@
             $("body").empty();
         }
     });
-})(brooder);
+})(bright);
