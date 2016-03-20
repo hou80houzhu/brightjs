@@ -3481,6 +3481,17 @@
             });
             return this;
         },
+        html: function (url, success, error, data) {
+            bright.ajax({
+                url: url,
+                data: data,
+                dataType: "text",
+                success: success,
+                type: "get",
+                error: error
+            });
+            return this;
+        },
         json: function (url, success, error, data) {
             bright.ajax({
                 url: url,
