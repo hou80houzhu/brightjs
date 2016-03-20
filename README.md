@@ -3,3 +3,4 @@
 ### brightjs 1.* changelog
 
 - Module.postRequest as promise
+- fix loader.html()
