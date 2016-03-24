@@ -12,8 +12,40 @@
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/72.png">
         <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/57.png">
         <link rel="shortcut icon" href="images/144.png">
-        <script src="adapt.js" type="text/javascript"></script>
+        <style>
+            body,html{
+                padding:0;
+                margin:0;
+            }
+            .main{
+                width:500px;
+                margin:0 auto;
+            }
+            .main-desc{
+                line-height:35px;
+                font-size: 30px;
+            }
+            .main-items-item{
+                line-height:50px;
+                border:1px solid #D7D7D7;
+                margin:10px 0 10px 0;
+                padding:0 10px 0 10px;
+            }
+            .main-items-item a{
+                text-decoration: none;
+                display:block;
+                color:#0D0C0B;
+            }
+        </style>
     </head>
     <body>
+        <div class="main">
+            <div class="main-logo"><img src="src/admin/style/images/logo1.png"></div>
+            <div class="main-desc">Samples</div>
+            <div class="main-items">
+                <div class="main-items-item"><a href="admin.html">Admin Sample</a></div>
+                <div class="main-items-item"><a href="todolist.html">Todolist Sample</a></div>
+            </div>
+        </div>
     </body>
 </html>

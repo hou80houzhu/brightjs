@@ -1,3 +1,10 @@
+/*!
+ * BrightJS JavaScript Library v0.12.2
+ * http://brightjs.org/
+ * Author WangJinliang(hou80houzhu)
+ * licensed under the MIT licenses.
+ * https://github.com/hou80houzhu/brightjs/blob/master/LICENSE
+ */
 (function () {
     "use strict";
     var bright = function (start) {
@@ -5062,284 +5069,276 @@
 
     var adapt = function () {
     };
-    adapt.isSuper = /this.superClass\(.*?\);/g;
-    adapt.superInvoke = function (ths, adaptName, propName, argus) {
-        if (ths.__superinvoke__ && !ths.__superinvoke__[adaptName + propName]) {
-            ths.__superinvoke__[adaptName + propName] = 1;
-            return adapt.superInvoke(ths, ths.__superinvoke__.current, propName, argus);
-        }
-        if (!ths.__superinvoke__) {
-            ths.__superinvoke__ = {};
-        }
-        if (!ths.__superinvoke__[adaptName + propName] || ths.__superinvoke__[adaptName + propName] === 1) {
-            ths.__superinvoke__[adaptName + propName] = {};
-        }
-        if (!ths.__superinvoke__[adaptName + propName].calling) {
-            var a = Object.getPrototypeOf(ths), prot = null;
-            if (adaptName) {
-                while (a) {
-                    if (a.__info__.name === adaptName) {
-                        prot = a;
-                        break;
-                    } else {
-                        a = Object.getPrototypeOf(a);
-                    }
+    adapt._invoke = function (propName, pars) {
+        var parent = this.__adapt__._factory.mapping[this.__adapt__._parent];
+        var self = this.__adapt__._factory.mapping[this.__adapt__._type];
+        var pp = [], ths = this;
+        if (parent && parent.prototype[propName]) {
+            var b = parent.prototype[propName];
+            if (is.isFunction(b)) {
+                var _a = new parent();
+                var _c = Object.keys(this);
+                for (var i = 0; i < _c.length; i++) {
+                    _a[_c[i]] = this[_c[i]];
                 }
-            } else {
-                prop = ths;
-            }
-            if (prot) {
-                ths.__superinvoke__[adaptName + propName].returns = [];
-                ths.__superinvoke__[adaptName + propName].propName = propName;
-                ths.__superinvoke__[adaptName + propName].current = "";
-                var fns = [], protos = [];
-                while (prot) {
-                    var p = prot[propName].toString().match(adapt.isSuper);
-                    if (p && p.length > 0) {
-                        for (var i = 0; i < p.length; i++) {
-                            var t = p[i].substring(16, p[i].length - 2);
-                            var fnname = t.split(",").shift();
-                            fnname = fnname.substring(1, fnname.length - 1);
-                            if (fnname === propName) {
-                                fns.push(prot[propName]);
-                                protos.push(prot.__info__.name);
-                            }
+                for (var i in self.prototype) {
+                    if (is.isFunction(self.prototype[i])) {
+                        if (!parent.prototype[i]) {
+                            pp.push(i);
+                            (function (mp) {
+                                _a[mp] = function () {
+                                    return ths[mp].apply(ths, Array.prototype.slice.call(arguments));
+                                };
+                            })(i);
                         }
-                        prot = Object.getPrototypeOf(prot);
                     } else {
-                        fns.push(prot[propName]);
-                        protos.push(prot.__info__.name);
-                        break;
+                        pp.push(i);
+                        _a[i] = this[i];
                     }
                 }
-                if (fns.length > 1) {
-                    fns.shift();
-                    fns.reverse();
-                    protos.shift();
-                    protos.reverse();
-                }
-                var m = null;
-                ths.__superinvoke__[adaptName + propName].calling = true;
-                for (var i = 0; i < fns.length; i++) {
-                    ths.__superinvoke__.current = protos[i];
-                    var x = fns[i].apply(ths, argus);
-                    ths.__superinvoke__[adaptName + propName].returns.push(x);
-                    m = x;
-                }
-                ths.__superinvoke__[adaptName + propName].calling = false;
-                ths.__superinvoke__[adaptName + propName].returns = [];
-                ths.__superinvoke__[adaptName + propName] = null;
-                var re = true;
-                for (var i in ths.__superinvoke__) {
-                    if (i !== "current") {
-                        if (ths.__superinvoke__[i] !== null && ths.__superinvoke__[i] !== 1) {
-                            re = false;
+                try {
+                    var r = b.apply(_a, pars), l = Object.keys(_a);
+                    for (var i = 0; i < l.length; i++) {
+                        if (pp.indexOf(l[i]) === -1) {
+                            this[l[i]] = _a[l[i]];
                         }
                     }
+                    return r;
+                } catch (e) {
+                    console.error(e.message);
+                    return null;
                 }
-                if (re) {
-                    ths.__superinvoke__ = null;
-                }
-                return m;
             } else {
-                return null;
+                return b;
             }
         } else {
-            return ths.__superinvoke__[adaptName + propName].returns.shift();
+            return undefined;
         }
     };
-    Object.defineProperty(adapt.prototype, "__info__", {
+    adapt.prototype.privator = function (name) {
+        var a = this.__adapt__._private["_" + name];
+        if (a) {
+            var paras = Array.prototype.slice.call(arguments);
+            paras.splice(0, 1);
+            return a.apply(this, paras);
+        } else {
+            return null;
+        }
+    };
+    adapt.prototype.staticor = function (name, scope) {
+        var a = this.__adapt__._static["__" + name];
+        if (is.isFunction(a)) {
+            var paras = Array.prototype.slice.call(arguments);
+            paras.splice(0, 2);
+            return a.apply(scope, paras);
+        } else {
+            return a;
+        }
+    };
+    adapt.prototype.type = function () {
+        return this.__adapt__._type;
+    };
+    adapt.prototype.shortName = function () {
+        return this.__adapt__._shortName;
+    };
+    adapt.prototype.packet = function () {
+        return this.__adapt__._packet;
+    };
+    adapt.prototype.typeOf = function (type) {
+        return this.__adapt__._mapping[type] !== undefined;
+    };
+    adapt.prototype.extendsOf = function (type) {
+        for (var i in this.__adapt__._extendslink) {
+            if (this.__adapt__._extendslink[i] === type) {
+                return true;
+            }
+        }
+        return false;
+    };
+    adapt.prototype.factory = function () {
+        return this.__adapt__._factory;
+    };
+    adapt.prototype.clean = function () {
+        this.__adapt__._factory = null;
+        var keys = Object.keys(this);
+        for (var i in keys) {
+            this[keys[i]] = null;
+        }
+    };
+    adapt.prototype.isSingleton = function () {
+        return this.__adapt__._singleton;
+    };
+    adapt.prototype.superClass = function (propName) {
+        var pars = Array.prototype.slice.call(arguments);
+        pars.splice(0, 1);
+        return adapt._invoke.call(this, propName, pars);
+    };
+    adapt.prototype.invokeClass = function (className, propName) {
+        var pars = Array.prototype.slice.call(arguments);
+        pars.splice(0, 2);
+        return adapt._invoke.call(this, propName, pars);
+    };
+    Object.defineProperty(adapt.prototype, "__adapt__", {
         enumerable: false,
         configurable: false,
         writable: false,
         value: {
-            name: "adapt",
-            short: "adapt",
-            interface: null,
-            super: null,
-            packet: null,
-            types: ["adapt"]
+            _type: "adapt",
+            _shortName: "adapt",
+            _packet: "",
+            _parent: null,
+            _factory: null,
+            _private: null,
+            _static: null,
+            _option: null,
+            _mapping: {},
+            _original_option: [],
+            _instance_props: ["privator", "staticor", "type", "shortName", "packet", "typeOf", "factory", "clean", "superClass"],
+            _extendslink: []
         }
     });
-    adapt.prototype.option = {};
-    adapt.prototype.privator = function () {
-        var t = Array.prototype.slice.call(arguments);
-        var name = t.shift();
-        if (bright.is.isFunction(this["_" + name])) {
-            return this["_" + name].apply(this, t);
-        } else {
-            return this["_" + name];
-        }
-    };
-    adapt.prototype.staticor = function () {
-        var t = Array.prototype.slice.call(arguments);
-        var name = t.shift();
-        if (bright.is.isFunction(this["__" + name])) {
-            return this["__" + name].apply(this, t);
-        } else {
-            return this["__" + name];
-        }
-    };
-    adapt.prototype.type = function () {
-        return this["__info__"].name;
-    };
-    adapt.prototype.shortName = function () {
-        return this["__info__"].short;
-    };
-    adapt.prototype.packet = function () {
-        return this["__info__"].packet;
-    };
-    adapt.prototype.typeOf = function (type) {
-        var t = this, has = false;
-        while (t["__info__"]) {
-            var a = t["__info__"];
-            if (a.types.indexOf(type) !== -1) {
-                has = true;
-                break;
-            } else {
-                t = Object.getPrototypeOf(t);
-            }
-        }
-        return has;
-    };
-    adapt.prototype.extendsOf = function (type) {
-        var t = this, has = false;
-        while (t["__info__"]) {
-            if (t["__info__"].name === type) {
-                has = true;
-                break;
-            } else {
-                t = Object.getPrototypeOf(t);
-            }
-        }
-        return has;
-    };
-    adapt.prototype.clean = function () {
-        for (var i in this) {
-            this[i] = null;
-        }
-    };
-    adapt.prototype.superClass = function (propName) {
-        var name = "";
-        var keys = Object.keys(this);
-        if (keys.indexOf(propName) === -1) {
-            name = Object.getPrototypeOf(this).__info__.name;
-        }
-        var argus = Array.prototype.slice.call(arguments);
-        argus.shift();
-        return adapt.superInvoke(this, name, propName, argus);
-    };
     var factory = function () {
-        this._mapping = {
-            "adapt": adapt
+        this.mapping = {
+            adapt: adapt
         };
     };
-    factory.set = function (objn, obj) {
-        for (var i in obj) {
-            Object.defineProperty(objn, i, {
-                enumerable: false,
-                configurable: false,
-                writable: false,
-                value: obj[i]
-            });
-        }
-        return objn;
-    };
+    var fsingleton = {};
+    factory.a = /^(init)$|^_\w*/;
+    factory.b = /^(name)|(extend)|(option)/;
+    factory.c = /^(packet)|(layout)/;
+    factory.d = /^__/;
+    factory.e = /^_/;
     factory.prototype.def = function (obj) {
-        if (!obj.extend) {
-            obj.extend = ["adapt"];
-        } else {
-            if (bright.is.isString(obj.extend)) {
-                obj.extend = [obj.extend];
-            }
+        var ab = new Function();
+        var a = {
+            _type: (obj.packet && obj.packet !== "" ? obj.packet + "." : "") + obj.name,
+            _shortName: obj.name || "",
+            _packet: obj.packet || "",
+            _mapping: {adapt: 1},
+            _extendslink: [],
+            _instance_props: [],
+            _private: {},
+            _static: {},
+            _factory: this,
+            _singleton: obj.singleton === null ? obj.singleton : false,
+            _option: obj.option || {},
+            _original_option: []
+        };
+        a._mapping[a._type] = 1;
+        for (var i in obj.option) {
+            a._original_option.push(i);
         }
-        var b = new this._mapping[obj.extend[0]]();
-        for (var i in obj) {
-            if (i !== "name" && i !== "extend" && i !== "shortName" && i !== "packet") {
-                b[i] = obj[i];
-            }
-        }
-        if (!b.option) {
-            b.option = {};
-        }
-        var r = Object.getPrototypeOf(b), ops = [b.option];
-        while (r) {
-            ops.push(r.option ? bright.json.clone(r.option) : {});
-            r = Object.getPrototypeOf(r);
-        }
-        var ife = [], ex = [obj.packet ? obj.packet + "." + obj.name : obj.name];
-        if (obj.extend.length > 1) {
-            ex.push(obj.extend.shift());
-            for (var i = 0; i < obj.extend.length; i++) {
-                var t = obj.extend[i];
-                var q = this._mapping[t];
-                if (q) {
-                    ife.push(t);
-                    var m = Object.keys(q.prototype);
-                    for (var k = 0; k < m.length; k++) {
-                        var opn = m[k];
-                        if (opn !== "option" && opn !== "init") {
-                            b[opn] = q.prototype[opn];
+        var prpt = new adapt();
+        !obj.extend && (obj.extend = ["adapt"]);
+        var array = obj.extend;
+        is.isString(obj.extend) && (array = [obj.extend]);
+        a._parent = array[0];
+        var c = bright.extend({}, bright.json.clone(this.mapping[array[0]].prototype.__adapt__._option));
+        a._option = bright.extend(c, a._option);
+        for (var i = array.length - 1; i >= 0; i--) {
+            if (array[i] !== "adapt") {
+                var d = this.mapping[array[i]].prototype;
+                var __mapping = {}, __private = {}, __static = {};
+                bright.extend(__mapping, bright.json.clone(d.__adapt__._mapping));
+                bright.extend(__private, d.__adapt__._private);
+                bright.extend(__static, d.__adapt__._static);
+                bright.extend(a._mapping, __mapping);
+                bright.extend(a._private, __private);
+                bright.extend(a._static, __static);
+                var q = Object.keys(d);
+                for (var t = 0; t < q.length; t++) {
+                    if (bright.is.isFunction(d[t])) {
+                        if (!factory.a.test(t)) {
+                            prpt[q[t]] = d[q[t]];
                         }
+                    } else {
+                        prpt[q[t]] = d[q[t]];
                     }
-                    ops.push(bright.json.clone(q.prototype.option));
                 }
             }
         }
-        bright.extend.apply({}, ops);
-        if (!b.init) {
-            b.init = function () {};
-        }
-        var pp = ex.concat(obj.extend);
-        if (this._mapping[obj.extend[0]].prototype.__info__) {
-            for (var i in this._mapping[obj.extend[0]].prototype.__info__.types) {
-                var t = this._mapping[obj.extend[0]].prototype.__info__.types[i];
-                if (pp.indexOf(t) === -1) {
-                    pp.push(t);
+        Object.defineProperty(prpt, "__adapt__", {
+            enumerable: false,
+            configurable: false,
+            writable: false,
+            value: a
+        });
+        for (var i in obj) {
+            if (factory.d.test(i)) {
+                a._static[i] = obj[i];
+            } else {
+                if (is.isFunction(obj[i])) {
+                    if (factory.e.test(i)) {
+                        a._private[i] = obj[i];
+                    } else {
+                        prpt[i] = obj[i];
+                        if (i !== "init")
+                            a._instance_props.push(i);
+                    }
+                } else {
+                    if (!factory.b.test(i)) {
+                        prpt[i] = obj[i];
+                        if (!factory.c.test(i))
+                            a._instance_props.push(i);
+                    }
                 }
             }
         }
-        factory.set(b, {"__info__": factory.set({}, {
-                name: (obj.packet ? obj.packet + "." + obj.name : obj.name),
-                short: obj.name || "",
-                packet: obj.packet || "",
-                interface: ife,
-                super: ex.join(""),
-                types: pp
-            })});
-        var adapt = function () {};
-        adapt.prototype = b;
-        this._mapping[b.__info__.name] = adapt;
+        ab.prototype = prpt;
+        var k = ab;
+        while (k) {
+            a._extendslink.push(k.prototype.__adapt__._type);
+            k = this.mapping[k.prototype.__adapt__._parent];
+        }
+        this.mapping[a._type] = ab;
         return this;
     };
     factory.prototype.get = function (name) {
-        return this._mapping[name];
+        return this.mapping[name];
     };
     factory.prototype.create = function (type, option) {
-        var a = this.instance(type, option);
-        if (a) {
-            for (var i = a.__info__.types.length - 1; i >= 0; i--) {
-                var p = this._mapping[a.__info__.types[i]];
+        var objx = null, name = type;
+        var clazz = this.mapping[name];
+        if (clazz) {
+            objx = new clazz();
+            var _opp = bright.extend({}, bright.json.clone(clazz.prototype.__adapt__._option));
+            objx.option = bright.extend(_opp, option);
+            for (var i = clazz.prototype.__adapt__._extendslink.length - 1; i >= 0; i--) {
+                var p = this.mapping[clazz.prototype.__adapt__._extendslink[i]];
                 if (p && p.prototype["init"]) {
-                    p.prototype["init"].call(a, a.option);
+                    p.prototype["init"].call(objx, objx.option);
                 }
             }
         }
-        return a;
+        return objx;
     };
     factory.prototype.instance = function (type, option) {
-        var obj = null, name = type;
-        var clazz = this._mapping[name];
+        var objx = null, name = type;
+        var clazz = this.mapping[name];
         if (clazz) {
-            obj = new clazz();
-            obj.option = bright.extend({}, bright.json.clone(clazz.prototype.option), option);
+            var sg = clazz.prototype.__adapt__._singleton;
+            if (sg) {
+                if (!fsingleton[type]) {
+                    var objxx = new clazz();
+                    var _opp = bright.extend({}, bright.json.clone(clazz.prototype.__adapt__._option));
+                    bright.extend(_opp, option);
+                    objxx.option = _opp;
+                    fsingleton[type] = objxx;
+                }
+                objx = fsingleton[type];
+            } else {
+                objx = new clazz();
+                var _opp = bright.extend({}, bright.json.clone(clazz.prototype.__adapt__._option));
+                bright.extend(_opp, option);
+                objx.option = _opp;
+            }
         }
-        return obj;
+        return objx;
     };
     factory.prototype.invoke = function (clazzName, methodName, scope) {
         var a = null;
         if (is.isString(clazzName)) {
-            var j = this._mapping[clazzName];
+            var j = this.mapping[clazzName];
             j && (a = new j());
         } else if (is.isObject(clazzName)) {
             a = clazzName;
@@ -5365,8 +5364,58 @@
         }
         return null;
     };
+    factory.prototype.proxy = function (object, part, fn) {//fn(method)
+        if (arguments.length > 1) {
+            var some = null, proxy = null;
+            if (is.isString(object)) {
+                var _a = this.mapping[object];
+                _a && (object = new _a());
+            } else if (object instanceof adapt) {
+                var _b = new this.mapping[object.__adapt__._type](), _c = Object.keys(object);
+                for (var i = 0; i < _c.length; i++) {
+                    _b[_c[i]] = object[_c[i]];
+                }
+                object = _b;
+            } else {
+                object = null;
+            }
+            if (is.isObject(object)) {
+                if (is.isArray(part)) {
+                    some = part;
+                    proxy = fn;
+                } else if (is.isFunction(part)) {
+                    proxy = part;
+                }
+                var a = new this.mapping[object.__adapt__._type]();
+                for (var i in object) {
+                    if (is.isFunction(object[i])) {
+                        if (!some || some && some.indexOf(i) !== -1) {
+                            (function (methodName) {
+                                a[i] = function () {
+                                    var pars = arguments;
+                                    proxy && proxy.call(object, {
+                                        methodName: methodName,
+                                        invoke: function () {
+                                            return object[methodName].apply(object, pars);
+                                        }
+                                    });
+                                };
+                            })(i);
+                        }
+                    } else {
+                        a[i] = object[i];
+                    }
+                }
+                return a;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    };
     factory.prototype.has = function (clazzType) {
-        return this._mapping[clazzType] !== undefined;
+        return this.mapping[clazzType] !== undefined;
     };
     bright.adapt = function () {
         return new factory();
@@ -5739,8 +5788,8 @@
             var ne = (obj.packet && obj.packet !== "" ? obj.packet + "." : "") + obj.name;
             var sobj = module.factory.get(ne).prototype;
             var cln = [obj.className || ""];
-            for (var i = sobj.__info__.types.length - 1; i >= 0; i--) {
-                var b = module.factory.get(sobj.__info__.types[i]);
+            for (var i = sobj.__adapt__._extendslink.length - 1; i >= 0; i--) {
+                var b = module.factory.get(sobj.__adapt__._extendslink[i]);
                 if (b) {
                     var cn = b.prototype.className;
                     if (cn && cn !== "") {
@@ -6028,7 +6077,7 @@
                 var optionName = this.dom.dataset("option"), ths = this;
                 if (this.dom.hasClass("_futuretochange_")) {
                     this.dom.removeClass("_futuretochange_");
-                    var prps = module.factory._mapping[this.type()].prototype;
+                    var prps = this.__adapt__._factory.mapping[this.__adapt__._type].prototype;
                     var cln = prps.fullClassName;
                     if (this.dom.get(0).tagName.toLowerCase() !== this.tagName) {
                         var a = $("<" + prps.tagName + " class='" + cln + "' data-view='" + this.dom.dataset("view") + "' data-parent-view='" + this.dom.dataset("parentView") + "' data-view-id='" + this.dom.dataset("viewId") + "' daa-option='" + this.dom.dataset("option") + "'></" + prps.tagName + ">");
@@ -6423,7 +6472,7 @@
                 var ths = this, optionName = this.dom.dataset("option"), queue = bright.queue();
                 if (this.dom.hasClass("_futuretochange_")) {
                     this.dom.removeClass("_futuretochange_");
-                    var prps = module.factory._mapping[this.type()].prototype;
+                    var prps = this.__adapt__._factory.mapping[this.__adapt__._type].prototype;
                     var cln = prps.fullClassName;
                     if (this.dom.get(0).tagName.toLowerCase() !== this.tagName) {
                         var a = $("<" + prps.tagName + " class='" + cln + "' data-view='" + this.dom.dataset("view") + "' data-parent-view='" + this.dom.dataset("parentView") + "' data-view-id='" + this.dom.dataset("viewId") + "' daa-option='" + this.dom.dataset("option") + "'></" + prps.tagName + ">");
@@ -6474,8 +6523,8 @@
                                     module: function (attrs, render) {
                                         var type = attrs["type"], option = attrs["option"], id = attrs["id"];
                                         var prps = {tagName: "div", fullClassName: "_futuretochange_"};
-                                        if (module.factory._mapping[type]) {
-                                            var prps = module.factory._mapping[type].prototype;
+                                        if (ths.__adapt__._factory.mapping[type]) {
+                                            var prps = ths.__adapt__._factory.mapping[type].prototype;
                                         }
                                         return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
                                     }
@@ -6484,8 +6533,8 @@
                                     id: ths.getId(), option: ths.option
                                 }, ths.getId(), ths.option, function (type, option, id) {
                                     var prps = {tagName: "div", fullClassName: "_futuretochange_"};
-                                    if (module.factory._mapping[type]) {
-                                        var prps = module.factory._mapping[type].prototype;
+                                    if (ths.__adapt__._factory.mapping[type]) {
+                                        var prps = ths.__adapt__._factory.mapping[type].prototype;
                                     }
                                     return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
                                 });
@@ -6545,8 +6594,8 @@
                                     }
                                 }
                                 module.get(aa.type(), subview, null, function (k) {
-                                    for (var i = k.__info__.types.length - 1; i >= 0; i--) {
-                                        bright.extend(ops, aa.option[k.__info__.types[i]]);
+                                    for (var i = k.__adapt__._extendslink.length - 1; i >= 0; i--) {
+                                        bright.extend(ops, aa.option[k.__adapt__._extendslink[i]]);
                                     }
                                     bright.extend(ops, aa.option[subid]);
                                     var tops = null;
@@ -6605,7 +6654,7 @@
                     } else {
                         ths.children.splice(xindex, 0, sobj);
                     }
-                    var cln = module.factory._mapping[sobj.type()].prototype.fullClassName;
+                    var cln = sobj.__adapt__._factory.mapping[sobj.__adapt__._type].prototype.fullClassName;
                     var coner = bright(ops.container);
                     var pdom = bright("<" + sobj.tagName + " class='" + cln + "' data-parent-view='" + ths.getId() + "' data-view='" + ops.type + "' data-view-id='" + ops.id + "' data-option='" + (is.isObject(ops.option) ? "" : ops.option) + "'></" + sobj.tagName + ">");
                     if (is.isNumber(ops.domIndex)) {
@@ -6619,10 +6668,10 @@
                         sobj.dom = pdom.appendTo(coner, false);
                     }
                     var opss = {};
-                    for (var i = sobj.__info__.types.length - 1; i >= 0; i--) {
-                        bright.extend(opss, ths.option[sobj.__info__.types[i]]);
+                    for (var i = sobj.__adapt__._extendslink.length - 1; i >= 0; i--) {
+                        bright.extend(opss, ths.option[sobj.__adapt__._extendslink[i]]);
                     }
-                    bright.extend(opss, bright.json.clone(sobj.option));
+                    bright.extend(opss, bright.json.clone(sobj.__adapt__._option));
                     bright.extend(opss, ths.option[ops.id]);
                     bright.extend(opss, ths.option[ops.type]);
                     if (is.isObject(ops.option)) {
