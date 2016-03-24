@@ -144,6 +144,7 @@ factory.def({
     extend: "baseChart",
     option: {},
     init: function () {
+        console.log(this);
         this.children = [];
     },
     addChild: function (a) {
