@@ -1,0 +1,24 @@
+<!--[todolist]-->
+<div class="todolisthead">
+    <div class="todolisthead-input"><input type="text" data-find="input" placeholder="输入字符"/></div>
+    <div class="todolisthead-btn" data-find="btn"><i class="fa fa-check"></i></div>
+</div>
+<div class="todolist-body" data-find="body">
+    <@include data="{{data.list}}" template="{{data.template}}"/>
+</div>
+<!--[todolistlist]-->
+<div class="todolistlist-con">
+    <%for(var i in data){%>
+    <div class="todolist-con-item" data-group="item" @cache(data[i])>
+        <div class="todolist-con-item-desc" data-groupi="name"><%=data[i].name;%></div>
+        <div class="todolist-con-item-btn" data-groupi="btn"><i class="fa fa-cross"></i></div>
+    </div>
+    <%}%>
+</div>
+<!--[todolistcontainer]-->
+<div class="todolistcontainer-logo">
+    <img src="demo/todolist/style/images/logo.png"/>
+</div>
+<div class="todolistcontainer-todolist">
+    <@module type="{{option.innerType}}"/>
+</div>

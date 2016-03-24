@@ -1,0 +1,127 @@
+.xtree {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #FCFAFA;
+}
+.xtree .xhead {
+    width: 100%;
+    line-height: 35px;
+    border-bottom: 1px solid #F1F1F1;
+    background: #FAFAFA;
+    display: -webkit-flex;
+}
+.xtree .xhead .xcurrent {
+    padding-left: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    -webkit-flex: 1;
+}
+.xtree .xhead .xtoggle {
+    width: 35px;
+    height: 35px;
+    display: table-cell;
+    text-align: center;
+}
+.xtree .xhead .xtoggle .fa:first-child {
+    display: none;
+}
+.xtree .xhead .xtoggle.toggle .fa:first-child {
+    display: inline-block;
+}
+.xtree .xhead .xtoggle.toggle .fa:last-child {
+    display: none;
+}
+.xtree .xcon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 36px;
+    overflow: hidden;
+    padding-left: 10px;
+}
+.xtree .xcon:hover{
+    overflow: auto;
+}
+.xtree .xnode > .xnode-head {
+    line-height: 25px;
+    white-space: nowrap;
+    margin-bottom: 5px;
+}
+.xtree .xnode > .xnode-head > .arrow {
+    width: 25px;
+    display: inline-block;
+    text-align: center;
+    line-height: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    vertical-align: top;
+}
+.xtree .xnode > .xnode-head > .arrow i {
+    -webkit-transform: rotate(45deg);
+}
+.xtree .xnode > .xnode-head > .icon {
+    width: 25px;
+    display: inline-block;
+    text-align: center;
+    line-height: 25px;
+    /*color:#645F5F;*/
+}
+.xtree .xnode > .xnode-head > .tools {
+    display: none;
+}
+.xtree .xnode > .xnode-head > .tools > .tool {
+    width: 25px;
+    display: inline-block;
+    text-align: center;
+    line-height: 25px;
+    cursor: pointer;
+}
+.xtree .xnode > .xnode-head > .tools > .tool:hover {
+    background: #E9EFF8;
+}
+.xtree .xnode > .xnode-head > input[type='checkbox'] {
+    vertical-align: top;
+    margin-right: 5px;
+}
+.xtree .xnode > .xnode-head > .title {
+    padding: 0 8px 0 8px;
+    cursor: default;
+    line-height: 25px;
+    display: inline-block;
+    -webkit-border-radius: 4px;
+    margin-right: 5px;
+    vertical-align: top;
+    max-width: 170px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.xtree .xnode > .xnode-head > .title:hover {
+    background: #DBE3E8;
+}
+.xtree .xnode > .xnode-head.noarrow .arrow {
+    /*display:none;*/
+    visibility: hidden;
+}
+.xtree .xnode > .xnode-head.active .title {
+    background: #227FBC;
+    color: white;
+}
+.xtree .xnode > .xnode-head.active .tools {
+    display: inline-block;
+}
+.xtree .xnode.close > .xnode-head .arrow i {
+    -webkit-transform: rotate(0deg);
+}
+.xtree .xnode.close > .xnode-list {
+    display: none;
+}
+.xtree .xnode > .xnode-list {
+    margin-left: 13px;
+    -webkit-transition: all 0.5s ease-in;
+}

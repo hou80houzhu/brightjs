@@ -1,0 +1,71 @@
+{
+    "code": "1",
+    "msg": "",
+    "data": [
+        {"id": "jc001", "name": "商品", "img": "fa fa-users", "list": [
+                {"id": "jc002", "name": "商品管理功能", "img": "icon-user", "list": [
+                    ], "view": "goodslist", "type": "small"},
+                {"id": "jc003", "name": "商品分类", "img": "fa fa-users", "list": [
+                        {"id": "jc036", "name": "分类管理", "img": "fa fa-users", "list": [], "view": "sortlist", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "goodssort", "type": ""},
+                {"id": "jc004", "name": "品牌", "img": "fa fa-users", "list": [
+                        {"id": "jc037", "name": "品牌分类", "img": "fa fa-users", "list": [], "view": "brandsort", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc038", "name": "品牌列表", "img": "fa fa-users", "list": [], "view": "brandlist", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "goodsbrand", "type": ""},
+                {"id": "jc005", "name": "模型与规格", "img": "fa fa-users", "list": [
+                        {"id": "jc039", "name": "模型列表", "img": "fa fa-users", "list": [], "view": "modellist", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc039xx", "name": "模型列表", "img": "fa fa-users", "list": [], "view": "modellistxx", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc040", "name": "规格列表", "img": "fa fa-users", "list": [], "view": "specilist", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "goodstempl", "type": ""},
+                {"id": "jc047", "name": "商品定制", "img": "fa fa-users", "list": [
+                        {"id": "jc045", "name": "定制模型", "img": "fa fa-users", "list": [], "view": "modellist", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc046", "name": "定制规格", "img": "fa fa-users", "list": [], "view": "specilist", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "goodstempl", "type": ""}
+            ], "view": "goods", "type": "big", "color": "1", "method": "list"},
+        {"id": "jc006", "name": "会员", "img": "fa fa-users", "list": [
+                {"id": "jc007", "name": "会员管理", "img": "", "list": [
+                        {"id": "jc001", "name": "会员管理", "img": "fa fa-users", "list": [], "view": "memeberlist", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "memebermanage", "type": ""}
+            ], "view": "member", "type": "small", "color": "2", "method": "list"},
+        {"id": "jc008", "name": "订单", "img": "icon-book", "list": [
+                {"id": "jc009", "name": "订单管理", "img": "", "list": [
+                        {"id": "jc010", "name": "订单列表", "img": "fa fa-users", "list": [], "view": "orderlist", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc011", "name": "退货申请表", "img": "fa fa-users", "list": [], "view": "returngoods", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc012", "name": "用户评论", "img": "fa fa-users", "list": [], "view": "comments", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "ordermanage", "type": ""},
+                {"id": "jc001", "name": "单据管理", "img": "fa fa-users", "list": [
+                        {"id": "jc013", "name": "收款单", "img": "fa fa-users", "list": [], "view": "shoukuandan", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc014", "name": "退款单", "img": "fa fa-users", "list": [], "view": "tuikuandan", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc015", "name": "配货单", "img": "fa fa-users", "list": [], "view": "peihuodan", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "receiptmanage", "type": ""}
+            ], "view": "order", "type": "small", "color": "3", "method": "list"},
+        {"id": "jc016", "name": "统计", "img": "icon-bar-chart", "list": [
+                {"id": "jc017", "name": "基础数据统计", "img": "fa fa-users", "list": [
+                        {"id": "jc018", "name": "下单总量统计", "img": "fa fa-users", "list": [], "view": "axiadan", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc019", "name": "销售金额统计", "img": "fa fa-users", "list": [], "view": "axiaoshou", "type": "", "deal": "add,edit,search,delete"},
+                        {"id": "jc020", "name": "月会员注册量", "img": "fa fa-users", "list": [], "view": "saxidan", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "basecount", "type": ""}
+            ], "view": "statistc", "type": "big", "color": "4", "method": "list"},
+        {"id": "jc021", "name": "系统", "img": "fa fa-users", "list": [
+                {"id": "jc024", "name": "配送方式", "img": "", "list": [
+                        {"id": "jc025", "name": "物流公司", "img": "fa fa-users", "list": [], "view": "wuliucom", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "senttype", "type": ""},
+                {"id": "jc026", "name": "角色管理", "img": "fa fa-users", "list": [
+                        {"id": "jc042", "name": "角色管理", "img": "fa fa-users", "list": [], "view": "rolemanage", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "rolemanage", "type": ""},
+                {"id": "jc026", "name": "管理员管理", "img": "fa fa-users", "list": [
+                        {"id": "jc027", "name": "管理员管理", "img": "fa fa-users", "list": [], "view": "managema", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "managema", "type": ""}
+            ], "view": "systems", "type": "small", "color": "5", "method": "list"},
+        {"id": "jc028", "name": "新闻", "img": "fa fa-users", "list": [
+                {"id": "jc029", "name": "新闻管理", "img": "", "list": [
+                        {"id": "jc030", "name": "新闻管理", "img": "fa fa-users", "list": [], "view": "newsmanage", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "newsmanage", "type": ""}
+            ], "view": "news", "type": "small", "color": "6", "method": "list"},
+        {"id": "jc031", "name": "活动优惠", "img": "fa fa-users", "list": [
+                {"id": "jc032", "name": "优惠券", "img": "fa fa-users", "list": [
+                        {"id": "jc033", "name": "优惠券管理", "img": "fa fa-users", "list": [], "view": "allsell", "type": "", "deal": "add,edit,search,delete"}
+                    ], "view": "", "type": ""}
+            ], "view": "youhui", "type": "small", "color": "7", "method": "list"}
+    ]
+}

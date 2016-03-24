@@ -563,8 +563,8 @@ adapt.prototype.extendsOf = function (type) {
     return has;
 };
 adapt.prototype.clean = function () {
-    for(var i in this){
-        this[i]=null;
+    for (var i in this) {
+        this[i] = null;
     }
 };
 adapt.prototype.superClass = function (propName) {
@@ -638,13 +638,22 @@ factory.prototype.def = function (obj) {
     if (!b.init) {
         b.init = function () {};
     }
+    var pp = ex.concat(obj.extend);
+    if (this._mapping[obj.extend[0]].prototype.__info__) {
+        for (var i in this._mapping[obj.extend[0]].prototype.__info__.types) {
+            var t = this._mapping[obj.extend[0]].prototype.__info__.types[i];
+            if (pp.indexOf(t) === -1) {
+                pp.push(t);
+            }
+        }
+    }
     factory.set(b, {"__info__": factory.set({}, {
-            name: obj.name,
-            short: obj.shortName || "",
+            name: (obj.packet ? obj.packet + "." + obj.name : obj.name),
+            short: obj.name || "",
             packet: obj.packet || "",
             interface: ife,
             super: ex.join(""),
-            types: ex.concat(obj.extend)
+            types: pp
         })});
     var adapt = function () {};
     adapt.prototype = b;
@@ -666,15 +675,6 @@ factory.prototype.instance = function (type, option) {
     if (clazz) {
         obj = new clazz();
         obj.option = bright.extend(bright.json.clone(clazz.prototype.option), option);
-        if (option.override) {
-            var t = Object.keys(option.override);
-            for (var i = 0; i < t.length; i++) {
-                if (i !== "option" && i !== "init") {
-                    obj[t[i]] = option.override[t[i]];
-                }
-            }
-        }
-        obj.init(obj.option);
     }
     return obj;
 };
