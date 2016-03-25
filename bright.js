@@ -670,49 +670,51 @@
     };
 
     var promise = function (task) {
-        this.state = 0;//0,1,2
-        this.queue = new dynamicQueue();
-        this._finally = null;
-        this._notify = null;
+        this._state = 0;
+        this._scope = {};
+        this._queue = new queue();
         this._complete = null;
-        this._result = null;
-        this._scope = null;
+        this._finally = null;
+        this._always = null;
+        this._error = null;
+        this._notify = null;
+        this._finalerror = null;
+        this._isfinalerror = false;
         var ths = this;
-        this.queue.complete(function (data) {
-            ths._result = data;
-            var a = ths._finally && ths._finally.call(ths, data);
-            if (a instanceof promise) {
-                a.complete(function (b) {
-                    ths._result = b;
-                    ths._complete && ths._complete.call(ths, b);
-                });
-            } else {
-                ths._complete && ths._complete.call(ths, data);
+        this._queue.complete(function (r) {
+            if (ths._state === 0) {
+                ths._complete && ths._complete.call(ths._scope, r, ths._isfinalerror);
             }
-        }).notify(function (e) {
-            ths._notify && ths._notify(e);
+            if (ths._state === 1) {
+                ths._error && ths._error.call(ths._scope, r);
+                var t = ths._parent;
+                while (t) {
+                    t._isfinalerror = true;
+                    t = t._parent;
+                }
+            }
+            ths._always && ths._always.call(ths._scope, r, this._state);
+            ths._finally && ths._finally.call(ths._scope, r, this._state);
         });
-        if (is.isFunction(task)) {
-            this.queue.wait();
-            this.done(function (a) {
-                return a;
-            });
-            task(function (a) {
-                ths.resolve(a);
-            }, function (a) {
-                ths.reject(a);
-            });
-        } else if (task) {
-            this._result = task;
-            this.state = 1;
-            this.queue.add(function () {
-                this.next(task);
-            });
-        } else {
-            this.queue.wait();
-            this.done(function (a) {
-                return a;
-            });
+        this._queue.progress(function (a) {
+            ths._notify && ths._notify.call(ths._scope, a);
+        });
+        if (task) {
+            setTimeout(function () {
+                try {
+                    task.call(ths._scope, function (a) {
+                        ths._state = 0;
+                        ths._queue.run(a);
+                    }, function (a) {
+                        ths._state = 1;
+                        ths._queue.run(a);
+                    });
+                } catch (e) {
+                    console.error(e.stack);
+                    ths._state = 1;
+                    ths._queue.end();
+                }
+            }, 0);
         }
     };
     promise.prototype.scope = function (scope) {
@@ -724,39 +726,91 @@
         }
     };
     promise.prototype.then = function (resolver, rejecter) {
-        promise.add.call(this, resolver, 1);
-        promise.add.call(this, rejecter, 2);
+        this.done(resolver);
+        this.fail(rejecter);
         return this;
     };
     promise.prototype.wait = function (fn) {
-        this.queue.add(function (data) {
-            var ths = this;
-            fn.call(ths, function (a) {
-                ths.next(a);
-            }, data);
+        var ths = this;
+        this.done(function (n) {
+            if (fn) {
+                fn && fn.call(ths._scope, n, function (a) {
+                    ths.next(a);
+                });
+            } else {
+                ths.next(n);
+            }
         });
         return this;
     };
-    promise.prototype.done = function (fn) {
-        promise.add.call(this, fn, 1);
+    promise.prototype.done = function (fnt) {
+        var ths = this;
+        this._queue.add(function (n, fn) {
+            if (ths._state === 0) {
+                if (fn) {
+                    var a = fn.call(ths._scope, n);
+                    if (a instanceof promise) {
+                        a._parent = ths;
+                        a._finally = function (r) {
+                            ths._queue.next(r);
+                        };
+                    } else {
+                        ths._queue.next(a);
+                    }
+                } else {
+                    ths._queue.next(n);
+                }
+            } else {
+                ths._queue.next(n);
+            }
+        }, function (a) {
+            ths._state = 1;
+            ths._queue.next(a);
+        }, fnt);
         return this;
     };
-    promise.prototype.fail = function (fn) {
-        promise.add.call(this, fn, 2);
+    promise.prototype.fail = function (fnt) {
+        var ths = this;
+        this._queue.add(function (n, fn) {
+            if (ths._state === 1) {
+                if (fn) {
+                    var a = fn.call(ths._scope, n);
+                    if (a instanceof promise) {
+                        a._parent = ths;
+                        a._finally = function (r) {
+                            ths._queue.next(r);
+                        };
+                    } else {
+                        ths._queue.next(a);
+                    }
+                } else {
+                    ths._queue.next(n);
+                }
+            } else {
+                ths._queue.next(n);
+            }
+        }, function (a) {
+            ths._state = 1;
+            ths._queue.next(a);
+        }, fnt);
         return this;
     };
     promise.prototype.always = function (fn) {
-        is.isFunction(fn) && (this._finally = fn);
+        is.isFunction(fn) && (this._always = fn);
         return this;
     };
     promise.prototype.reject = function (data) {
-        this.state = 2;
-        this.queue.work(data);
+        setTimeout(function () {
+            this._state = 1;
+            this._queue.run(data);
+        }.bind(this), 0);
         return this;
     };
     promise.prototype.resolve = function (data) {
-        this.state = 1;
-        this.queue.work(data);
+        setTimeout(function () {
+            this._state = 0;
+            this._queue.run(data);
+        }.bind(this), 0);
         return this;
     };
     promise.prototype.notify = function (fn) {
@@ -767,41 +821,21 @@
         is.isFunction(fn) && (this._complete = fn);
         return this;
     };
+    promise.prototype.error = function (fn) {
+        is.isFunction(fn) && (this._error = fn);
+        return this;
+    };
     promise.prototype.delay = function (time) {
         this.queue.delay(time);
         return this;
+    };
+    promise.prototype.isInError = function () {
+        return this._finalerror;
     };
     promise.prototype.clean = function () {
         this.queue.clean();
         for (var i in this) {
             this[i] = null;
-        }
-    };
-    promise.add = function (fn, state) {
-        var ps = this;
-        if (fn && is.isFunction(fn)) {
-            this.queue.add(function (data) {
-                var ths = this;
-                setTimeout(function () {
-                    if (ps.state === state) {
-                        var a;
-                        if (ps._scope) {
-                            a = fn && fn.call(ps._scope, data);
-                        } else {
-                            a = fn && fn(data);
-                        }
-                        if (a instanceof promise) {
-                            a.complete(function (b) {
-                                ths.next(b);
-                            });
-                        } else {
-                            ths.next(a);
-                        }
-                    } else {
-                        ths.next(data);
-                    }
-                }, 0);
-            });
         }
     };
     bright.promise = function (fn) {
