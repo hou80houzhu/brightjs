@@ -4733,7 +4733,7 @@
     bright.source = function (a) {
         for (var type in a) {
             var fileload = true;
-            if (packet[type + "persistence"].isLoaded()) {
+            if (packet[type + "persistence"]&&packet[type + "persistence"].isLoaded()) {
                 fileload = false;
             }
             if (fileload) {
