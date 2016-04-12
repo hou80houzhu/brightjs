@@ -5885,37 +5885,6 @@
         this._goon = false;
     };
 
-    var requestState = function () {
-        this._data = null;
-        this._bad = null;
-        this._offline = null;
-        this._error = null;
-    };
-    requestState.prototype.data = function (fn) {
-        if (is.isFunction(fn)) {
-            this._data = fn;
-        }
-        return this;
-    };
-    requestState.prototype.bad = function (fn) {
-        if (is.isFunction(fn)) {
-            this._bad = fn;
-        }
-        return this;
-    };
-    requestState.prototype.offline = function (fn) {
-        if (is.isFunction(fn)) {
-            this._offline = fn;
-        }
-        return this;
-    };
-    requestState.prototype.error = function (fn) {
-        if (is.isFunction(fn)) {
-            this._error = fn;
-        }
-        return this;
-    };
-
     var delegater = function () {
         this._data = [];
     };
@@ -5983,14 +5952,15 @@
 
     module.add({
         name: "request",
-        request: function (url, data, type) {
-            var _rs = this.getRequestState(), _ok = false;
+        request: function (url, data, option) {
+            var _rs = bright.promise(), _ok = false;
+            _rs.scope(this);
             var ops = {
                 url: "",
-                type: type || "post",
                 dataType: "json",
                 data: ""
             };
+            bright.extend(ops, option);
             if (is.isString(url)) {
                 _ok = true;
                 ops.url = url;
@@ -6006,35 +5976,47 @@
                 throw Error("[bright] request parameter error");
             }
         },
-        doRequest: function (option, reqeustState) {
-            var ths = this;
+        doRequest: function (option, promise) {
             bright.ajax(option).done(function (a) {
                 if (a.code && a.code === "1") {
-                    reqeustState._data && reqeustState._data.call(ths, a.data);
+                    promise.resolve(a.data);
                 } else {
-                    reqeustState._bad && reqeustState._bad.call(ths, a);
+                    promise.reject(a);
                 }
             }).fail(function (e) {
-                reqeustState._error && reqeustState._error.call(ths, e);
+                promise.reject(e);
             });
         },
         getRequest: function (url, data) {
             return this.request(url, data, "get");
         },
-        postRequest: function (url, data) {
-            return this.request(url, data, "post");
+        postRequest: function (url, data, option) {
+            if (!option) {
+                option = {};
+            }
+            option.type = "post";
+            return this.request(url, data, option);
         },
-        putRequest: function (url, data) {
-            return this.request(url, data, "put");
+        putRequest: function (url, data, option) {
+            if (!option) {
+                option = {};
+            }
+            option.type = "post";
+            return this.request(url, data, option);
         },
-        deleteRequest: function (url, data) {
-            return this.request(url, data, "delete");
+        deleteRequest: function (url, data, option) {
+            if (!option) {
+                option = {};
+            }
+            option.type = "post";
+            return this.request(url, data, option);
         },
-        patchRequest: function (url, data) {
-            return this.request(url, data, "patch");
-        },
-        getRequestState: function () {
-            return new requestState();
+        patchRequest: function (url, data, option) {
+            if (!option) {
+                option = {};
+            }
+            option.type = "post";
+            return this.request(url, data, option);
         }
     });
     module.add({
