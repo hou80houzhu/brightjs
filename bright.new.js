@@ -5096,7 +5096,7 @@
 
     var adapt = function () {
     };
-    adapt.isSuper = /this.superClass\(.*?\);/g;
+    adapt.isSuper = /superClass\(.*?\)/g;
     adapt.superInvoke = function (ths, adaptName, propName, argus) {
         if (ths.__superinvoke__ && !ths.__superinvoke__[adaptName + propName]) {
             ths.__superinvoke__[adaptName + propName] = 1;

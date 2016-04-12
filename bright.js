@@ -5096,7 +5096,7 @@
 
     var adapt = function () {
     };
-    adapt.isSuper = /this.superClass\(.*?\);/g;
+    adapt.isSuper = /superClass\(.*?\)/g;
     adapt.superInvoke = function (ths, adaptName, propName, argus) {
         if (ths.__superinvoke__ && !ths.__superinvoke__[adaptName + propName]) {
             ths.__superinvoke__[adaptName + propName] = 1;
@@ -5131,7 +5131,8 @@
                     var p = prot[propName].toString().match(adapt.isSuper);
                     if (p && p.length > 0) {
                         for (var i = 0; i < p.length; i++) {
-                            var t = p[i].substring(16, p[i].length - 2);
+                            var t = p[i].substring(12, p[i].length - 2);
+                            console.log(t);
                             var fnname = t.split(",").shift();
                             fnname = fnname.substring(1, fnname.length - 1);
                             if (fnname === propName) {
