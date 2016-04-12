@@ -137,7 +137,7 @@ Module({
         this.onunload(function () {
             $(window).unbind("resize", fn);
         });
-        this.postRequest(option.url).data(function (data) {
+        this.postRequest(option.url).done(function (data) {
             ths.remoteData = data;
             ths.render(data);
             ths.finders("item").eq(0).click();
