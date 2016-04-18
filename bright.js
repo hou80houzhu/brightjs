@@ -1747,6 +1747,7 @@
             }
             this.nodes[t].innerHTML = "";
         }
+        return this;
     };
     query.prototype.clean = function () {
         for (var i = 0; i <= this.nodes.length; i++) {
