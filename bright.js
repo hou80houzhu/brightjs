@@ -13,7 +13,7 @@
     var browser = (function () {
         var map = {
             kenel: [{n: "webkit", g: /applewebkit\/([\d.]+)/}, {n: "gecko", g: /gecko\/([\d.]+)/}, {n: "trident", g: /trident\/([\d.]+)/}, {n: "edge", g: /edge\/([\d.]+)/}],
-            info: [{n: "chrome", g: /chrome\/([\d.]+)/}, {n: "mozilla", g: /mozilla\/([\d.]+)/}, {n: "firefox", g: /firefox\/([\d.]+)/}, {n: "msie", g: /msie ([\d.]+)/}, {n: "opera", g: /opera\/([\d.]+)/}, {n: "safari", g: /safari\/([\d.]+)/}, {n: "blackberry", g: /blackberry ([\d.]+)/}, {n: "blackberry", g: /edge ([\d.]+)/}],
+            info: [{n: "edge", g: /edge\/([\d.]+)/}, {n: "chrome", g: /chrome\/([\d.]+)/}, {n: "mozilla", g: /mozilla\/([\d.]+)/}, {n: "firefox", g: /firefox\/([\d.]+)/}, {n: "msie", g: /msie ([\d.]+)/}, {n: "opera", g: /opera\/([\d.]+)/}, {n: "safari", g: /safari\/([\d.]+)/}, {n: "blackberry", g: /blackberry ([\d.]+)/}, {n: "blackberry", g: /edge ([\d.]+)/}],
             os: [{n: "windows", g: /windows ([a-z\d. ]+)/}, {n: "osx", g: /mac os x ([a-z\d. ]+)/}, {n: "ios", g: /os ([a-z\d. _]+)/}, {n: "linux", g: /linux ([a-z\d. _]+)/}, {n: "linux", g: /linux/}, {n: "blackberry", g: /blackberry ([a-z\d. ]+)/}, {n: "blackberry", g: /bb[0-9]+/}, {n: "windowsphone", g: /windows phone/}],
             mobile: [{n: "android", g: /android ([\d.]+)/}, {n: "iphone", g: /iphone/}, {n: "ipad", g: /ipad/}, {n: "blackberry", g: /bb[0-9]+/}, {n: "blackberry", g: /blackberry/}, {n: "windowsphone", g: /iemobile/}]
         }, ua = window.navigator.userAgent.toLowerCase(), c = {};
@@ -994,18 +994,20 @@
                     node.datasets = null;
                 }
                 event.util.unbindnode(node);
-                var c = node.getElementsByClassName("incache");
-                for (var n in c) {
-                    if (c[n].nodeType) {
-                        for (var m in c[n].datasets) {
-                            var q = c[n].datasets[m];
-                            if (q && q.clean) {
-                                q.clean();
+                if (node.getElementsByClassName) {
+                    var c = node.getElementsByClassName("incache");
+                    for (var n in c) {
+                        if (c[n].nodeType) {
+                            for (var m in c[n].datasets) {
+                                var q = c[n].datasets[m];
+                                if (q && q.clean) {
+                                    q.clean();
+                                }
+                                c[n].datasets[m] = null;
                             }
-                            c[n].datasets[m] = null;
+                            c[n].datasets = null;
+                            event.util.unbindnode(c[n]);
                         }
-                        c[n].datasets = null;
-                        event.util.unbindnode(c[n]);
                     }
                 }
             }
@@ -1522,7 +1524,7 @@
                 if (arguments.length === 1 && num >= 0) {
                     r = this.nodes[0].children[num] ? [this.nodes[0].children[num]] : [];
                 } else {
-                    r = Array.prototype.slice.call(this.nodes[0].children);
+                    r = Array.prototype.slice.call(this.nodes[0].children || []);
                 }
             }
         }
@@ -4734,7 +4736,7 @@
     bright.source = function (a) {
         for (var type in a) {
             var fileload = true;
-            if (packet[type + "persistence"]&&packet[type + "persistence"].isLoaded()) {
+            if (packet[type + "persistence"] && packet[type + "persistence"].isLoaded()) {
                 fileload = false;
             }
             if (fileload) {

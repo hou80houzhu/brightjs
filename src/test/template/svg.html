@@ -1,0 +1,22 @@
+<!--[svgposition]-->
+<div class="position-left">
+    <div class="position-left-top">
+    </div>
+    <div class="position-left-bottom">
+        <@module type="{{option.inner}}"/>
+    </div>
+</div>
+<div class="position-right">
+    <div class="" data-find="zoomin">zoomin</div>
+    <div class="" data-find="zoomout">zoomout</div>
+    <div class="" data-find="users"></div>
+</div>
+<!--[xposition]-->
+<div class="xposition-inner" data-find="inner"></div>
+<div class="xposition-tip" data-find="tip">tip</div>
+<!--[xpositionitems]-->
+<div class="">
+<%for(var i in data){%>
+<div class="" data-find="item"><%=data[i].username;%></div>
+<%}%>
+</div>

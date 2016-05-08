@@ -2,6 +2,7 @@
  * @packet test.test;
  * @template test.template.tet;
  * @css test.style.tcss;
+ * @require test.svg;
  */
 Option({
     name: "root",
@@ -43,4 +44,15 @@ Module({
         });
     }
 });
-
+Option({
+    name:"svg",
+    option:{
+        override:{
+            onendinit:function(){
+                this.addChild({
+                    type:"@svg.svgposition"
+                });
+            }
+        }
+    }
+});
