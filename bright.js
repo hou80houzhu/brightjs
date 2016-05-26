@@ -525,9 +525,11 @@
                 this.next(result);
             }
         } else {
-            this.state = 'end';
-            this.result = result;
-            this._complete && this._complete.call(this, result);
+            if(this.state !== 'end'){
+                this.state = 'end';
+                this.result = result;
+                this._complete && this._complete.call(this, result);
+            }
         }
         return this;
     };
@@ -842,7 +844,7 @@
         return new promise(fn);
     };
     bright.all = function () {
-        var ps = $.promise();
+        var ps = bright.promise();
         if (arguments.length > 0) {
             var a = Array.prototype.slice.call(arguments);
             var total = a.length;
@@ -860,7 +862,7 @@
         return ps;
     };
     bright.any = function () {
-        var ps = $.promise();
+        var ps = bright.promise();
         if (arguments.length > 0) {
             var a = Array.prototype.slice.call(arguments);
             var total = a.length, resolved = false;
@@ -1054,7 +1056,7 @@
         this.dom.data("_transition_", this);
     };
     transition.fn = function (e) {
-        var obj = $(e.currentTarget).data("_transition_");
+        var obj = bright(e.currentTarget).data("_transition_");
         var name = e.propertyName;
         if (obj.mapping[name]) {
             if (obj.mapping[name].promise) {
@@ -3708,10 +3710,10 @@
         var dom = null, arg = arguments.length;
         bright().ready(function () {
             if (arg === 1) {
-                dom = $("body");
+                dom = bright("body");
                 optionName = selector;
             } else if (arg === 2) {
-                dom = $(selector);
+                dom = bright(selector);
             }
             packet.preload(function () {
                 packet.pretreat().done(function () {
@@ -5035,14 +5037,14 @@
         a.splice(0, 1);
         this._session = a;
         var b = this._fn.apply(this, this._session);
-        this.flush($(b).appendTo(dom));
+        this.flush(bright(b).appendTo(dom));
     };
     template.prototype.flush = function (dom) {
         var ths = this;
         dom.find("[data-cache]").add(dom).each(function () {
-            var c = $(this).dataset("cache");
+            var c = bright(this).dataset("cache");
             if (c) {
-                $(this).data("-cache-", ths._caching[c]).removeAttr("data-cache");
+                bright(this).data("-cache-", ths._caching[c]).removeAttr("data-cache");
             }
         });
     };
@@ -5414,7 +5416,7 @@
         this.value = null;
     };
     var observe = function (name, obj, fn) {
-        if ($.is.isObject(obj)) {
+        if (bright.is.isObject(obj)) {
             return observe.setObject(name, "", obj, null, fn);
         } else {
             return observe.setArray(name, "", obj, null, fn);
@@ -5452,7 +5454,7 @@
             (function (t) {
                 obj.__defineSetter__(t, function (a) {
                     try {
-                        this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+                        this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                             name: this["_*_"].name,
                             dataType: "object",
                             type: "edit",
@@ -5481,7 +5483,7 @@
                 _type = "add";
                 observe.setwrite(this, "_" + key + "_", observe.setObserve(this["_*_"].name, key, value, this, this["_*_"].fn));
                 this.__defineSetter__(key, function (a) {
-                    this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+                    this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                         name: this["_*_"].name,
                         dataType: "object",
                         type: "edit",
@@ -5496,7 +5498,7 @@
                     return this["_" + key + "_"];
                 });
             }
-            this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+            this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                 name: this["_*_"].name,
                 dataType: "object",
                 type: _type,
@@ -5511,12 +5513,12 @@
             return this["_" + key + "_"];
         });
         observe.setunwrite(obj, "remove", function () {
-            if ($.is.isArray(this["_+_"])) {
+            if (bright.is.isArray(this["_+_"])) {
                 this["_+_"].splice(this["_+_"].indexOf(this), 1);
             }
         });
         observe.setunwrite(obj, "getIndex", function () {
-            if ($.is.isArray(this["_+_"])) {
+            if (bright.is.isArray(this["_+_"])) {
                 return this["_+_"].indexOf(this);
             }
         });
@@ -5568,7 +5570,7 @@
                 }
                 value = q;
             }
-            this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+            this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                 name: this["_*_"].name,
                 dataType: "array",
                 type: _type,
@@ -5581,7 +5583,7 @@
             return Array.prototype.splice.apply(this, news);
         });
         observe.setunwrite(obj, "pop", function () {
-            this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+            this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                 name: this["_*_"].name,
                 dataType: "array",
                 type: "remove",
@@ -5593,7 +5595,7 @@
             return Array.prototype.pop.call(this);
         });
         observe.setunwrite(obj, "push", function (obj) {
-            this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+            this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                 name: this["_*_"].name,
                 dataType: "array",
                 type: "add",
@@ -5606,7 +5608,7 @@
             return Array.prototype.push.call(this, observe.setObserve(this["_*_"].name, this["_*_"].key + "*", obj, this, this["_*_"].fn));
         });
         observe.setunwrite(obj, "shift", function () {
-            this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+            this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                 name: this["_*_"].name,
                 dataType: "array",
                 type: "remove",
@@ -5619,7 +5621,7 @@
             return Array.prototype.shift.call(this);
         });
         observe.setunwrite(obj, "unshift", function (obj) {
-            this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+            this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                 name: this["_*_"].name,
                 dataType: "array",
                 type: "add",
@@ -5632,7 +5634,7 @@
             return Array.prototype.push.call(this, observe.setObserve(this["_*_"].name, this["_*_"].key + "*", obj, this, this["_*_"].fn));
         });
         observe.setunwrite(obj, "removeAll", function () {
-            this["_*_"].fn && this["_*_"].fn($.extend(new command(), {
+            this["_*_"].fn && this["_*_"].fn(bright.extend(new command(), {
                 name: this["_*_"].name,
                 dataType: "array",
                 type: "remove",
@@ -5667,9 +5669,9 @@
         return obj;
     };
     observe.setObserve = function (name, key, obj, parent, fn) {
-        if ($.is.isArray(obj)) {
+        if (bright.is.isArray(obj)) {
             return observe.setArray(name, key, obj, parent, fn);
-        } else if ($.is.isObject(obj)) {
+        } else if (bright.is.isObject(obj)) {
             return observe.setObject(name, key, obj, parent, fn);
         } else {
             return obj;
@@ -5677,6 +5679,316 @@
     };
     bright.observe = function (name, obj, fn) {
         return observe(name, obj, fn);
+    };
+
+    var node = function () {
+        this.tag = "";
+        this.props = {};
+        this.hasProp = false;
+        this.children = [];
+        this.parent = null;
+    };
+    node.isDoctype = /\<\!DOCTYPE[\s\S]*?\>/g;
+    node.isNote = /\<\!\-\-[\s\S]*?\-\-\>/g;
+    node.isXmlTag = /\<\?[\s\S]*?\?\>/g;
+    node.filter = function (str) {
+        str = str.trim();
+        return str.replace(node.isNote, "").replace(node.isDoctype, "").replace(node.isXmlTag, "");
+    };
+    node.parse = function (str) {
+        if (str && str !== "") {
+            str = node.filter(str);
+            var stacks = [], nodes = [], current = null;
+            var tagname = "", tagendname = "", propname = "", value = "", text = "";
+            var tagnamestart = false, propstart = false, valuestart = false, tagendstart = false, element = false;
+            for (var i = 0; i < str.length; i++) {
+                var a = str[i];
+                if (a !== "\r" && a !== "\n") {
+                    if (a === "<") {
+                        element = true;
+                        if (text.trim() !== "") {
+                            current = new tnode(text.trim(), stacks[stacks.length - 1]);
+                            stacks[stacks.length - 1].children.push(current);
+                            text = "";
+                        }
+                        if (str[i + 1] && str[i + 1] === "/") {
+                            tagendstart = true;
+                        } else {
+                            current = new node();
+                            stacks.push(current);
+                            if (stacks.length - 2 >= 0) {
+                                stacks[stacks.length - 2].children.push(current);
+                                current.parent = stacks[stacks.length - 2];
+                            }
+                            tagnamestart = true;
+                        }
+                        continue;
+                    } else if (a === " ") {
+                        if (element) {
+                            if (tagnamestart) {
+                                tagnamestart = false;
+                                current.tag = tagname.trim();
+                                tagname = "";
+                            }
+                            if (!propstart && !valuestart) {
+                                propstart = true;
+                                continue;
+                            }
+                        }
+                    } else if (a === "=") {
+                        element && (propstart = false);
+                    } else if (a === "'" || a === "\"") {
+                        if (!valuestart && element) {
+                            valuestart = a;
+                            continue;
+                        } else {
+                            if (valuestart === a) {
+                                valuestart = false, current.hasProp = true;
+                                current.props[propname.trim()] = value.trim();
+                                propname = "", value = "";
+                            }
+                        }
+                    } else if (a === ">") {
+                        element = false, propstart = false, valuestart = false, tagnamestart = false;
+                        if (tagendstart) {
+                            tagendstart = false, tagendname = "";
+                            stacks.length === 1 && (nodes.push(stacks[0]));
+                            stacks.pop();
+                        }
+                        if (!current.hasProp) {
+                            current.tag === "" && (current.tag = tagname.trim());
+                            tagname = "";
+                        }
+                        continue;
+                    } else if (a === "/") {
+                        if (str[i + 1] && str[i + 1] === ">") {
+                            element = false, valuestart = false, propstart = false,
+                                    tagendstart = false, tagnamestart = false, tagendname = "";
+                            if (stacks.length === 1) {
+                                nodes.push(stacks[0]);
+                            }
+                            if (!current.hasProp) {
+                                current.tag === "" && (current.tag = tagname.trim());
+                                tagname = "";
+                            }
+                            stacks.pop();
+                        }
+                        continue;
+                    }
+                    tagnamestart && (tagname += a);
+                    propstart && (propname += a);
+                    valuestart && (value += a);
+                    tagendstart && (tagendname += a);
+                    !element && (text += a);
+                }
+            }
+            return nodes;
+        } else {
+            return [];
+        }
+    };
+    node.diff = function (newnode, oldnode) {
+        var r = {
+            add: [],
+            replace: [],
+            remove: [],
+            edit: [],
+            removeAll: []
+        }, current = [];
+        var walk = function (a, b) {
+            if (a && b) {
+                var len = a.length;
+                if (a.length === 0) {
+                    r.removeAll.push({
+                        path: current.join(",")
+                    });
+                } else {
+                    if (a.length < b.length) {
+                        len = b.length;
+                    }
+                    for (var i = 0; i < len; i++) {
+                        current.push(i);
+                        if (a[i]) {
+                            if (b[i]) {
+                                if (a[i].props && a[i].props["data-view"] !== undefined) {
+                                } else {
+                                    var ctp = checkNode(a[i], b[i]);
+                                    if (ctp === true) {
+                                        walk(a[i].children, b[i].children);
+                                    } else if (ctp === "replace") {
+                                        r.replace.push({
+                                            path: current.join(","),
+                                            node: a[i]
+                                        });
+                                    } else {
+                                        r.edit.push({
+                                            path: current.join(","),
+                                            props: ctp
+                                        });
+                                        walk(a[i].children, b[i].children);
+                                    }
+                                }
+                            } else {
+                                r.add.push({
+                                    path: current.join(","),
+                                    node: a[i]
+                                });
+                            }
+                        } else {
+                            r.remove.push({
+                                path: current.join(","),
+                                node: b[i]
+                            });
+                        }
+                        current.pop();
+                    }
+                }
+            }
+        };
+        var checkNode = function (a, b) {
+            var r = true;
+            if (a.tag === b.tag) {
+                if (a.content) {
+                    if (a.content === b.content) {
+                        r = true;
+                    } else {
+                        r = "replace";
+                    }
+                } else {
+                    return checkProps(a.props, b.props);
+                }
+            } else {
+                r = "replace";
+            }
+            return r;
+        };
+        var checkProps = function (a, b) {
+            var ap = Object.keys(a), bp = Object.keys(b), r = {
+                remove: [],
+                add: [],
+                edit: []
+            }, t = ap.length, isedit = false;
+            if (ap.length < bp.length) {
+                t = bp.length;
+            }
+            for (var i = 0; i < t; i++) {
+                var key = ap[i];
+                if (key) {
+                    if (b[key] === undefined) {
+                        isedit = true;
+                        r.add.push({
+                            key: key,
+                            val: b[key]
+                        });
+                    } else {
+                        if (a[key] !== b[key]) {
+                            isedit = true;
+                            r.edit.push({
+                                key: key,
+                                val: a[key]
+                            });
+                        }
+                    }
+                } else {
+                    isedit = true;
+                    r.remove.push({
+                        key: key
+                    });
+                }
+            }
+            if (isedit) {
+                return r;
+            } else {
+                return true;
+            }
+        };
+        walk(newnode, oldnode);
+        console.log(r);
+        return r;
+    };
+    node.effect = function (dom, r) {
+        for (var i in r.replace) {
+            var t = dom.get(0);
+            var paths = r.replace[i].path.split(",");
+            for (var tp in paths) {
+                t = t.childNodes[paths[tp] / 1];
+            }
+            t.parentNode.replaceChild(r.replace[i].node.element(), t);
+        }
+        for (var i in r.add) {
+            var t = dom.get(0);
+            var paths = r.add[i].path.split(",");
+            paths.pop();
+            for (var tp in paths) {
+                t = t.childNodes[paths[tp] / 1];
+            }
+            t.appendChild(r.add[i].node.element());
+        }
+        for (var i in r.remove) {
+            var t = dom.get(0);
+            var paths = r.remove[i].path.split(",");
+            var index = paths.pop();
+            for (var tp in paths) {
+                t = t.childNodes[paths[tp] / 1];
+            }
+            t.removeChild(t.childNodes[index]);
+        }
+        for (var i in r.edit) {
+            var t = dom.get(0);
+            var paths = r.edit[i].path.split(",");
+            for (var tp in paths) {
+                t = t.childNodes[paths[tp] / 1];
+            }
+            var props = r.edit[i].props;
+            for (var tp in props.add) {
+                t.setAttribute(props.add[tp].key, props.add[tp].val);
+            }
+            for (var tp in props.remove) {
+                t.removeAttribute(props.remove[tp].key);
+            }
+            for (var tp in props.edit) {
+                t.setAttribute(props.edit[tp].key, props.edit[tp].val);
+            }
+        }
+        for (var i in r.removeAll) {
+            var t = dom.get(0);
+            var paths = r.removeAll[i].path.split(",");
+            for (var tp in paths) {
+                t = t.childNodes[paths[tp] / 1];
+            }
+            t.innerHTML = "";
+        }
+    };
+    node.prototype.element = function () {
+        var t = bright().create(this.tag).attr(this.props).get(0);
+        for (var i = 0; i < this.children.length; i++) {
+            t.appendChild(this.children[i].element());
+        }
+        return t;
+    };
+    var tnode = function (content, parent) {
+        this.content = content;
+        this.parent = parent;
+    };
+    tnode.prototype.element = function () {
+        return window.document.createTextNode(this.content);
+    };
+    var autodomc = function (dom, temp, data) {
+        this.dom = dom;
+        this.tempt = bright.template(temp);
+        var tempstr = this.tempt.render(data);
+        this.cache = node.parse(tempstr);
+        dom.html(tempstr);
+    };
+    autodomc.prototype.render = function (data) {
+        var tempstr = this.tempt.render(data);
+        var m = node.parse(tempstr);
+        var q = node.diff(node.parse(tempstr), this.cache);
+        this.cache = m;
+        node.effect(this.dom, q);
+    };
+    query.prototype.autodom = function (temp, data) {
+        return new autodomc(this, temp, data);
     };
 
     var module = {
@@ -5687,7 +5999,7 @@
             return (window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver || null) !== null;
         },
         domInserted: function (parent, child) {
-            var d = $(child);
+            var d = bright(child);
             if (!d.dataset("parentView")) {
                 var has = false;
                 while (parent && parent !== window.document) {
@@ -5705,7 +6017,7 @@
             }
         },
         domRemoved: function (parent, child) {
-            var d = $(child);
+            var d = bright(child);
             if (!d.dataset("parentView")) {
                 var has = false, nparent = parent;
                 while (parent && parent !== window.document) {
@@ -5897,11 +6209,11 @@
         }
         module._finders._data = r;
         module.dom.find("[data-find]").each(function () {
-            var _name = $(this).dataset("find");
-            $(this).data("-finder-", {name: _name}).removeAttr("data-find").attr("finder", _name);
-            module._finders._data.push($(this));
+            var _name = bright(this).dataset("find");
+            bright(this).data("-finder-", {name: _name}).removeAttr("data-find").attr("finder", _name);
+            module._finders._data.push(bright(this));
             try {
-                module["find_" + _name] && module["find_" + _name]($(this), module._finders);
+                module["find_" + _name] && module["find_" + _name](bright(this), module._finders);
             } catch (e) {
                 console.error("[bright] view finder called error with module of " + module.type() + " Message:" + e.message);
             }
@@ -5916,17 +6228,17 @@
         }
         module._groups._data = r;
         module.dom.find("*[data-group]").each(function () {
-            var name = $(this).dataset("group"), p = {name: name, items: {}}, qt = $(this);
-            $(this).data("-group-", p).removeAttr("data-group").attr("group", name);
-            module._groups._data.push($(this));
-            $(this).find("*[data-groupi]").each(function () {
-                p.items[$(this).dataset("groupi")] = $(this);
-                var _name = $(this).dataset("groupi");
-                $(this).data("-groupitem-", {name: _name, group: qt}).removeAttr("data-groupi").attr("groupi", _name);
+            var name = bright(this).dataset("group"), p = {name: name, items: {}}, qt = bright(this);
+            bright(this).data("-group-", p).removeAttr("data-group").attr("group", name);
+            module._groups._data.push(bright(this));
+            bright(this).find("*[data-groupi]").each(function () {
+                p.items[bright(this).dataset("groupi")] = bright(this);
+                var _name = bright(this).dataset("groupi");
+                bright(this).data("-groupitem-", {name: _name, group: qt}).removeAttr("data-groupi").attr("groupi", _name);
             });
             if (module["group_" + name]) {
                 try {
-                    module["group_" + name]($(this));
+                    module["group_" + name](bright(this));
                 } catch (e) {
                     console.error("[bright] view groups called error with module of " + module.type() + " Message:" + e.message);
                 }
@@ -5935,17 +6247,17 @@
     };
     delegater.event = function (module) {
         module.dom.find("[data-bind]").each(function () {
-            if (!$(this).data("_eventback_")) {
-                var q = {}, types = $(this).dataset("bind").split(" ");
+            if (!bright(this).data("_eventback_")) {
+                var q = {}, types = bright(this).dataset("bind").split(" ");
                 for (var m in types) {
                     var type = types[m].split(":"), etype = type[0], back = type[1];
                     q[etype] = back;
-                    $(this).removeAttr("data-bind").bind(etype, function (e) {
-                        var back = $(this).data("_eventback_")[e.type];
-                        module["bind_" + back] && module["bind_" + back].call(module, $(this), e);
+                    bright(this).removeAttr("data-bind").bind(etype, function (e) {
+                        var back = bright(this).data("_eventback_")[e.type];
+                        module["bind_" + back] && module["bind_" + back].call(module, bright(this), e);
                     });
                 }
-                $(this).data("_eventback_", q);
+                bright(this).data("_eventback_", q);
             }
         });
     };
@@ -6023,10 +6335,10 @@
         name: "view",
         extend: "request",
         packet: "",
-        option: {
-        },
+        option: {},
         parentView: null,
         init: null,
+        autodomc: true,
         template: "",
         onbeforeinit: null,
         onendinit: null,
@@ -6048,7 +6360,7 @@
                     var prps = module.factory._mapping[this.type()].prototype;
                     var cln = prps.fullClassName;
                     if (this.dom.get(0).tagName.toLowerCase() !== this.tagName) {
-                        var a = $("<" + prps.tagName + " class='" + cln + "' data-view='" + this.dom.dataset("view") + "' data-parent-view='" + this.dom.dataset("parentView") + "' data-view-id='" + this.dom.dataset("viewId") + "' daa-option='" + this.dom.dataset("option") + "'></" + prps.tagName + ">");
+                        var a = bright("<" + prps.tagName + " class='" + cln + "' data-view='" + this.dom.dataset("view") + "' data-parent-view='" + this.dom.dataset("parentView") + "' data-view-id='" + this.dom.dataset("viewId") + "' daa-option='" + this.dom.dataset("option") + "'></" + prps.tagName + ">");
                         this.dom.get(0).parentNode.replaceChild(a.get(0), this.dom.get(0));
                         this.dom = a;
                     }
@@ -6204,7 +6516,7 @@
             this.dom.remove();
         },
         render: function (data) {
-            var ths = this, ps = $.promise();
+            var ths = this, ps = bright.promise();
             ps.scope(this);
             try {
                 ths.onbeforerender && ths.onbeforerender();
@@ -6212,8 +6524,17 @@
                 console.error("[bright] onbeforerender called error with module of " + ths.type() + " Message:" + e.message);
             }
             try {
-                bright.template(ths.template).renderTo(ths.dom, data);
-                ths.delegate();
+                if (this.autodomc) {
+                    ths.autodom = ths.dom.autodom(ths.template, data);
+                    ths.autodom.render = function (data) {
+                        Object.getPrototypeOf(this).render.call(this, data);
+                        ths.delegate();
+                    };
+                    ths.delegate();
+                } else {
+                    bright.template(ths.template).renderTo(ths.dom, data);
+                    ths.delegate();
+                }
             } catch (e) {
                 console.error("[bright] render called error with module of " + ths.type() + " Message:" + e.message);
             }
@@ -6396,7 +6717,7 @@
             }
         },
         finders: function (name) {
-            var r = $();
+            var r = bright();
             for (var i = 0; i < this._finders._data.length; i++) {
                 if (arguments.length === 1) {
                     if (this._finders._data[i].data("-finder-") && this._finders._data[i].data("-finder-").name === name) {
@@ -6409,7 +6730,7 @@
             return r;
         },
         groups: function (name) {
-            var r = $();
+            var r = bright();
             for (var i = 0; i < this._groups._data.length; i++) {
                 if (arguments.length === 1) {
                     if (this._groups._data[i].data("-group-") && this._groups._data[i].data("-group-").name === name) {
@@ -6443,7 +6764,7 @@
                     var prps = module.factory._mapping[this.type()].prototype;
                     var cln = prps.fullClassName;
                     if (this.dom.get(0).tagName.toLowerCase() !== this.tagName) {
-                        var a = $("<" + prps.tagName + " class='" + cln + "' data-view='" + this.dom.dataset("view") + "' data-parent-view='" + this.dom.dataset("parentView") + "' data-view-id='" + this.dom.dataset("viewId") + "' daa-option='" + this.dom.dataset("option") + "'></" + prps.tagName + ">");
+                        var a = bright("<" + prps.tagName + " class='" + cln + "' data-view='" + this.dom.dataset("view") + "' data-parent-view='" + this.dom.dataset("parentView") + "' data-view-id='" + this.dom.dataset("viewId") + "' daa-option='" + this.dom.dataset("option") + "'></" + prps.tagName + ">");
                         this.dom.get(0).parentNode.replaceChild(a.get(0), this.dom.get(0));
                         this.dom = a;
                     }
@@ -6487,27 +6808,48 @@
                         if (bright.is.isString(str)) {
                             try {
                                 var temp = bright.template(str);
-                                temp.macro(bright.extend({
-                                    module: function (attrs, render) {
-                                        var type = attrs["type"], option = attrs["option"], id = attrs["id"];
+                                var getstr = function () {
+                                    temp.macro(bright.extend({
+                                        module: function (attrs, render) {
+                                            var type = attrs["type"], option = attrs["option"], id = attrs["id"];
+                                            var prps = {tagName: "div", fullClassName: "_futuretochange_"};
+                                            if (module.factory._mapping[type]) {
+                                                var prps = module.factory._mapping[type].prototype;
+                                            }
+                                            return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
+                                        }
+                                    }, ths.marcos));
+                                    str = temp.fn(new Function("data", "pid", "option", "module", temp.code())).render({
+                                        id: ths.getId(), option: ths.option
+                                    }, ths.getId(), ths.option, function (type, option, id) {
                                         var prps = {tagName: "div", fullClassName: "_futuretochange_"};
                                         if (module.factory._mapping[type]) {
                                             var prps = module.factory._mapping[type].prototype;
                                         }
                                         return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
-                                    }
-                                }, ths.marcos));
-                                str = temp.fn(new Function("data", "pid", "option", "module", temp.code())).render({
-                                    id: ths.getId(), option: ths.option
-                                }, ths.getId(), ths.option, function (type, option, id) {
-                                    var prps = {tagName: "div", fullClassName: "_futuretochange_"};
-                                    if (module.factory._mapping[type]) {
-                                        var prps = module.factory._mapping[type].prototype;
-                                    }
-                                    return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
-                                });
-                                ths.dom.html(str);
-                                temp.flush(ths.dom);
+                                    });
+                                };
+                                if (ths.autodomc) {
+                                    getstr();
+                                    ths.dom.html(str);
+                                    temp.flush(ths.dom);
+                                    ths.autodom = {
+                                        cache: node.parse(str),
+                                        dom: ths.dom,
+                                        render: function () {
+                                            getstr();
+                                            var q = node.parse(str);
+                                            var m = node.diff(q, this.cache);
+                                            this.cache = q;
+                                            temp.flush(ths.dom);
+                                            node.effect(this.dom, m);
+                                        }
+                                    };
+                                } else {
+                                    getstr();
+                                    ths.dom.html(str);
+                                    temp.flush(ths.dom);
+                                }
                             } catch (e) {
                                 console.error("[bright] parse layout called error with module of " + ths.type() + " Message:" + e.stack);
                                 ths.dom.html("");
@@ -6588,7 +6930,8 @@
                                         que.next(aa);
                                     }
                                 });
-                            }, function () {
+                            }, function (e,c) {
+                                console.error(c);
                                 this.next(ths);
                             }, bright(this));
                         });
@@ -6685,7 +7028,7 @@
             }
         },
         render: function () {
-            var ps = $.promise();
+            var ps = bright.promise();
             ps.scope(this);
             this.dom.unbind();
             this.dom.get(0).datasets = {};
@@ -6886,7 +7229,7 @@
             for (var i in obj) {
                 a.prototype[i] = obj[i];
             }
-            $.fn[obj.name] = function (option) {
+            bright.fn[obj.name] = function (option) {
                 if (this.data(obj.name) && this.data(obj.name).singleton === true) {
                     return this.data(obj.name);
                 } else {
@@ -6899,7 +7242,7 @@
     };
     bright.Method = function (obj) {
         if (obj && obj.name && obj.name !== "") {
-            $[obj.name] = function (option) {
+            bright[obj.name] = function (option) {
                 if (is.isFunction(obj.action)) {
                     return obj.action(option);
                 } else {

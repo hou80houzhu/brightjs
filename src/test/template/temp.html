@@ -1,0 +1,89 @@
+<!--[nodomc]-->
+<div class="" data-find="change">change</div>
+<div class="" data-find="add">add row</div>
+<div class="" data-find="remove">remove row</div>
+<div class="" data-find="removeAll">remove all row</div>
+<div class="" data-find="content"></div>
+<!--[nodom]-->
+<div class="a">
+    <%for(var i in data){%>
+    <div class="b">
+        <div class="c<%=' '+data[i].name;%>" data-aa='<%=data[i].name;%>' data-bb='<%=data[i].name;%>'><%=data[i].name;%></div>
+        <div class="d">
+            <div class="e"><%=data[i].name2;%></div>
+            <div class="f"><%=data[i].name3;%></div>
+        </div>
+        <div class="aapt" data-view-id='' data-view=''>
+            <div class="e"><%=data[i].name;%></div>
+            <div class="f"><%=data[i].name;%></div>
+        </div>
+        <div class="bbpt">
+            <%for(var t in data[i].list){%>
+            <div class="">
+                <div class=""><%=data[i].list[t].aa;%></div>
+                <div class=""><%=data[i].list[t].bb;%></div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+</div>
+<!--[nodome]-->
+<div class="" data-find="change">change</div>
+<div class="" data-find="add">add row</div>
+<div class="" data-find="remove">remove row</div>
+<div class="" data-find="removeAll">remove all row</div>
+<div class="" data-find="content"></div>
+<div class="a">
+    <%for(var i in data){%>
+    <div class="b">
+        <div class="c<%=' '+data[i].name;%>" data-aa='<%=data[i].name;%>' data-bb='<%=data[i].name;%>'><%=data[i].name;%></div>
+        <div class="d">
+            <div class="e"><%=data[i].name2;%></div>
+            <div class="f"><%=data[i].name3;%></div>
+        </div>
+        <div class="aapt" data-view-id='' data-view=''>
+            <div class="e"><%=data[i].name;%></div>
+            <div class="f"><%=data[i].name;%></div>
+        </div>
+        <div class="bbpt">
+            <%for(var t in data[i].list){%>
+            <div class="">
+                <div class=""><%=data[i].list[t].aa;%></div>
+                <div class=""><%=data[i].list[t].bb;%></div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+</div>
+<!--[nodomef]-->
+<@module type="{{option.type}}"/>
+<div class="" data-find="change">change</div>
+<div class="" data-find="add">add row</div>
+<div class="" data-find="remove">remove row</div>
+<div class="" data-find="removeAll">remove all row</div>
+<div class="" data-find="content"></div>
+<div class="a">
+    <%for(var i in option.data){%>
+    <div class="b">
+        <div class="c<%=' '+option.data[i].name;%>" data-aa='<%=option.data[i].name;%>' data-bb='<%=option.data[i].name;%>'><%=option.data[i].name;%></div>
+        <div class="d">
+            <div class="e"><%=option.data[i].name2;%></div>
+            <div class="f"><%=option.data[i].name3;%></div>
+        </div>
+        <div class="aapt" data-view-id='' data-view=''>
+            <div class="e"><%=option.data[i].name;%></div>
+            <div class="f"><%=option.data[i].name;%></div>
+        </div>
+        <div class="bbpt">
+            <%for(var t in option.data[i].list){%>
+            <div class="">
+                <div class=""><%=option.data[i].list[t].aa;%></div>
+                <div class=""><%=option.data[i].list[t].bb;%></div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+    <%}%>
+</div>
