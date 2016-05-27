@@ -47,7 +47,7 @@ Module({
 
             this.c[0].list[0].aa = this.c[0].list[0].aa + "-a";
             this.c[0].list[1].aa = this.c[0].list[1].aa + "-a";
-            this.autodom.render(this.c);
+            this.autodom.refresh(this.c);
         }.bind(this));
     },
     find_add: function (dom) {
@@ -65,7 +65,7 @@ Module({
                 aa: "aaerer",
                 bb: "ersdfsdf"
             });
-            this.autodom.render(this.c);
+            this.autodom.refresh(this.c);
         }.bind(this));
     },
     find_remove: function (dom) {
@@ -73,13 +73,13 @@ Module({
             this.c.pop();
             this.c[0].list.pop();
             this.c[1].list.pop();
-            this.autodom.render(this.c);
+            this.autodom.refresh(this.c);
         }.bind(this));
     },
     find_removeAll: function (dom) {
         dom.click(function () {
             this.c.length = 0;
-            this.autodom.render(this.c);
+            this.autodom.refresh(this.c);
         }.bind(this));
     }
 });
@@ -127,7 +127,7 @@ Module({
 
             this.option.data[0].list[0].aa = this.option.data[0].list[0].aa + "-a";
             this.option.data[0].list[1].aa = this.option.data[0].list[1].aa + "-a";
-            this.autodom.render();
+            this.autodom.refresh();
         }.bind(this));
     },
     find_add: function (dom) {
@@ -145,7 +145,7 @@ Module({
                 aa: "aaerer",
                 bb: "ersdfsdf"
             });
-            this.autodom.render();
+            this.autodom.refresh();
         }.bind(this));
     },
     find_remove: function (dom) {
@@ -153,13 +153,13 @@ Module({
             this.option.data.pop();
             this.option.data[0].list.pop();
             this.option.data[1].list.pop();
-            this.autodom.render();
+            this.autodom.refresh();
         }.bind(this));
     },
     find_removeAll: function (dom) {
         dom.click(function () {
             this.option.data.length = 0;
-            this.autodom.render();
+            this.autodom.refresh();
         }.bind(this));
     }
 });
@@ -178,7 +178,7 @@ Option({
 
                 this.c[0].list[0].aa = this.c[0].list[0].aa + "-a";
                 this.c[0].list[1].aa = this.c[0].list[1].aa + "-a";
-                this.cpt.render(this.c);
+                this.cpt.refresh(this.c);
             }.bind(this));
         },
         override_find_add: function (dom) {
@@ -196,7 +196,7 @@ Option({
                     aa: "aaerer",
                     bb: "ersdfsdf"
                 });
-                this.cpt.render(this.c);
+                this.cpt.refresh(this.c);
             }.bind(this));
         },
         override_find_remove: function (dom) {
@@ -204,13 +204,13 @@ Option({
                 this.c.pop();
                 this.c[0].list.pop();
                 this.c[1].list.pop();
-                this.cpt.render(this.c);
+                this.cpt.refresh(this.c);
             }.bind(this));
         },
         override_find_removeAll: function (dom) {
             dom.click(function () {
                 this.c.length = 0;
-                this.cpt.render(this.c);
+                this.cpt.refresh(this.c);
             }.bind(this));
         },
         override_onendinit: function () {
@@ -269,7 +269,7 @@ Option({
 Option({
     name: "testviewgrouproot",
     option: {
-        type: "@.autoview6",
+        type: "@.autoview",
         data: [
             {name: 1, name2: 1, name3: 10, list: [
                     {aa: "aa", bb: "bb"},

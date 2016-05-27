@@ -525,7 +525,7 @@
                 this.next(result);
             }
         } else {
-            if(this.state !== 'end'){
+            if (this.state !== 'end') {
                 this.state = 'end';
                 this.result = result;
                 this._complete && this._complete.call(this, result);
@@ -5973,22 +5973,37 @@
     tnode.prototype.element = function () {
         return window.document.createTextNode(this.content);
     };
-    var autodomc = function (dom, temp, data) {
+    var autodomc = function (dom, temp, data, ismutilparameter) {
         this.dom = dom;
-        this.tempt = bright.template(temp);
-        var tempstr = this.tempt.render(data);
+        this.ismutilparameter = ismutilparameter;
+        if (is.isString(temp)) {
+            this.tempt = bright.template(temp);
+        } else {
+            this.tempt = temp;
+        }
+        var tempstr = "";
+        if (ismutilparameter === true) {
+            tempstr = this.tempt.render.apply(this.tempt, data);
+        } else {
+            tempstr = this.tempt.render(data);
+        }
         this.cache = node.parse(tempstr);
         dom.html(tempstr);
     };
-    autodomc.prototype.render = function (data) {
-        var tempstr = this.tempt.render(data);
+    autodomc.prototype.refresh = function (data) {
+        var tempstr = "";
+        if (this.ismutilparameter === true) {
+            tempstr = this.tempt.render.apply(this.tempt, data);
+        } else {
+            tempstr = this.tempt.render(data);
+        }
         var m = node.parse(tempstr);
         var q = node.diff(node.parse(tempstr), this.cache);
         this.cache = m;
         node.effect(this.dom, q);
     };
-    query.prototype.autodom = function (temp, data) {
-        return new autodomc(this, temp, data);
+    query.prototype.autodom = function (temp, data, ismutilparameter) {
+        return new autodomc(this, temp, data, ismutilparameter);
     };
 
     var module = {
@@ -6808,46 +6823,36 @@
                         if (bright.is.isString(str)) {
                             try {
                                 var temp = bright.template(str);
-                                var getstr = function () {
-                                    temp.macro(bright.extend({
-                                        module: function (attrs, render) {
-                                            var type = attrs["type"], option = attrs["option"], id = attrs["id"];
-                                            var prps = {tagName: "div", fullClassName: "_futuretochange_"};
-                                            if (module.factory._mapping[type]) {
-                                                var prps = module.factory._mapping[type].prototype;
-                                            }
-                                            return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
-                                        }
-                                    }, ths.marcos));
-                                    str = temp.fn(new Function("data", "pid", "option", "module", temp.code())).render({
-                                        id: ths.getId(), option: ths.option
-                                    }, ths.getId(), ths.option, function (type, option, id) {
+                                temp.macro(bright.extend({
+                                    module: function (attrs, render) {
+                                        var type = attrs["type"], option = attrs["option"], id = attrs["id"];
                                         var prps = {tagName: "div", fullClassName: "_futuretochange_"};
                                         if (module.factory._mapping[type]) {
                                             var prps = module.factory._mapping[type].prototype;
                                         }
                                         return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
-                                    });
-                                };
-                                if (ths.autodomc) {
-                                    getstr();
-                                    ths.dom.html(str);
-                                    temp.flush(ths.dom);
-                                    ths.autodom = {
-                                        cache: node.parse(str),
-                                        dom: ths.dom,
-                                        render: function () {
-                                            getstr();
-                                            var q = node.parse(str);
-                                            var m = node.diff(q, this.cache);
-                                            this.cache = q;
-                                            temp.flush(ths.dom);
-                                            node.effect(this.dom, m);
+                                    }
+                                }, ths.marcos));
+                                temp.fn(new Function("data", "pid", "option", "module", temp.code()));
+                                var rdata = [
+                                    ths.option,
+                                    ths.getId(),
+                                    ths.option,
+                                    function (type, option, id) {
+                                        var prps = {tagName: "div", fullClassName: "_futuretochange_"};
+                                        if (module.factory._mapping[type]) {
+                                            var prps = module.factory._mapping[type].prototype;
                                         }
+                                        return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
+                                    }];
+                                if (ths.autodomc) {
+                                    ths.autodom = ths.dom.autodom(temp, rdata, true);
+                                    ths.autodom.refresh=function(){
+                                        Object.getPrototypeOf(ths.autodom).refresh.call(ths.autodom,rdata);
                                     };
+                                    temp.flush(ths.dom);
                                 } else {
-                                    getstr();
-                                    ths.dom.html(str);
+                                    ths.dom.html(temp.render.apply(temp, rdata));
                                     temp.flush(ths.dom);
                                 }
                             } catch (e) {
@@ -6930,7 +6935,7 @@
                                         que.next(aa);
                                     }
                                 });
-                            }, function (e,c) {
+                            }, function (e, c) {
                                 console.error(c);
                                 this.next(ths);
                             }, bright(this));
