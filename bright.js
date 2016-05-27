@@ -5762,8 +5762,7 @@
                         continue;
                     } else if (a === "/") {
                         if (str[i + 1] && str[i + 1] === ">") {
-                            element = false, valuestart = false, propstart = false,
-                                    tagendstart = false, tagnamestart = false, tagendname = "";
+                            element = false, valuestart = false, propstart = false,tagendstart = false, tagnamestart = false, tagendname = "";
                             if (stacks.length === 1) {
                                 nodes.push(stacks[0]);
                             }
@@ -5772,6 +5771,8 @@
                                 tagname = "";
                             }
                             stacks.pop();
+                        }else{
+                            !element && (text += a);
                         }
                         continue;
                     }
@@ -5903,10 +5904,12 @@
             }
         };
         walk(newnode, oldnode);
-        console.log(r);
         return r;
     };
     node.effect = function (dom, r) {
+        if(baseMapping.debug){
+            console.warn("Auto Refresh DOM:[replace-"+r.replace.length+"] [add-"+r.add.length+"] [remove-"+r.remove.length+"] [edit-"+r.edit.length+"] [removeAll-"+r.removeAll.length+"]");
+        }
         for (var i in r.replace) {
             var t = dom.get(0);
             var paths = r.replace[i].path.split(",");
@@ -5989,8 +5992,10 @@
         }
         this.cache = node.parse(tempstr);
         dom.html(tempstr);
+        this.tempt.flush(dom);
     };
     autodomc.prototype.refresh = function (data) {
+        this.dom.hide();
         var tempstr = "";
         if (this.ismutilparameter === true) {
             tempstr = this.tempt.render.apply(this.tempt, data);
@@ -6001,6 +6006,8 @@
         var q = node.diff(node.parse(tempstr), this.cache);
         this.cache = m;
         node.effect(this.dom, q);
+        this.tempt.flush(this.dom);
+        this.dom.show();
     };
     query.prototype.autodom = function (temp, data, ismutilparameter) {
         return new autodomc(this, temp, data, ismutilparameter);
@@ -6849,6 +6856,7 @@
                                     ths.autodom = ths.dom.autodom(temp, rdata, true);
                                     ths.autodom.refresh=function(){
                                         Object.getPrototypeOf(ths.autodom).refresh.call(ths.autodom,rdata);
+                                        ths.delegate();
                                     };
                                     temp.flush(ths.dom);
                                 } else {
