@@ -4753,12 +4753,12 @@
     };
     bright._packet = packet;
 
-    var template = function (temp, macro) {
+    var template = function (temp, macro, parameters) {
         temp = template.cache(temp);
         var a = template.precompile(temp);
         this._scope = a.info;
         this._code = template.code(a.template);
-        this._fn = template.compile(this._code);
+        this._fn = template.compile(this._code, parameters);
         this._session = null;
         this._caching = {};
         this._macrofn = macro || {};
@@ -4798,9 +4798,20 @@
         fn += "return out;";
         return fn;
     };
-    template.compile = function (code) {
+    template.compile = function (code, parameters) {
         try {
-            return  new Function("data", "fn", code);
+            if (!parameters) {
+                parameters = ["data", "fn"];
+            }
+            var crt = function (fnn, args) {
+                function fn() {
+                    return fnn.apply(this, args);
+                }
+                fn.prototype = fnn.prototype;
+                return new fn();
+            };
+            parameters.push(code);
+            return crt(Function, parameters);
         } catch (e) {
             console.error("[template error] " + e.message);
             console.info("[template result] " + code);
@@ -5071,9 +5082,8 @@
             this[i] = null;
         }
     };
-    bright.template = function () {
-        var temp = Array.prototype.slice.call(arguments).join("");
-        return new template(temp);
+    bright.template = function (temp, parameters, macro) {
+        return new template(temp, macro, parameters);
     };
     bright.setTemplateGlobalMacro = function (key, fn) {
         if (arguments.length === 1) {
@@ -5083,8 +5093,8 @@
         }
         return this;
     };
-    query.prototype.template = function () {
-        var temp = new template(ths.html()), ths = this;
+    query.prototype.template = function (parameters, macro) {
+        var temp = new template(ths.html(), macro, parameters), ths = this;
         return {
             render: function (data, fn) {
                 ths.html(temp.render(data, fn));
@@ -5762,7 +5772,7 @@
                         continue;
                     } else if (a === "/") {
                         if (str[i + 1] && str[i + 1] === ">") {
-                            element = false, valuestart = false, propstart = false,tagendstart = false, tagnamestart = false, tagendname = "";
+                            element = false, valuestart = false, propstart = false, tagendstart = false, tagnamestart = false, tagendname = "";
                             if (stacks.length === 1) {
                                 nodes.push(stacks[0]);
                             }
@@ -5771,7 +5781,7 @@
                                 tagname = "";
                             }
                             stacks.pop();
-                        }else{
+                        } else {
                             !element && (text += a);
                         }
                         continue;
@@ -5789,13 +5799,7 @@
         }
     };
     node.diff = function (newnode, oldnode) {
-        var r = {
-            add: [],
-            replace: [],
-            remove: [],
-            edit: [],
-            removeAll: []
-        }, current = [];
+        var r = {add: [], replace: [], remove: [], edit: [], removeAll: []}, current = [];
         var walk = function (a, b) {
             if (a && b) {
                 var len = a.length;
@@ -5907,9 +5911,6 @@
         return r;
     };
     node.effect = function (dom, r) {
-        if(baseMapping.debug){
-            console.warn("Auto Refresh DOM:[replace-"+r.replace.length+"] [add-"+r.add.length+"] [remove-"+r.remove.length+"] [edit-"+r.edit.length+"] [removeAll-"+r.removeAll.length+"]");
-        }
         for (var i in r.replace) {
             var t = dom.get(0);
             var paths = r.replace[i].path.split(",");
@@ -6829,8 +6830,7 @@
                         }
                         if (bright.is.isString(str)) {
                             try {
-                                var temp = bright.template(str);
-                                temp.macro(bright.extend({
+                                var temp = bright.template(str, ["data", "pid", "option", "module"], bright.extend({
                                     module: function (attrs, render) {
                                         var type = attrs["type"], option = attrs["option"], id = attrs["id"];
                                         var prps = {tagName: "div", fullClassName: "_futuretochange_"};
@@ -6840,7 +6840,6 @@
                                         return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
                                     }
                                 }, ths.marcos));
-                                temp.fn(new Function("data", "pid", "option", "module", temp.code()));
                                 var rdata = [
                                     ths.option,
                                     ths.getId(),
@@ -6854,8 +6853,8 @@
                                     }];
                                 if (ths.autodomc) {
                                     ths.autodom = ths.dom.autodom(temp, rdata, true);
-                                    ths.autodom.refresh=function(){
-                                        Object.getPrototypeOf(ths.autodom).refresh.call(ths.autodom,rdata);
+                                    ths.autodom.refresh = function () {
+                                        Object.getPrototypeOf(ths.autodom).refresh.call(ths.autodom, rdata);
                                         ths.delegate();
                                     };
                                     temp.flush(ths.dom);
