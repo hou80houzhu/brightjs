@@ -47,7 +47,7 @@ Module({
 
             this.c[0].list[0].aa = this.c[0].list[0].aa + "-a";
             this.c[0].list[1].aa = this.c[0].list[1].aa + "-a";
-            this.autodom.refresh(this.c);
+            this.update(this.c);
         }.bind(this));
     },
     find_add: function (dom) {
@@ -65,7 +65,7 @@ Module({
                 aa: "aaerer",
                 bb: "ersdfsdf"
             });
-            this.autodom.refresh(this.c);
+            this.update(this.c);
         }.bind(this));
     },
     find_remove: function (dom) {
@@ -73,13 +73,13 @@ Module({
             this.c.pop();
             this.c[0].list.pop();
             this.c[1].list.pop();
-            this.autodom.refresh(this.c);
+            this.update(this.c);
         }.bind(this));
     },
     find_removeAll: function (dom) {
         dom.click(function () {
             this.c.length = 0;
-            this.autodom.refresh(this.c);
+            this.update(this.c);
         }.bind(this));
     }
 });
@@ -127,7 +127,7 @@ Module({
 
             this.option.data[0].list[0].aa = this.option.data[0].list[0].aa + "-a";
             this.option.data[0].list[1].aa = this.option.data[0].list[1].aa + "-a";
-            this.autodom.refresh();
+            this.update();
         }.bind(this));
     },
     find_add: function (dom) {
@@ -145,7 +145,7 @@ Module({
                 aa: "aaerer",
                 bb: "ersdfsdf"
             });
-            this.autodom.refresh();
+            this.update();
         }.bind(this));
     },
     find_remove: function (dom) {
@@ -153,13 +153,13 @@ Module({
             this.option.data.pop();
             this.option.data[0].list.pop();
             this.option.data[1].list.pop();
-            this.autodom.refresh();
+            this.update();
         }.bind(this));
     },
     find_removeAll: function (dom) {
         dom.click(function () {
             this.option.data.length = 0;
-            this.autodom.refresh();
+            this.update();
         }.bind(this));
     }
 });

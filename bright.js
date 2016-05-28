@@ -376,7 +376,7 @@
             var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(''), uuid = new Array(36), rnd = 0, r;
             for (var i = 0; i < 36; i++) {
                 if (i === 8 || i === 13 || i === 18 || i === 23) {
-                    uuid[i] = '-';
+                    uuid[i] = '';
                 } else if (i === 14) {
                     uuid[i] = '4';
                 } else {
@@ -3461,7 +3461,7 @@
                         type: "get",
                         async: false,
                         success: function (e) {
-                            (new Function("try{" + e + "}catch(e){console.error('[bright]imports: %s ,path " + jspath + "',e.message);}"))();
+                            (new Function("try{" + e + "}catch(e){console.error('[bright]imports: %s ,path " + jspath + "',e.stack);}"))();
                             if (callback) {
                                 callback();
                             }
@@ -3669,7 +3669,7 @@
                     try {
                         baseMapping.appupdate && baseMapping.appupdate({old: baseMapping.currentBuild, current: baseMapping.sourceMapping.build, update: baseMapping.update});
                     } catch (e) {
-                        console.error("[bright] onappupdate called error " + e.message);
+                        console.error("[bright] onappupdate called error " + e.stack);
                     }
                 }
             }
@@ -4789,13 +4789,22 @@
         }
     };
     template.code = function (temp) {
-        var fn = "var out='';";
+        var fn = "";
+        if (baseMapping.debug) {
+            fn = "/* template source:\r\n" + temp + "*/\r\n\r\n";
+            fn += "/* compile code:*/\r\n";
+        }
+        fn += "var out='';";
         var tp = temp.replace(template.a, "<%").replace(template.b, "%>").split(template.d);
         for (var index = 0; index < tp.length; index++) {
             var e = tp[index];
             index % 2 !== 0 ? (template.e.test(e) ? (fn += "out+" + e) : (fn += e)) : (fn += "out+=\"" + e.replace(template.m, '\\"') + "\";");
         }
         fn += "return out;";
+        if (baseMapping.debug) {
+            fn += "//# sourceURL=" + baseMapping.basePath + "_tempcompile/" + util.uuid() + ".js";
+            fn = fn.replace(/\;/g, ";\r\n");
+        }
         return fn;
     };
     template.compile = function (code, parameters) {
@@ -4813,8 +4822,7 @@
             parameters.push(code);
             return crt(Function, parameters);
         } catch (e) {
-            console.error("[template error] " + e.message);
-            console.info("[template result] " + code);
+            console.error("[template compile error] \r\n" + code);
             return function () {
                 return "";
             };
@@ -5033,21 +5041,35 @@
         }
     };
     template.prototype.render = function () {
+        var r = "";
         this._session = Array.prototype.slice.call(arguments);
-        return this._fn.apply(this, this._session);
+        try {
+            r = this._fn.apply(this, this._session);
+        } catch (e) {
+            console.error("[bright] template render called error, Message:" + e.stack);
+        }
+        return r;
     };
     template.prototype.renderTo = function (dom) {
-        var a = Array.prototype.slice.call(arguments);
+        var a = Array.prototype.slice.call(arguments), b = "";
         a.splice(0, 1);
         this._session = a;
-        var b = this._fn.apply(this, this._session);
+        try {
+            b = this._fn.apply(this, this._session);
+        } catch (e) {
+            console.error("[bright] template render called error, Message:" + e.stack);
+        }
         this.flush(dom.html(b));
     };
     template.prototype.renderAppendTo = function (dom) {
-        var a = Array.prototype.slice.call(arguments);
+        var a = Array.prototype.slice.call(arguments), b = "";
         a.splice(0, 1);
         this._session = a;
-        var b = this._fn.apply(this, this._session);
+        try {
+            b = this._fn.apply(this, this._session);
+        } catch (e) {
+            console.error("[bright] template render called error, Message:" + e.stack);
+        }
         this.flush(bright(b).appendTo(dom));
     };
     template.prototype.flush = function (dom) {
@@ -5405,7 +5427,7 @@
                     }
                     return r;
                 } catch (e) {
-                    console.error(e.message);
+                    console.error(e.stack);
                     return null;
                 }
             }
@@ -5977,32 +5999,21 @@
     tnode.prototype.element = function () {
         return window.document.createTextNode(this.content);
     };
-    var autodomc = function (dom, temp, data, ismutilparameter) {
+    var autodomc = function (dom, temp, dataarray) {
         this.dom = dom;
-        this.ismutilparameter = ismutilparameter;
         if (is.isString(temp)) {
             this.tempt = bright.template(temp);
         } else {
             this.tempt = temp;
         }
-        var tempstr = "";
-        if (ismutilparameter === true) {
-            tempstr = this.tempt.render.apply(this.tempt, data);
-        } else {
-            tempstr = this.tempt.render(data);
-        }
+        var tempstr = this.tempt.render.apply(this.tempt, dataarray);
         this.cache = node.parse(tempstr);
         dom.html(tempstr);
         this.tempt.flush(dom);
     };
-    autodomc.prototype.refresh = function (data) {
+    autodomc.prototype.update = function (dataarray) {
         this.dom.hide();
-        var tempstr = "";
-        if (this.ismutilparameter === true) {
-            tempstr = this.tempt.render.apply(this.tempt, data);
-        } else {
-            tempstr = this.tempt.render(data);
-        }
+        var tempstr = this.tempt.render.apply(this.tempt, dataarray);
         var m = node.parse(tempstr);
         var q = node.diff(node.parse(tempstr), this.cache);
         this.cache = m;
@@ -6010,8 +6021,8 @@
         this.tempt.flush(this.dom);
         this.dom.show();
     };
-    query.prototype.autodom = function (temp, data, ismutilparameter) {
-        return new autodomc(this, temp, data, ismutilparameter);
+    query.prototype.autodom = function (temp, dataarray) {
+        return new autodomc(this, temp, dataarray);
     };
 
     var module = {
@@ -6238,7 +6249,7 @@
             try {
                 module["find_" + _name] && module["find_" + _name](bright(this), module._finders);
             } catch (e) {
-                console.error("[bright] view finder called error with module of " + module.type() + " Message:" + e.message);
+                console.error("[bright] view finder called error with module of " + module.type() + " Message:" + e.stack);
             }
         });
     };
@@ -6263,7 +6274,7 @@
                 try {
                     module["group_" + name](bright(this));
                 } catch (e) {
-                    console.error("[bright] view groups called error with module of " + module.type() + " Message:" + e.message);
+                    console.error("[bright] view groups called error with module of " + module.type() + " Message:" + e.stack);
                 }
             }
         });
@@ -6360,8 +6371,8 @@
         packet: "",
         option: {},
         parentView: null,
+        marcos: {},
         init: null,
-        autodomc: true,
         template: "",
         onbeforeinit: null,
         onendinit: null,
@@ -6413,7 +6424,7 @@
                         try {
                             ths.onbeforeinit(ths.option);
                         } catch (e) {
-                            console.error("[bright] onbeforeinit called error with module of " + ths.type() + " Message:" + e.message);
+                            console.error("[bright] onbeforeinit called error with module of " + ths.type() + " Message:" + e.stack);
                         }
                     }
                     if (ths.className && ths.className !== "") {
@@ -6430,7 +6441,7 @@
                         try {
                             ths.onendinit(ths.option);
                         } catch (e) {
-                            console.error("[bright] onendinit called error with module of " + ths.type() + " Message:" + e.message);
+                            console.error("[bright] onendinit called error with module of " + ths.type() + " Message:" + e.stack);
                         }
                     }
                     fn && fn();
@@ -6538,38 +6549,36 @@
         remove: function () {
             this.dom.remove();
         },
-        render: function (data) {
+        render: function () {
             var ths = this, ps = bright.promise();
             ps.scope(this);
             try {
                 ths.onbeforerender && ths.onbeforerender();
             } catch (e) {
-                console.error("[bright] onbeforerender called error with module of " + ths.type() + " Message:" + e.message);
+                console.error("[bright] onbeforerender called error with module of " + ths.type() + " Message:" + e.stack);
             }
             try {
-                if (this.autodomc) {
-                    ths.autodom = ths.dom.autodom(ths.template, data);
-                    ths.autodom.render = function (data) {
-                        Object.getPrototypeOf(this).render.call(this, data);
-                        ths.delegate();
-                    };
-                    ths.delegate();
-                } else {
-                    bright.template(ths.template).renderTo(ths.dom, data);
-                    ths.delegate();
-                }
+                ths.autodom = ths.dom.autodom(ths.template, Array.prototype.slice.call(arguments), ths.marcos);
+                ths.delegate();
             } catch (e) {
-                console.error("[bright] render called error with module of " + ths.type() + " Message:" + e.message);
+                ths.autodom = null;
+                console.error("[bright] render called error with module of " + ths.type() + " Message:" + e.stack);
             }
             try {
                 ths.onendrender && ths.onendrender();
             } catch (e) {
-                console.error("[bright] onendrender called error with module of " + ths.type() + " Message:" + e.message);
+                console.error("[bright] onendrender called error with module of " + ths.type() + " Message:" + e.stack);
             }
             setTimeout(function () {
                 ps.resolve();
             }, 0);
             return ps;
+        },
+        update: function () {
+            if (this.autodom) {
+                this.autodom.update(Array.prototype.slice.call(arguments));
+                this.delegate();
+            }
         },
         original: function (methods) {
             var a = Object.getPrototypeOf(this)[methods];
@@ -6773,7 +6782,6 @@
         ondomready: null,
         onoption: null,
         oninitchild: null,
-        marcos: {},
         _render: function (fn) {
             if (!this.dom.data("-view-")) {
                 this.dom.data("-view-", this);
@@ -6830,7 +6838,7 @@
                         }
                         if (bright.is.isString(str)) {
                             try {
-                                var temp = bright.template(str, ["data", "pid", "option", "module"], bright.extend({
+                                ths.autodom = ths.dom.autodom(bright.template(str, ["data", "pid", "option"], bright.extend({
                                     module: function (attrs, render) {
                                         var type = attrs["type"], option = attrs["option"], id = attrs["id"];
                                         var prps = {tagName: "div", fullClassName: "_futuretochange_"};
@@ -6839,32 +6847,11 @@
                                         }
                                         return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
                                     }
-                                }, ths.marcos));
-                                var rdata = [
-                                    ths.option,
-                                    ths.getId(),
-                                    ths.option,
-                                    function (type, option, id) {
-                                        var prps = {tagName: "div", fullClassName: "_futuretochange_"};
-                                        if (module.factory._mapping[type]) {
-                                            var prps = module.factory._mapping[type].prototype;
-                                        }
-                                        return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
-                                    }];
-                                if (ths.autodomc) {
-                                    ths.autodom = ths.dom.autodom(temp, rdata, true);
-                                    ths.autodom.refresh = function () {
-                                        Object.getPrototypeOf(ths.autodom).refresh.call(ths.autodom, rdata);
-                                        ths.delegate();
-                                    };
-                                    temp.flush(ths.dom);
-                                } else {
-                                    ths.dom.html(temp.render.apply(temp, rdata));
-                                    temp.flush(ths.dom);
-                                }
+                                }, ths.marcos)), [ths.option, ths.getId(), ths.option]);
                             } catch (e) {
                                 console.error("[bright] parse layout called error with module of " + ths.type() + " Message:" + e.stack);
                                 ths.dom.html("");
+                                ths.autodom = null;
                             }
                         }
                         if (typeof ths.ondomready === 'function') {
@@ -7028,7 +7015,7 @@
                             try {
                                 ths.oninitchild({id: sobj.getId(), type: sobj.type()});
                             } catch (e) {
-                                console.error("[bright] oninitchild called error with module of " + ths.type() + " [" + e.message + "]");
+                                console.error("[bright] oninitchild called error with module of " + ths.type() + " [" + e.stack + "]");
                             }
                         }
                         callback && callback.call(sobj);
@@ -7048,6 +7035,12 @@
                 ps.resolve();
             });
             return ps;
+        },
+        update: function () {
+            if (this.autodom) {
+                this.autodom.update([this.option, this.getId(), this.option]);
+                this.delegate();
+            }
         },
         getChildrenByType: function (type) {
             var r = [];
