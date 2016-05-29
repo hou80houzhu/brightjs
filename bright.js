@@ -6372,6 +6372,7 @@
         option: {},
         parentView: null,
         marcos: {},
+        autoupdate: false,
         init: null,
         template: "",
         onbeforeinit: null,
@@ -6558,10 +6559,16 @@
                 console.error("[bright] onbeforerender called error with module of " + ths.type() + " Message:" + e.stack);
             }
             try {
-                ths.autodom = ths.dom.autodom(ths.template, Array.prototype.slice.call(arguments), ths.marcos);
-                ths.delegate();
+                if (ths.autoupdate) {
+                    ths.autodom = ths.dom.autodom(ths.template, Array.prototype.slice.call(arguments), ths.marcos);
+                    ths.delegate();
+                } else {
+                    var tep = bright.template(ths.template, null, ths.marcos),n=Array.prototype.slice.call(arguments);
+                    n.unshift(ths.dom);
+                    tep.renderTo.apply(tep, n);
+                    ths.delegate();
+                }
             } catch (e) {
-                ths.autodom = null;
                 console.error("[bright] render called error with module of " + ths.type() + " Message:" + e.stack);
             }
             try {
@@ -6575,9 +6582,11 @@
             return ps;
         },
         update: function () {
-            if (this.autodom) {
+            if (this.autoupdate&&this.autodom) {
                 this.autodom.update(Array.prototype.slice.call(arguments));
                 this.delegate();
+            } else {
+                console.warn("[bright] this view is not open autoupdate option");
             }
         },
         original: function (methods) {
@@ -6838,7 +6847,7 @@
                         }
                         if (bright.is.isString(str)) {
                             try {
-                                ths.autodom = ths.dom.autodom(bright.template(str, ["data", "pid", "option"], bright.extend({
+                                var tempt = bright.template(str, ["data", "pid", "option"], bright.extend({
                                     module: function (attrs, render) {
                                         var type = attrs["type"], option = attrs["option"], id = attrs["id"];
                                         var prps = {tagName: "div", fullClassName: "_futuretochange_"};
@@ -6847,11 +6856,15 @@
                                         }
                                         return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
                                     }
-                                }, ths.marcos)), [ths.option, ths.getId(), ths.option]);
+                                }, ths.marcos));
+                                if (ths.autoupdate) {
+                                    ths.autodom = ths.dom.autodom(tempt, [ths.option, ths.getId(), ths.option]);
+                                } else {
+                                    tempt.renderTo(ths.dom, ths.option, ths.getId(), ths.option);
+                                }
                             } catch (e) {
                                 console.error("[bright] parse layout called error with module of " + ths.type() + " Message:" + e.stack);
                                 ths.dom.html("");
-                                ths.autodom = null;
                             }
                         }
                         if (typeof ths.ondomready === 'function') {
@@ -7037,9 +7050,11 @@
             return ps;
         },
         update: function () {
-            if (this.autodom) {
+            if (this.autoupdate&&this.autodom) {
                 this.autodom.update([this.option, this.getId(), this.option]);
                 this.delegate();
+            } else {
+                console.warn("[bright] this viewgroup is not open autoupdate option");
             }
         },
         getChildrenByType: function (type) {
