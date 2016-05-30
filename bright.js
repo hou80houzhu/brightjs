@@ -7290,6 +7290,9 @@
             return r;
         };
     }
+    window.onerror = function(msg,file,line){
+        console.error(msg+" ,"+file+" ,"+line);
+    };
     bright.overrideRequest = function (obj) {
         var request = module.factory.get("request");
         var view = module.factory.get("view");
