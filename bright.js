@@ -1,3 +1,10 @@
+/*!
+ * BrightJS JavaScript Library v1.1.0
+ * http://brightjs.org/
+ * Author WangJinliang(hou80houzhu)
+ * licensed under the MIT licenses.
+ * https://github.com/hou80houzhu/brightjs/blob/master/LICENSE
+ */
 (function () {
     "use strict";
     var bright = function (start) {
