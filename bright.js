@@ -1,10 +1,3 @@
-/*!
- * BrightJS JavaScript Library v1.1.0
- * http://brightjs.org/
- * Author WangJinliang(hou80houzhu)
- * licensed under the MIT licenses.
- * https://github.com/hou80houzhu/brightjs/blob/master/LICENSE
- */
 (function () {
     "use strict";
     var bright = function (start) {
@@ -439,6 +432,14 @@
         }
         return this;
     };
+    queue.prototype.delay = function (time) {
+        this.add(function () {
+            var ths = this;
+            setTimeout(function () {
+                ths.next();
+            }, time);
+        });
+    };
     queue.prototype.scope = function (a) {
         if (arguments.length === 0) {
             return this._scope;
@@ -835,7 +836,7 @@
         return this;
     };
     promise.prototype.delay = function (time) {
-        this.queue.delay(time);
+        this._queue.delay(time);
         return this;
     };
     promise.prototype.isInError = function () {
@@ -4796,21 +4797,21 @@
         }
     };
     template.code = function (temp) {
-        var fn = "";
+        var fn = "",outp="out+";
         if (baseMapping.debug) {
             fn = "/* template source:\r\n" + temp + "*/\r\n\r\n";
             fn += "/* compile code:*/\r\n";
+            outp="\r\nout+";
         }
         fn += "var out='';";
         var tp = temp.replace(template.a, "<%").replace(template.b, "%>").split(template.d);
         for (var index = 0; index < tp.length; index++) {
             var e = tp[index];
-            index % 2 !== 0 ? (template.e.test(e) ? (fn += "out+" + e) : (fn += e)) : (fn += "out+=\"" + e.replace(template.m, '\\"') + "\";");
+            index % 2 !== 0 ? (template.e.test(e) ? (fn += outp + e) : (fn += e)) : (fn += outp+"=\"" + e.replace(template.m, '\\"') + "\";");
         }
         fn += "return out;";
         if (baseMapping.debug) {
             fn += "//# sourceURL=" + baseMapping.basePath + "_tempcompile/" + util.uuid() + ".js";
-            fn = fn.replace(/\;/g, ";\r\n");
         }
         return fn;
     };
@@ -4829,7 +4830,7 @@
             parameters.push(code);
             return crt(Function, parameters);
         } catch (e) {
-            console.error("[template compile error] \r\n" + code);
+            console.error("[template compile error] \r\n"+e.stack +"\r\n"+ code);
             return function () {
                 return "";
             };
@@ -5740,7 +5741,7 @@
             var stacks = [], nodes = [], current = null;
             var tagname = "", tagendname = "", propname = "", value = "", text = "";
             var tagnamestart = false, propstart = false, valuestart = false, tagendstart = false, element = false;
-            for (var i = 0; i < str.length; i++) {
+            for (var i = 0, len = str.length; i < len; i++) {
                 var a = str[i];
                 if (a !== "\r" && a !== "\n") {
                     if (a === "<") {
@@ -5833,9 +5834,11 @@
             if (a && b) {
                 var len = a.length;
                 if (a.length === 0) {
-                    r.removeAll.push({
-                        path: current.join(",")
-                    });
+                    if (b.length !== 0) {
+                        r.removeAll.push({
+                            path: current.join(",")
+                        });
+                    }
                 } else {
                     if (a.length < b.length) {
                         len = b.length;
@@ -5940,31 +5943,44 @@
         return r;
     };
     node.effect = function (dom, r) {
-        for (var i in r.replace) {
+        console.log(r);
+        var removes = [], adds = {};
+        for (var i = 0, len = r.replace.length; i < len; i++) {
             var t = dom.get(0);
             var paths = r.replace[i].path.split(",");
-            for (var tp in paths) {
+            for (var tp = 0, lenp = paths.length; tp < lenp; tp++) {
                 t = t.childNodes[paths[tp] / 1];
             }
             t.parentNode.replaceChild(r.replace[i].node.element(), t);
         }
-        for (var i in r.add) {
+        for (var i = 0, len = r.add.length; i < len; i++) {
             var t = dom.get(0);
             var paths = r.add[i].path.split(",");
             paths.pop();
-            for (var tp in paths) {
+            var pname = paths.join("");
+            for (var tp = 0, lenp = paths.length; tp < lenp; tp++) {
                 t = t.childNodes[paths[tp] / 1];
             }
-            t.appendChild(r.add[i].node.element());
+            if (!adds[pname]) {
+                adds[pname] = [{
+                        p: t,
+                        n: r.add[i].node
+                    }];
+            } else {
+                adds[pname].push({
+                    p: t,
+                    n: r.add[i].node
+                });
+            }
         }
-        for (var i in r.remove) {
+        for (var i = 0, len = r.remove.length; i < len; i++) {
             var t = dom.get(0);
             var paths = r.remove[i].path.split(",");
             var index = paths.pop();
-            for (var tp in paths) {
+            for (var tp = 0, lenp = paths.length; tp < lenp; tp++) {
                 t = t.childNodes[paths[tp] / 1];
             }
-            t.removeChild(t.childNodes[index]);
+            removes.push(t.childNodes[index]);
         }
         for (var i in r.edit) {
             var t = dom.get(0);
@@ -5983,13 +5999,31 @@
                 t.setAttribute(props.edit[tp].key, props.edit[tp].val);
             }
         }
-        for (var i in r.removeAll) {
+        for (var i = 0, len = removes.length; i < len; i++) {
+            removes[i].parentNode.removeChild(removes[i]);
+        }
+        for (var i = 0, len = r.removeAll.length; i < len; i++) {
             var t = dom.get(0);
             var paths = r.removeAll[i].path.split(",");
-            for (var tp in paths) {
-                t = t.childNodes[paths[tp] / 1];
+            for (var tp = 0, lenp = paths.length; tp < lenp; tp++) {
+                if (t) {
+                    t = t.childNodes[paths[tp] / 1];
+                }
             }
-            t.innerHTML = "";
+            if (t) {
+                t.innerHTML = "";
+            }
+        }
+        for (var i in adds) {
+            if (adds[i].length > 0) {
+                var fm = window.document.createDocumentFragment();
+                for (var t = 0, len = adds[i].length; t < len; t++) {
+                    fm.appendChild(adds[i][t].n.element());
+                }
+                adds[i][0].p.appendChild(fm);
+            } else {
+                adds[i].p.appendChild(adds[i].n.element());
+            }
         }
     };
     node.prototype.element = function () {
@@ -6020,8 +6054,10 @@
     };
     autodomc.prototype.update = function (dataarray) {
         this.dom.hide();
+        console.time("render and parse");
         var tempstr = this.tempt.render.apply(this.tempt, dataarray);
         var m = node.parse(tempstr);
+        console.timeEnd("render and parse");
         var q = node.diff(node.parse(tempstr), this.cache);
         this.cache = m;
         node.effect(this.dom, q);
@@ -6567,10 +6603,11 @@
             }
             try {
                 if (ths.autoupdate) {
-                    ths.autodom = ths.dom.autodom(ths.template, Array.prototype.slice.call(arguments), ths.marcos);
+                    this.autodomcache=Array.prototype.slice.call(arguments);
+                    ths.autodom = ths.dom.autodom(ths.template, this.autodomcache, ths.marcos);
                     ths.delegate();
                 } else {
-                    var tep = bright.template(ths.template, null, ths.marcos),n=Array.prototype.slice.call(arguments);
+                    var tep = bright.template(ths.template, null, ths.marcos), n = Array.prototype.slice.call(arguments);
                     n.unshift(ths.dom);
                     tep.renderTo.apply(tep, n);
                     ths.delegate();
@@ -6589,8 +6626,12 @@
             return ps;
         },
         update: function () {
-            if (this.autoupdate&&this.autodom) {
-                this.autodom.update(Array.prototype.slice.call(arguments));
+            if (this.autoupdate && this.autodom) {
+                if(arguments.length===0){
+                    this.autodom.update(this.autodomcache);
+                }else{
+                    this.autodom.update(Array.prototype.slice.call(arguments));
+                }
                 this.delegate();
             } else {
                 console.warn("[bright] this view is not open autoupdate option");
@@ -7057,7 +7098,7 @@
             return ps;
         },
         update: function () {
-            if (this.autoupdate&&this.autodom) {
+            if (this.autoupdate && this.autodom) {
                 this.autodom.update([this.option, this.getId(), this.option]);
                 this.delegate();
             } else {
@@ -7297,8 +7338,8 @@
             return r;
         };
     }
-    window.onerror = function(msg,file,line){
-        console.error(msg+" ,"+file+" ,"+line);
+    window.onerror = function (msg, file, line) {
+        console.error(msg + " ," + file + " ," + line);
     };
     bright.overrideRequest = function (obj) {
         var request = module.factory.get("request");
