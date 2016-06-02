@@ -1,0 +1,67 @@
+@mixin absolute($top:0,$right:0,$bottom:0,$left:0){
+    position:absolute;
+    left:$left;
+    top:$top;
+    right:$right;
+    bottom:$bottom;
+}
+@mixin inlineblock{
+    display: inline-block;
+    vertical-align: top;
+}
+@mixin shadow($a:0 0 10px #8B8B8B){
+    -webkit-box-shadow: $a;
+    -moz-box-shadow:$a;
+    -ms-box-shadow:$a;
+    box-shadow:$a;
+}
+@mixin transform($a:translateX(0)){
+    -webkit-transform:$a;
+    -moz-transform:$a;
+    -ms-transform: $a;
+    transform:$a;
+}
+@mixin transition($a:all ease-out .5s){
+    -webkit-transition:$a;
+    -moz-transition:$a;
+    -ms-transition:$a;
+    transition:$a;
+}
+@mixin borderadius($a:5px 5px 5px 5px){
+    -webkit-border-radius: $a;
+    -moz-border-radius: $a;
+    -ms-border-radius:$a;
+    border-radius: $a;
+}
+@mixin displayflex(){
+    display:-webkit-flex;
+    display:-moz-flex;
+    display:-ms-flexbox;
+    display:flex;
+}
+@mixin flex($a:1){
+    -webkit-flex:1;
+    -moz-flex:1;
+    -ms-flexbox:1;
+    flex:1;
+}
+@mixin borderbox{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:border-box;
+    -ms-box-sizing:border-box;
+    box-sizing:border-box;
+}
+@mixin userselect{
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+    -moz-user-select: none;
+    -moz-user-drag: none;
+    -moz-tap-highlight-color: transparent;
+    -ms-user-select: none;
+    -ms-user-drag: none;
+    -ms-tap-highlight-color: transparent;
+    user-select: none;
+    user-drag: none;
+    tap-highlight-color: transparent;
+}

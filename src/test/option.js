@@ -6,7 +6,7 @@ Module({
     name: "autoview",
     extend: "view",
     template: module.getTemplate("@temp", "nodome"),
-    autodom: true,
+    autoupdate: true,
     init: function () {
         this.c = [
             {name: 1, name2: 1, name3: 10, list: [
@@ -86,6 +86,7 @@ Module({
 Module({
     name: "autoviewgroup",
     extend: "viewgroup",
+    autoupdate: true,
     option:{
         type: "@.autoview",
         data: [
@@ -298,5 +299,103 @@ Option({
                 ]}
         ],
         override_layout:module.getTemplate("@temp", "nodomef")
+    }
+});
+
+Module({
+    name:"qut",
+    extend:"view",
+    autoupdate:true,
+    template:module.getTemplate("@temp","qut"),
+    init:function(){
+        this.total=0;
+        var t=[];
+        for(var i=0;i<2000;i++){
+            t.push({
+                aa:"aa"+i,
+                bb:"bb"+i
+            });
+        }
+        this.render(t);
+    },
+    find_add300:function(dom){
+        dom.click(function(){
+            var t=[];
+            for(var i=0;i<400;i++){
+                t.push({
+                    aa:"aa"+i,
+                    bb:"bb"+i
+                });
+            }
+            this.update(t);
+        }.bind(this));
+    },
+    find_add900:function(dom){
+        dom.click(function(){
+            var t=[];
+            for(var i=0;i<1000;i++){
+                t.push({
+                    aa:"aa"+i,
+                    bb:"bb"+i
+                });
+            }
+            this.update(t);
+        }.bind(this));
+    },
+    find_add600:function(dom){
+        dom.click(function(){
+            var t=[];
+            for(var i=0;i<700;i++){
+                t.push({
+                    aa:"aa"+i,
+                    bb:"bb"+i
+                });
+            }
+            this.update(t);
+        }.bind(this));
+    },
+    find_add100:function(dom){
+        dom.click(function(){
+            var t=[];
+            for(var i=0;i<100;i++){
+                t.push({
+                    aa:"aa"+i,
+                    bb:"bb"+i
+                });
+            }
+            this.update(t);
+        }.bind(this));
+    },
+    find_add0:function(dom){
+        dom.click(function(){
+            var t=[];
+            this.update(t);
+        }.bind(this));
+    },
+    find_addadd1000:function(dom){
+        dom.click(function(){
+            var t=[];
+            this.total+=1000;
+            for(var i=0;i<this.total;i++){
+                t.push({
+                    aa:"aa"+i,
+                    bb:"bb"+i
+                });
+            }
+            this.update(t);
+        }.bind(this));
+    }
+});
+
+Option({
+    name:"qu",
+    option:{
+        override:{
+            onendinit:function(){
+                this.addChild({
+                    type:"@.qut"
+                });
+            }
+        }
     }
 });

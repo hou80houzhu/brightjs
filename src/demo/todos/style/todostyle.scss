@@ -1,0 +1,76 @@
+@import "reset.scss";
+@import "base.scss";
+.todos{
+    @include absolute;
+    @include shadow(0 5px 20px #D6D6D6);
+    margin:10px;
+    border:1px solid #D7D7D7;
+    .todos-input{
+        line-height:45px;
+        background:white;
+        input{
+            height:45px;
+            width:100%;
+            @include borderbox;
+            border:0;
+            padding:0 10px 0 10px;
+            outline: none;
+        }
+    }
+    .todos-list{
+        @include absolute(45px,0,40px,0);
+        border-top:1px solid #D7D7D7;
+        overflow:auto;
+        .todos-list-item{
+            line-height:35px;
+            border-bottom:1px solid #D7D7D7;
+            @include displayflex;
+            background:white;
+            .todos-list-item-check{
+                width:30px;
+                text-align: center;
+            }
+            .todos-list-item-desc{
+                @include flex(1);
+            }
+            .todos-list-item-remove{
+                width:30px;
+                text-align: center;
+                display:none;
+            }
+            &.checked{
+                background:#F5F7F7;
+            }
+            &:hover{
+                .todos-list-item-remove{
+                    display: block;
+                }
+            }
+        }
+    }
+    .todos-tools{
+        padding:5px 10px 5px 10px;
+        line-height:30px;
+        background:white;
+        border-top:1px solid #D7D7D7;
+        @include displayflex;
+        @include absolute(auto,0,0,0);
+        .todos-tools-a{}
+        .todos-tools-b{
+            @include flex(1);
+            text-align:center;
+            .todos-tools-b-btn{
+                padding:0 10px 0 10px;
+                display:inline-block;
+                vertical-align: top;
+                margin:0 5px 0 5px;
+                &.active{
+                    @include borderadius(5px);
+                    border:1px solid #D7D7D7;
+                    background:white;
+                }
+            }
+        }
+        .todos-tootls-c{}
+    }
+}

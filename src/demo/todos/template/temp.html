@@ -1,0 +1,30 @@
+<!--[todos]-->
+<div class="todos-input"><input type="text" placeholder="what needs to be done?" data-find='input'/></div>
+<div class="todos-list">
+    <%for(var i in data.task){%>
+    <%var render=false;%>
+    <%if(data.all||data.task[i].checked&&data.active===false||data.task[i].checked===false&&data.complete===false){render=true;}%>
+    <%if(render){%>
+    <div class="todos-list-item<%=(data.task[i].checked?' checked':'');%>" data-group='item' @cache(data.task[i])>
+        <div class="todos-list-item-check" data-groupi='check'>
+            <%if(data.task[i].checked){%>
+            <i class="fa fa-check-square-o"></i>
+            <%}else{%>
+            <i class="fa fa-square-o"></i>
+            <%}%>
+        </div>
+        <div class="todos-list-item-desc"><%=data.task[i].desc;%></div>
+        <div class="todos-list-item-remove" data-groupi='remove'><i class="fa fa-times"></i></div>
+    </div>
+    <%}%>
+    <%}%>
+</div>
+<div class="todos-tools">
+    <div class="todos-tools-a"><%=data.totalleft||'-';%> items left</div>
+    <div class="todos-tools-b">
+        <div class="todos-tools-b-btn<%=(data.all?' active':'');%>" data-find='all'>All</div>
+        <div class="todos-tools-b-btn<%=(data.active?' active':'');%>" data-find='active'>Active</div>
+        <div class="todos-tools-b-btn<%=(data.complete?' active':'');%>" data-find='complete'>Completed</div>
+    </div>
+    <div class="todos-tootls-c" data-find='clear'>Clear Completed</div>
+</div>
