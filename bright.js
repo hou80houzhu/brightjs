@@ -4797,17 +4797,17 @@
         }
     };
     template.code = function (temp) {
-        var fn = "",outp="out+";
+        var fn = "", outp = "out+";
         if (baseMapping.debug) {
             fn = "/* template source:\r\n" + temp + "*/\r\n\r\n";
             fn += "/* compile code:*/\r\n";
-            outp="\r\nout+";
+            outp = "\r\nout+";
         }
         fn += "var out='';";
         var tp = temp.replace(template.a, "<%").replace(template.b, "%>").split(template.d);
         for (var index = 0; index < tp.length; index++) {
             var e = tp[index];
-            index % 2 !== 0 ? (template.e.test(e) ? (fn += outp + e) : (fn += e)) : (fn += outp+"=\"" + e.replace(template.m, '\\"') + "\";");
+            index % 2 !== 0 ? (template.e.test(e) ? (fn += outp + e) : (fn += e)) : (fn += outp + "=\"" + e.replace(template.m, '\\"') + "\";");
         }
         fn += "return out;";
         if (baseMapping.debug) {
@@ -4830,7 +4830,7 @@
             parameters.push(code);
             return crt(Function, parameters);
         } catch (e) {
-            console.error("[template compile error] \r\n"+e.stack +"\r\n"+ code);
+            console.error("[template compile error] \r\n" + e.stack + "\r\n" + code);
             return function () {
                 return "";
             };
@@ -5982,20 +5982,20 @@
             }
             removes.push(t.childNodes[index]);
         }
-        for (var i in r.edit) {
+        for (var i = 0, len = r.edit.length; i < len; i++) {
             var t = dom.get(0);
             var paths = r.edit[i].path.split(",");
             for (var tp in paths) {
                 t = t.childNodes[paths[tp] / 1];
             }
             var props = r.edit[i].props;
-            for (var tp in props.add) {
+            for (var tp = 0, lenp = props.add.length; tp < lenp; tp++) {
                 t.setAttribute(props.add[tp].key, props.add[tp].val);
             }
-            for (var tp in props.remove) {
+            for (var tp = 0, lenp = props.remove.length; tp < lenp; tp++) {
                 t.removeAttribute(props.remove[tp].key);
             }
-            for (var tp in props.edit) {
+            for (var tp = 0, lenp = props.edit.length; tp < lenp; tp++) {
                 t.setAttribute(props.edit[tp].key, props.edit[tp].val);
             }
         }
@@ -6603,7 +6603,7 @@
             }
             try {
                 if (ths.autoupdate) {
-                    this.autodomcache=Array.prototype.slice.call(arguments);
+                    this.autodomcache = Array.prototype.slice.call(arguments);
                     ths.autodom = ths.dom.autodom(ths.template, this.autodomcache, ths.marcos);
                     ths.delegate();
                 } else {
@@ -6627,9 +6627,9 @@
         },
         update: function () {
             if (this.autoupdate && this.autodom) {
-                if(arguments.length===0){
+                if (arguments.length === 0) {
                     this.autodom.update(this.autodomcache);
-                }else{
+                } else {
                     this.autodom.update(Array.prototype.slice.call(arguments));
                 }
                 this.delegate();

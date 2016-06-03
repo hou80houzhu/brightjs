@@ -43,61 +43,48 @@ Module({
             ths.update();
         });
     },
-    find_input: function (dom) {
-        var ths = this;
-        dom.bind("keyup", function (e) {
-            if (e.keyCode === 13) {
-                var t = $(this).val();
-                ths._todos.task.push({
+    bind_input: function (dom,e) {
+        if (e.keyCode === 13) {
+            var t = dom.val();
+            if(t){
+                this._todos.task.push({
                     checked: false,
                     desc: t
                 });
-                ths._todos.totalleft = ths._todos.totalleft + 1;
-                ths.update();
-                $(this).val("");
+                this._todos.totalleft = this._todos.totalleft + 1;
+                this.update();
+                dom.val("");
             }
-        });
+        }
     },
-    find_all: function (dom) {
-        var ths = this;
-        dom.click(function () {
-            ths._todos.all = true;
-            ths._todos.complete = false;
-            ths._todos.active = false;
-            ths.update();
-        });
+    bind_all: function () {
+        this._todos.all = true;
+        this._todos.complete = false;
+        this._todos.active = false;
+        this.update();
     },
-    find_active: function (dom) {
-        var ths = this;
-        dom.click(function () {
-            ths._todos.active = true;
-            ths._todos.complete = false;
-            ths._todos.all = false;
-            ths.update();
-        });
+    bind_active: function () {
+        this._todos.active = true;
+        this._todos.complete = false;
+        this._todos.all = false;
+        this.update();
     },
-    find_complete: function (dom) {
-        var ths = this;
-        dom.click(function () {
-            ths._todos.active = false;
-            ths._todos.complete = true;
-            ths._todos.all = false;
-            ths.update();
-        });
+    bind_complete: function () {
+        this._todos.active = false;
+        this._todos.complete = true;
+        this._todos.all = false;
+        this.update();
     },
-    find_clear: function (dom) {
-        var ths = this;
-        dom.click(function () {
-            var t = [];
-            for (var i = 0; i < ths._todos.task.length; i++) {
-                if (!ths._todos.task[i].checked) {
-                    t.push(ths._todos.task[i]);
-                }
+    bind_clear: function () {
+        var t = [];
+        for (var i = 0; i < this._todos.task.length; i++) {
+            if (!this._todos.task[i].checked) {
+                t.push(this._todos.task[i]);
             }
-            ths._todos.task = t;
-            ths._todos.totalleft = t.length;
-            ths.update();
-        });
+        }
+        this._todos.task = t;
+        this._todos.totalleft = t.length;
+        this.update();
     }
 });
 
