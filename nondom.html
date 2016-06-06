@@ -26,15 +26,23 @@
                 margin:5px;
                 background:rgba(0,0,0,.2);
             }
+            h2 { margin:0; margin-bottom:25px; }
+            h3 { margin:0; padding:0; margin-bottom:12px; }
+            .test-data { margin-bottom:3px; }
+            .test-data span { padding:3px 10px; background:#EEE; width:100%; float:left; cursor:pointer; }
+            .test-data span:hover { background:#DDD; }
+            .test-data span.selected { background:#3F7AD9; color:white; }
+
+            .time { font-weight:bold; height:26px; line-height:26px; vertical-align:middle; display:inline-block; cursor:pointer; text-decoration:underline; }
         </style>
         <script src="bright.js" type="text/javascript"></script>
         <script>
 //            $.App({basePath: "src/", debug: true}).boot("test.option.nodom");
-//            $.App({basePath: "src/", debug: true}).boot("test.option.testview");
+            $.App({basePath: "src/", debug: true}).boot("test.option.testview");
 //            $.App({basePath: "src/", debug: true}).boot("test.option.testviewgroup");
 //            $.App({basePath: "src/", debug: true}).boot("test.option.testviewgrouproot");
 //            $.App({basePath: "src/", debug: true}).boot("test.option.qu");
-            $.App({basePath: "src/", debug: true}).boot("demo.todos.todos.todosoption");
+//            $.App({basePath: "src/", debug: true}).boot("demo.todos.todos.todosoption");
         </script>
     </head>
     <body>

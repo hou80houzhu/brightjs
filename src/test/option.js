@@ -87,7 +87,7 @@ Module({
     name: "autoviewgroup",
     extend: "viewgroup",
     autoupdate: true,
-    option:{
+    option: {
         type: "@.autoview",
         data: [
             {name: 1, name2: 1, name3: 10, list: [
@@ -298,102 +298,145 @@ Option({
                     {aa: "aa", bb: "bb"}
                 ]}
         ],
-        override_layout:module.getTemplate("@temp", "nodomef")
+        override_layout: module.getTemplate("@temp", "nodomef")
     }
 });
 
 Module({
-    name:"qut",
-    extend:"view",
-    autoupdate:true,
-    template:module.getTemplate("@temp","qut"),
-    init:function(){
-        this.total=0;
-        var t=[];
-        for(var i=0;i<2000;i++){
+    name: "qut",
+    extend: "view",
+    autoupdate: true,
+    template: module.getTemplate("@temp", "qut"),
+    init: function () {
+        this.total = 0;
+        var t = [];
+        for (var i = 0; i < 2000; i++) {
             t.push({
-                aa:"aa"+i,
-                bb:"bb"+i
+                aa: "aa" + i,
+                bb: "bb" + i
             });
         }
         this.render(t);
     },
-    find_add300:function(dom){
-        dom.click(function(){
-            var t=[];
-            for(var i=0;i<400;i++){
+    find_add300: function (dom) {
+        dom.click(function () {
+            var t = [];
+            for (var i = 0; i < 400; i++) {
                 t.push({
-                    aa:"aa"+i,
-                    bb:"bb"+i
+                    aa: "aa" + i,
+                    bb: "bb" + i
                 });
             }
             this.update(t);
         }.bind(this));
     },
-    find_add900:function(dom){
-        dom.click(function(){
-            var t=[];
-            for(var i=0;i<1000;i++){
+    find_add900: function (dom) {
+        dom.click(function () {
+            var t = [];
+            for (var i = 0; i < 1000; i++) {
                 t.push({
-                    aa:"aa"+i,
-                    bb:"bb"+i
+                    aa: "aa" + i,
+                    bb: "bb" + i
                 });
             }
             this.update(t);
         }.bind(this));
     },
-    find_add600:function(dom){
-        dom.click(function(){
-            var t=[];
-            for(var i=0;i<700;i++){
+    find_add600: function (dom) {
+        dom.click(function () {
+            var t = [];
+            for (var i = 0; i < 700; i++) {
                 t.push({
-                    aa:"aa"+i,
-                    bb:"bb"+i
+                    aa: "aa" + i,
+                    bb: "bb" + i
                 });
             }
             this.update(t);
         }.bind(this));
     },
-    find_add100:function(dom){
-        dom.click(function(){
-            var t=[];
-            for(var i=0;i<100;i++){
+    find_add100: function (dom) {
+        dom.click(function () {
+            var t = [];
+            for (var i = 0; i < 100; i++) {
                 t.push({
-                    aa:"aa"+i,
-                    bb:"bb"+i
+                    aa: "aa" + i,
+                    bb: "bb" + i
                 });
             }
             this.update(t);
         }.bind(this));
     },
-    find_add0:function(dom){
-        dom.click(function(){
-            var t=[];
+    find_add0: function (dom) {
+        dom.click(function () {
+            var t = [];
             this.update(t);
         }.bind(this));
     },
-    find_addadd1000:function(dom){
-        dom.click(function(){
-            var t=[];
-            this.total+=1000;
-            for(var i=0;i<this.total;i++){
+    find_addadd1000: function (dom) {
+        dom.click(function () {
+            var t = [];
+            this.total += 1000;
+            for (var i = 0; i < this.total; i++) {
                 t.push({
-                    aa:"aa"+i,
-                    bb:"bb"+i
+                    aa: "aa" + i,
+                    bb: "bb" + i
                 });
             }
             this.update(t);
         }.bind(this));
     }
 });
+Module({
+    name: "tt",
+    extend: "view",
+    autoupdate: true,
+    template: module.getTemplate("@temp", "testtest"),
+    init: function () {
+        function _buildData(count) {
+            count = count || 1000;
 
+            var adjectives = ["pretty", "large", "big", "small", "tall", "short", "long", "handsome", "plain", "quaint", "clean", "elegant", "easy", "angry", "crazy", "helpful", "mushy", "odd", "unsightly", "adorable", "important", "inexpensive", "cheap", "expensive", "fancy"];
+            var colours = ["red", "yellow", "blue", "green", "pink", "brown", "purple", "brown", "white", "black", "orange"];
+            var nouns = ["table", "chair", "house", "bbq", "desk", "car", "pony", "cookie", "sandwich", "burger", "pizza", "mouse", "keyboard"];
+            var data = [];
+            for (var i = 0; i < count; i++)
+                data.push({id: i + 1, label: adjectives[_random(adjectives.length)] + " " + colours[_random(colours.length)] + " " + nouns[_random(nouns.length)]});
+            return data;
+        }
+        function _random(max) {
+            return Math.round(Math.random() * 1000) % max;
+        }
+        var data = _buildData(), date = new Date();
+        this.render({
+            selected:0,
+            list:data
+        });
+        console.log(new Date() - date) + " ms";
+        var ths=this;
+        this.dom.click(function(e){
+            if(e.target.tagName==="SPAN"){
+                ths.autodomcache[0].selected=ths.autodomcache[0].list.indexOf($(e.target).parent(2).cache());
+                ths.update();
+            }
+        });
+    },
+    find_item:function(dom){
+        var ths=this;
+        dom.click(function(){
+            ths.autodomcache[0].selected=ths.autodomcache[0].list.indexOf($(this).cache());
+            console.time("===>update");
+            ths.update();
+            console.timeEnd("===>update");
+        });
+    }
+});
 Option({
-    name:"qu",
-    option:{
-        override:{
-            onendinit:function(){
+    name: "qu",
+    option: {
+        override: {
+            onendinit: function () {
                 this.addChild({
-                    type:"@.qut"
+                    type: "@.tt"
                 });
             }
         }

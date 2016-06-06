@@ -4761,381 +4761,6 @@
     };
     bright._packet = packet;
 
-    var template = function (temp, macro, parameters) {
-        temp = template.cache(temp);
-        var a = template.precompile(temp);
-        this._scope = a.info;
-        this._code = template.code(a.template);
-        this._fn = template.compile(this._code, parameters);
-        this._session = null;
-        this._caching = {};
-        this._macrofn = macro || {};
-        bright.extend(this._macrofn, template.globalMacro);
-    };
-    template.a = /&lt;%/g;
-    template.b = /%&gt;/g;
-    template.c = /&quot;/g;
-    template.d = /<%|%>/g;
-    template.e = /^=.*;$/;
-    template.f = />[\s]+</g;
-    template.g = /\{\{.*\}\}/;
-    template.h = /\<\!\-\-[\s\S]*?\-\-\>/g;
-    template.j = /\{\{|\}\}/;
-    template.i = /\r\n/g;
-    template.k = /\r/g;
-    template.l = /\n/g;
-    template.m = /"/g;
-    template.ch = /@cache\(.*?\)/g;
-    template.globalMacro = {
-        include: function (attrs, render) {
-            var p = new template(attrs.template);
-            var t = p.render(attrs.data);
-            for (var i in p._caching) {
-                this._caching[i] = p._caching[i];
-            }
-            return t;
-        }
-    };
-    template.code = function (temp) {
-        var fn = "", outp = "out+";
-        if (baseMapping.debug) {
-            fn = "/* template source:\r\n" + temp + "*/\r\n\r\n";
-            fn += "/* compile code:*/\r\n";
-            outp = "\r\nout+";
-        }
-        fn += "var out='';";
-        var tp = temp.replace(template.a, "<%").replace(template.b, "%>").split(template.d);
-        for (var index = 0; index < tp.length; index++) {
-            var e = tp[index];
-            index % 2 !== 0 ? (template.e.test(e) ? (fn += outp + e) : (fn += e)) : (fn += outp + "=\"" + e.replace(template.m, '\\"') + "\";");
-        }
-        fn += "return out;";
-        if (baseMapping.debug) {
-            fn += "//# sourceURL=" + baseMapping.basePath + "_tempcompile/" + util.uuid() + ".js";
-        }
-        return fn;
-    };
-    template.compile = function (code, parameters) {
-        try {
-            if (!parameters) {
-                parameters = ["data", "fn"];
-            }
-            var crt = function (fnn, args) {
-                function fn() {
-                    return fnn.apply(this, args);
-                }
-                fn.prototype = fnn.prototype;
-                return new fn();
-            };
-            parameters.push(code);
-            return crt(Function, parameters);
-        } catch (e) {
-            console.error("[template compile error] \r\n" + e.stack + "\r\n" + code);
-            return function () {
-                return "";
-            };
-        }
-    };
-    template.precompile = function (str) {
-        str = str.replace(template.h, "").replace(template.f, "><").replace(template.i, "").replace(template.k, "").replace(template.l, "");
-        if (str.indexOf("<@") !== -1) {
-            var i = -1, current = "", state = "start", tagname = "", propname = "", propnamestart, propvalue = "";
-            var isbody = true, endtagname = "", props = {}, tagindex = 0, tagendindex = 0, endtagindex = 0, endtagendindex = 0, obj = [];
-            while (i < str.length) {
-                i++;
-                current = str[i];
-                if (state === "start" && current === "<" && str[i + 1] === "@") {
-                    state = "tagstart";
-                    tagindex = i;
-                    continue;
-                }
-                if (state === "tagstart" && current === "@") {
-                    state = "tagname";
-                    tagname = "";
-                    props = {};
-                    continue;
-                }
-                if (state === "start" && current === "<" && str[i + 1] === "/" && str[i + 2] === "@") {
-                    endtagindex = i;
-                    state = "endtag";
-                    endtagname = "";
-                    i += 2;
-                    continue;
-                }
-                if (state === "endtag" && current === ">") {
-                    state = "start";
-                    endtagendindex = i + 1;
-                    obj.push({
-                        type: "endtag",
-                        tagname: endtagname,
-                        start: endtagindex,
-                        end: endtagendindex
-                    });
-                    continue;
-                }
-                if (state === "tagname" && current === " ") {
-                    state = "propname";
-                    propname = "";
-                    continue;
-                }
-                if (state === "tagname" && (current === "/" || current === ">")) {
-                    if (current === ">") {
-                        tagendindex = i + 1;
-                        state = "start";
-                        isbody = true;
-                    } else if (current === "/") {
-                        tagendindex = i + 2;
-                        state = "start";
-                        isbody = false;
-                    }
-                    if (tagname !== "") {
-                        obj.push({
-                            type: "tag",
-                            tagname: tagname,
-                            props: props,
-                            body: isbody,
-                            start: tagindex,
-                            end: tagendindex
-                        });
-                    }
-                    continue;
-                }
-                if (state === "propname" && current === "=") {
-                    state = "propvalue";
-                    continue;
-                }
-                if (state === "propvalue" && (current === "'" || current === "\"")) {
-                    state = "propvalueing";
-                    propnamestart = current;
-                    propvalue = "";
-                    continue;
-                }
-                if (state === "propvalueing" && current === propnamestart) {
-                    state = "tagname";
-                    props[propname] = propvalue;
-                    continue;
-                }
-                if (state === "endtag") {
-                    endtagname += current;
-                }
-                if (state === "tagname") {
-                    tagname += current;
-                }
-                if (state === "propname") {
-                    propname += current;
-                }
-                if (state === "propvalueing") {
-                    propvalue += current;
-                }
-            }
-            var index = 0, start = 0, end = 0, inner = false, current = null, result = [], t = "", startin = 0, info = [];
-            for (var i in obj) {
-                if (obj[i].type === "tag" && obj[i].body === false && inner === false) {
-                    obj[i].bodystr = "";
-                    obj[i].from = obj[i].start;
-                    obj[i].to = obj[i].end;
-                    result.push(obj[i]);
-                }
-                if (obj[i].type === "tag" && obj[i].body === true) {
-                    inner = true;
-                    if (current === null) {
-                        current = obj[i];
-                        current.from = obj[i].start;
-                    }
-                    if (index === 0) {
-                        start = obj[i].start;
-                        end = obj[i].end;
-                    }
-                    index++;
-                }
-                if (obj[i].type === "endtag") {
-                    index--;
-                    if (index === 0) {
-                        current.to = obj[i].end;
-                        current.bodystr = str.substring(end, obj[i].start);
-                        result.push(current);
-                        current = null;
-                        inner = false;
-                    }
-                }
-            }
-            for (var i in result) {
-                var st = result[i].props, parameter = "";
-                for (var tpp in st) {
-                    var np = st[tpp];
-                    if (template.g.test(np)) {
-                        var qpp = np.split(template.j), cpp = "";
-                        for (var ip = 1; ip <= qpp.length; ip++) {
-                            if (ip % 2 === 0) {
-                                if (qpp[ip - 1] !== "") {
-                                    cpp += qpp[ip - 1] + "+";
-                                }
-                            } else {
-                                if (qpp[ip - 1] !== "") {
-                                    cpp += "'" + qpp[ip - 1] + "'+";
-                                } else {
-                                    cpp += qpp[ip - 1];
-                                }
-                            }
-                        }
-                        var npp = (cpp.length > 0 ? cpp.substring(0, cpp.length - 1) : "''");
-                        parameter += tpp + ":" + npp + ",";
-                    } else {
-                        parameter += tpp + ":'" + st[tpp] + "',";
-                    }
-                }
-                result[i].parameter = "{" + (parameter.length > 0 ? parameter.substring(0, parameter.length - 1) : parameter) + "}";
-                info.push({
-                    name: result[i].tagname,
-                    body: result[i].bodystr,
-                    parameter: result[i].parameter
-                });
-                var a = str.substring(startin, result[i].from);
-                t += a;
-                t += "<%=this._macro(" + i + (result[i].parameter === "" ? "" : "," + result[i].parameter) + ");%>";
-                startin = result[i].to;
-            }
-            t += str.substring(startin, str.length);
-            return {
-                template: t,
-                info: info
-            };
-        } else {
-            return {template: str, info: []};
-        }
-    };
-    template.cache = function (str) {
-        return str.replace(template.ch, function (e) {
-            var k = e.substring(7, e.length - 1);
-            return "data-cache='<%=this._cache(" + k + ");%>'";
-        });
-    };
-    template.prototype._cache = function (data) {
-        var has = false;
-        for (var i in this._caching) {
-            if (this._caching[i] === data) {
-                has = true;
-                return i;
-            }
-        }
-        if (!has) {
-            var uuid = util.uuid();
-            this._caching[uuid] = data;
-            return uuid;
-        }
-    };
-    template.prototype._macro = function (num, attr) {
-        var n = this._scope[num], ths = this;
-        if (this._macrofn[n.name]) {
-            return this._macrofn[n.name].call(this, attr, function () {
-                if (n.body !== "") {
-                    var inner = new template(n.body).macro(ths._macrofn);
-                    inner._caching = ths._caching;
-                    return inner.render.apply(inner, ths._session);
-                } else {
-                    return "";
-                }
-            });
-        } else {
-            return "[nodata]";
-        }
-    };
-    template.prototype.session = function () {
-        if (arguments.length === 0) {
-            return this._session;
-        } else {
-            this._session = arguments[0];
-            return this;
-        }
-    };
-    template.prototype.render = function () {
-        var r = "";
-        this._session = Array.prototype.slice.call(arguments);
-        try {
-            r = this._fn.apply(this, this._session);
-        } catch (e) {
-            console.error("[bright] template render called error, Message:" + e.stack);
-        }
-        return r;
-    };
-    template.prototype.renderTo = function (dom) {
-        var a = Array.prototype.slice.call(arguments), b = "";
-        a.splice(0, 1);
-        this._session = a;
-        try {
-            b = this._fn.apply(this, this._session);
-        } catch (e) {
-            console.error("[bright] template render called error, Message:" + e.stack);
-        }
-        this.flush(dom.html(b));
-    };
-    template.prototype.renderAppendTo = function (dom) {
-        var a = Array.prototype.slice.call(arguments), b = "";
-        a.splice(0, 1);
-        this._session = a;
-        try {
-            b = this._fn.apply(this, this._session);
-        } catch (e) {
-            console.error("[bright] template render called error, Message:" + e.stack);
-        }
-        this.flush(bright(b).appendTo(dom));
-    };
-    template.prototype.flush = function (dom) {
-        var ths = this;
-        dom.find("[data-cache]").add(dom).each(function () {
-            var c = bright(this).dataset("cache");
-            if (c) {
-                bright(this).data("-cache-", ths._caching[c]).removeAttr("data-cache");
-            }
-        });
-    };
-    template.prototype.code = function () {
-        return this._code;
-    };
-    template.prototype.fn = function () {
-        if (arguments.length === 1) {
-            this._fn = arguments[0];
-            return this;
-        }
-        return this._fn;
-    };
-    template.prototype.macro = function (name, fn) {
-        if (arguments.length === 1) {
-            this._macrofn = name || {};
-        } else if (arguments.length === 2) {
-            this._macrofn[name] = fn;
-        }
-        return this;
-    };
-    template.prototype.clean = function () {
-        for (var i in this) {
-            this[i] = null;
-        }
-    };
-    bright.template = function (temp, parameters, macro) {
-        return new template(temp, macro, parameters);
-    };
-    bright.setTemplateGlobalMacro = function (key, fn) {
-        if (arguments.length === 1) {
-            bright.extend(template.globalMacro, key);
-        } else if (arguments.length === 2) {
-            template.globalMacro[key] = fn;
-        }
-        return this;
-    };
-    query.prototype.template = function (parameters, macro) {
-        var temp = new template(ths.html(), macro, parameters), ths = this;
-        return {
-            render: function (data, fn) {
-                ths.html(temp.render(data, fn));
-                return ths;
-            },
-            compile: function (data, fn) {
-                return temp.render(data, fn);
-            }
-        };
-    };
-
     var adapt = function () {
     };
     adapt.isSuper = /superClass\(.*?\)/g;
@@ -5721,23 +5346,16 @@
         return observe(name, obj, fn);
     };
 
-    var node = function () {
-        this.tag = "";
-        this.props = {};
+    var node = function (tag, props) {
+        this.tag = tag || "";
+        this.props = props || {};
         this.hasProp = false;
         this.children = [];
         this.parent = null;
     };
-    node.isDoctype = /\<\!DOCTYPE[\s\S]*?\>/g;
-    node.isNote = /\<\!\-\-[\s\S]*?\-\-\>/g;
-    node.isXmlTag = /\<\?[\s\S]*?\?\>/g;
-    node.filter = function (str) {
-        str = str.trim();
-        return str.replace(node.isNote, "").replace(node.isDoctype, "").replace(node.isXmlTag, "");
-    };
     node.parse = function (str) {
         if (str && str !== "") {
-            str = node.filter(str);
+            str = template.filter(str);
             var stacks = [], nodes = [], current = null;
             var tagname = "", tagendname = "", propname = "", value = "", text = "";
             var tagnamestart = false, propstart = false, valuestart = false, tagendstart = false, element = false;
@@ -5747,8 +5365,12 @@
                     if (a === "<") {
                         element = true;
                         if (text.trim() !== "") {
-                            current = new tnode(text.trim(), stacks[stacks.length - 1]);
-                            stacks[stacks.length - 1].children.push(current);
+                            current = new tnode(text.trim(), stacks[stacks.length - 1] || null);
+                            if (stacks[stacks.length - 1]) {
+                                stacks[stacks.length - 1].children.push(current);
+                            } else {
+                                nodes.push(current);
+                            }
                             text = "";
                         }
                         if (str[i + 1] && str[i + 1] === "/") {
@@ -5823,12 +5445,105 @@
                     !element && (text += a);
                 }
             }
+            if(text){
+                nodes.push(new tnode(text,null));
+            }
             return nodes;
         } else {
             return [];
         }
     };
-    node.diff = function (newnode, oldnode) {
+    node.prototype.element = function () {
+        var t = bright().create(this.tag).attr(this.props).get(0);
+        for (var i = 0; i < this.children.length; i++) {
+            t.appendChild(this.children[i].element());
+        }
+        return t;
+    };
+    node.prototype.hasCode = function () {
+        return false;
+    };
+    node.prototype.push = function (a) {
+        this.children.push(a);
+        return this;
+    };
+    node.prototype.code = function (lev) {
+        var pname = "", t = "";
+        if (!this.parent) {
+            lev = 0;
+            pname = "node" + lev;
+            t = "var " + pname + "=new node('" + this.tag + "'," + JSON.stringify(this.props) + ");";
+        } else {
+            pname = "node" + lev;
+            t = "new node('" + this.tag + "'," + JSON.stringify(this.props) + ");";
+        }
+        for (var i = 0, len = this.children.length; i < len; i++) {
+            if (this.children[i].hasCode()) {
+                t += this.children[i].content;
+            } else {
+                var q = "node" + (lev + 1);
+                lev += 1;
+                t += "var " + q + "=" + this.children[i].code(lev);
+                t += pname + ".push(" + q + ");";
+            }
+        }
+        return t;
+    };
+    var tnode = function (content, parent) {
+        this.content = content;
+        this.parent = parent;
+    };
+    tnode.prototype.element = function () {
+        return window.document.createTextNode(this.content);
+    };
+    tnode.prototype.code = function (lev) {
+        if (!this.hasCode()) {
+            return "new tnode(\"" + this.content + "\");";
+        } else {
+            return this.content;
+        }
+    };
+    tnode.prototype.hasCode = function () {
+        return /[.\(\)\{\};]/.test(this.content);
+    };
+    var template = function (temp, macro, parameters, autodom) {
+        temp = template.cache(temp);
+        var a = template.precompile(temp, autodom);
+        this._scope = a.info;
+        this._code = template.code(a.template);
+        this._fn = template.compile(this._code, parameters);
+        this._autodom = autodom;
+        if (autodom) {
+            this._autocode = template.autocode(a.virtemplate);
+            this._autocodefn = template.autocompile(this._autocode, parameters);
+        }
+        this._session = null;
+        this._caching = [];
+        this._macrofn = macro || {};
+        bright.extend(this._macrofn, template.globalMacro);
+    };
+    template.a = /&lt;%/g;
+    template.b = /%&gt;/g;
+    template.c = /&quot;/g;
+    template.d = /<%|%>/g;
+    template.e = /^=.*;$/;
+    template.f = />[\s]+</g;
+    template.g = /\{\{.*\}\}/;
+    template.h = /\<\!\-\-[\s\S]*?\-\-\>/g;
+    template.j = /\{\{|\}\}/;
+    template.i = /\r\n/g;
+    template.k = /\r/g;
+    template.l = /\n/g;
+    template.m = /"/g;
+    template.ch = /@cache\(.*?\)/g;
+    template.isDoctype = /\<\!DOCTYPE[\s\S]*?\>/g;
+    template.isNote = /\<\!\-\-[\s\S]*?\-\-\>/g;
+    template.isXmlTag = /\<\?[\s\S]*?\?\>/g;
+    template.filter = function (str) {
+        str = str.trim();
+        return str.replace(template.isNote, "").replace(template.isDoctype, "").replace(template.isXmlTag, "");
+    };
+    template.diff = function (newnode, oldnode) {
         var r = {add: [], replace: [], remove: [], edit: [], removeAll: []}, current = [];
         var walk = function (a, b) {
             if (a && b) {
@@ -5942,7 +5657,7 @@
         walk(newnode, oldnode);
         return r;
     };
-    node.effect = function (dom, r) {
+    template.effect = function (dom, r) {
         console.log(r);
         var removes = [], adds = {};
         for (var i = 0, len = r.replace.length; i < len; i++) {
@@ -6026,43 +5741,499 @@
             }
         }
     };
-    node.prototype.element = function () {
-        var t = bright().create(this.tag).attr(this.props).get(0);
-        for (var i = 0; i < this.children.length; i++) {
-            t.appendChild(this.children[i].element());
+    template.globalMacro = {
+        include: function (attrs, render) {
+            var p = new template(attrs.template);
+            var t = p.render(attrs.data);
+            for (var i in p._caching) {
+                this._caching[i] = p._caching[i];
+            }
+            return t;
         }
+    };
+    template.code = function (temp) {
+        var fn = "", outp = "out+";
+        if (baseMapping.debug) {
+            fn = "/* template source:\r\n" + temp + "*/\r\n\r\n";
+            fn += "/* compile code:*/\r\n";
+            outp = "\r\nout+";
+        }
+        fn += "var out='';";
+        var tp = temp.replace(template.a, "<%").replace(template.b, "%>").split(template.d);
+        for (var index = 0; index < tp.length; index++) {
+            var e = tp[index];
+            index % 2 !== 0 ? (template.e.test(e) ? (fn += outp + e) : (fn += e)) : (fn += outp + "=\"" + e.replace(template.m, '\\"') + "\";");
+        }
+        fn += "return out;";
+        if (baseMapping.debug) {
+            fn += "//# sourceURL=" + baseMapping.basePath + "_tempcompile/" + util.uuid() + ".js";
+        }
+        return fn;
+    };
+    template.autocode = function (temp) {
+        var fn = "", outp = "", cc = [], ee = [];
+        var tp = temp.replace(template.a, "<%").replace(template.b, "%>").split(template.d);
+        for (var index = 0; index < tp.length; index++) {
+            var e = tp[index];
+            if (index % 2 !== 0) {
+                if (template.e.test(e)) {
+                    fn += outp + "[-code-]";
+                    cc.push(e);
+                } else {
+                    fn += "([-code-])";
+                    ee.push(e);
+                }
+            } else {
+                fn += outp + e;
+            }
+        }
+        var m = node.parse(fn);
+        var t = "var r=[];\r\n";
+        for (var i = 0, len = m.length; i < len; i++) {
+            var ct = m[i].code();
+//            console.log(ct);
+            if (ct.indexOf("([-code-])")===-1) {
+                t += ct + "\r\n";
+                t += "r.push(node0);\r\n";
+            } else {
+                t += ct + "\r\n";
+                if(i===len-1){
+                    t+="r.push(node0);\r\n";
+                }
+            }
+        }
+        t = t.replace(/\(\[-code-\]\)/g, function (a, b, c) {
+            var mt=ee.shift();
+            return mt;
+        }).replace(/\[-code-\]/g, function (a, b, c) {
+            var aa = cc.shift();
+            if (aa && aa[0] === "=") {
+                return "\"+" + aa.substring(1, aa.length - 1) + "+\"";
+            } else {
+                return aa;
+            }
+        }).replace(/\{\{node\}\}/g, function (a, b, c) {
+            var t = c.substring(0, b).match(/var node[0-9]+=/g);
+            if (t) {
+                var q = t[t.length - 1];
+                return q.substring(4, q.length - 1);
+            } else {
+                return "r";
+            }
+        });
+        t += "return r;";
+//        console.log(t);
         return t;
     };
-    var tnode = function (content, parent) {
-        this.content = content;
-        this.parent = parent;
+    template.compile = function (code, parameters) {
+        try {
+            var t = [];
+            if (!parameters) {
+                t = ["data", "fn"];
+            } else {
+                for (var i = 0; i < parameters.length; i++) {
+                    t.push(parameters[i]);
+                }
+            }
+            var crt = function (fnn, args) {
+                function fn() {
+                    return fnn.apply(this, args);
+                }
+                fn.prototype = fnn.prototype;
+                return new fn();
+            };
+            t.push(code);
+            return crt(Function, t);
+        } catch (e) {
+            console.error("[template compile error] \r\n" + e.stack + "\r\n" + code);
+            return function () {
+                return "";
+            };
+        }
     };
-    tnode.prototype.element = function () {
-        return window.document.createTextNode(this.content);
+    template.autocompile = function (code, parameters) {
+        try {
+            var t = [];
+            if (!parameters) {
+                t = ["data", "fn"];
+            } else {
+                for (var i = 0; i < parameters.length; i++) {
+                    t.push(parameters[i]);
+                }
+            }
+            t.push("node");
+            t.push("tnode");
+            var crt = function (fnn, args) {
+                function fn() {
+                    return fnn.apply(this, args);
+                }
+                fn.prototype = fnn.prototype;
+                return new fn();
+            };
+            t.push(code);
+            return crt(Function, t);
+        } catch (e) {
+            console.error("[template compile error] \r\n" + e.stack + "\r\n" + code);
+            return function () {
+                return "";
+            };
+        }
     };
+    template.precompile = function (str, autodom) {
+        str = str.replace(template.h, "").replace(template.f, "><").replace(template.i, "").replace(template.k, "").replace(template.l, "");
+        if (str.indexOf("<@") !== -1) {
+            var i = -1, current = "", state = "start", tagname = "", propname = "", propnamestart, propvalue = "";
+            var isbody = true, endtagname = "", props = {}, tagindex = 0, tagendindex = 0, endtagindex = 0, endtagendindex = 0, obj = [];
+            while (i < str.length) {
+                i++;
+                current = str[i];
+                if (state === "start" && current === "<" && str[i + 1] === "@") {
+                    state = "tagstart";
+                    tagindex = i;
+                    continue;
+                }
+                if (state === "tagstart" && current === "@") {
+                    state = "tagname";
+                    tagname = "";
+                    props = {};
+                    continue;
+                }
+                if (state === "start" && current === "<" && str[i + 1] === "/" && str[i + 2] === "@") {
+                    endtagindex = i;
+                    state = "endtag";
+                    endtagname = "";
+                    i += 2;
+                    continue;
+                }
+                if (state === "endtag" && current === ">") {
+                    state = "start";
+                    endtagendindex = i + 1;
+                    obj.push({
+                        type: "endtag",
+                        tagname: endtagname,
+                        start: endtagindex,
+                        end: endtagendindex
+                    });
+                    continue;
+                }
+                if (state === "tagname" && current === " ") {
+                    state = "propname";
+                    propname = "";
+                    continue;
+                }
+                if (state === "tagname" && (current === "/" || current === ">")) {
+                    if (current === ">") {
+                        tagendindex = i + 1;
+                        state = "start";
+                        isbody = true;
+                    } else if (current === "/") {
+                        tagendindex = i + 2;
+                        state = "start";
+                        isbody = false;
+                    }
+                    if (tagname !== "") {
+                        obj.push({
+                            type: "tag",
+                            tagname: tagname,
+                            props: props,
+                            body: isbody,
+                            start: tagindex,
+                            end: tagendindex
+                        });
+                    }
+                    continue;
+                }
+                if (state === "propname" && current === "=") {
+                    state = "propvalue";
+                    continue;
+                }
+                if (state === "propvalue" && (current === "'" || current === "\"")) {
+                    state = "propvalueing";
+                    propnamestart = current;
+                    propvalue = "";
+                    continue;
+                }
+                if (state === "propvalueing" && current === propnamestart) {
+                    state = "tagname";
+                    props[propname] = propvalue;
+                    continue;
+                }
+                if (state === "endtag") {
+                    endtagname += current;
+                }
+                if (state === "tagname") {
+                    tagname += current;
+                }
+                if (state === "propname") {
+                    propname += current;
+                }
+                if (state === "propvalueing") {
+                    propvalue += current;
+                }
+            }
+            var index = 0, start = 0, end = 0, inner = false, current = null, result = [], t = "", vt = "", startin = 0, info = [];
+            for (var i in obj) {
+                if (obj[i].type === "tag" && obj[i].body === false && inner === false) {
+                    obj[i].bodystr = "";
+                    obj[i].from = obj[i].start;
+                    obj[i].to = obj[i].end;
+                    result.push(obj[i]);
+                }
+                if (obj[i].type === "tag" && obj[i].body === true) {
+                    inner = true;
+                    if (current === null) {
+                        current = obj[i];
+                        current.from = obj[i].start;
+                    }
+                    if (index === 0) {
+                        start = obj[i].start;
+                        end = obj[i].end;
+                    }
+                    index++;
+                }
+                if (obj[i].type === "endtag") {
+                    index--;
+                    if (index === 0) {
+                        current.to = obj[i].end;
+                        current.bodystr = str.substring(end, obj[i].start);
+                        result.push(current);
+                        current = null;
+                        inner = false;
+                    }
+                }
+            }
+            for (var i in result) {
+                var st = result[i].props, parameter = "";
+                for (var tpp in st) {
+                    var np = st[tpp];
+                    if (template.g.test(np)) {
+                        var qpp = np.split(template.j), cpp = "";
+                        for (var ip = 1; ip <= qpp.length; ip++) {
+                            if (ip % 2 === 0) {
+                                if (qpp[ip - 1] !== "") {
+                                    cpp += qpp[ip - 1] + "+";
+                                }
+                            } else {
+                                if (qpp[ip - 1] !== "") {
+                                    cpp += "'" + qpp[ip - 1] + "'+";
+                                } else {
+                                    cpp += qpp[ip - 1];
+                                }
+                            }
+                        }
+                        var npp = (cpp.length > 0 ? cpp.substring(0, cpp.length - 1) : "''");
+                        parameter += tpp + ":" + npp + ",";
+                    } else {
+                        parameter += tpp + ":'" + st[tpp] + "',";
+                    }
+                }
+                result[i].parameter = "{" + (parameter.length > 0 ? parameter.substring(0, parameter.length - 1) : parameter) + "}";
+                info.push({
+                    name: result[i].tagname,
+                    body: result[i].bodystr,
+                    parameter: result[i].parameter
+                });
+                var a = str.substring(startin, result[i].from);
+                t += a;
+                if (autodom) {
+                    vt += a;
+                    vt += "<%var tp=this._macro(" + i + (result[i].parameter === "" ? "" : "," + result[i].parameter) + ");" +
+                            "if(tp){" +
+                            "var c=node.parse(tp);" +
+                            "for(var i=0;i<c.length;i++){" +
+                            "{{node}}.push(c[i])" +
+                            "}" +
+                            "}" +
+                            "%>";
+                }
+                t += "<%=this._macro(" + i + (result[i].parameter === "" ? "" : "," + result[i].parameter) + ");%>";
+                startin = result[i].to;
+            }
+            t += str.substring(startin, str.length);
+            if (autodom) {
+                vt += str.substring(startin, str.length);
+            }
+            return {
+                template: t,
+                virtemplate: vt,
+                info: info
+            };
+        } else {
+            return {template: str, virtemplate: str, info: []};
+        }
+    };
+    template.cache = function (str) {
+        return str.replace(template.ch, function (e) {
+            var k = e.substring(7, e.length - 1);
+            return "data-cache='<%=this._cache(" + k + ");%>'";
+        });
+    };
+    template.prototype._cache = function (data) {
+        var k = this._caching.indexOf(data);
+        if (k === -1) {
+            this._caching.push(data);
+            return this._caching.length - 1;
+        } else {
+            return k;
+        }
+    };
+    template.prototype._macro = function (num, attr) {
+        var n = this._scope[num], ths = this;
+        if (this._macrofn[n.name]) {
+            return this._macrofn[n.name].call(this, attr, function () {
+                if (n.body !== "") {
+                    var inner = new template(n.body).macro(ths._macrofn);
+                    inner._caching = ths._caching;
+                    return inner.render.apply(inner, ths._session);
+                } else {
+                    return "";
+                }
+            });
+        } else {
+            return "[nodata]";
+        }
+    };
+    template.prototype.session = function () {
+        if (arguments.length === 0) {
+            return this._session;
+        } else {
+            this._session = arguments[0];
+            return this;
+        }
+    };
+    template.prototype.render = function () {
+        var r = "";
+        this._session = Array.prototype.slice.call(arguments);
+        try {
+            r = this._fn.apply(this, this._session);
+        } catch (e) {
+            console.error("[bright] template render called error, Message:" + e.stack);
+        }
+        return r;
+    };
+    template.prototype.autoDom = function () {
+        var r = "", ps = Array.prototype.slice.call(arguments);
+        if (ps.length === 1) {
+            ps.push({});
+        }
+        ps.push(node);
+        ps.push(tnode);
+        this._session = ps;
+        try {
+            r = this._autocodefn.apply(this, this._session);
+        } catch (e) {
+            console.error("[bright] template render called error, Message:" + e.stack);
+        }
+        return r;
+    };
+    template.prototype.renderTo = function (dom) {
+        var a = Array.prototype.slice.call(arguments), b = "";
+        a.splice(0, 1);
+        this._session = a;
+        try {
+            b = this._fn.apply(this, this._session);
+        } catch (e) {
+            console.error("[bright] template render called error, Message:" + e.stack);
+        }
+        this.flush(dom.html(b));
+    };
+    template.prototype.renderAppendTo = function (dom) {
+        var a = Array.prototype.slice.call(arguments), b = "";
+        a.splice(0, 1);
+        this._session = a;
+        try {
+            b = this._fn.apply(this, this._session);
+        } catch (e) {
+            console.error("[bright] template render called error, Message:" + e.stack);
+        }
+        this.flush(bright(b).appendTo(dom));
+    };
+    template.prototype.flush = function (dom) {
+        var ths = this;
+        dom.find("[data-cache]").add(dom).each(function () {
+//            var c = bright(this).dataset("cache");
+            var c = this.dataset.cache;
+            if (c) {
+                this.datasets || (this.datasets = {});
+                this.datasets["-cache-"] = ths._caching[c];
+                this.removeAttribute("data-cache");
+            }
+        });
+        this._caching.length = 0;
+    };
+    template.prototype.code = function () {
+        return this._code;
+    };
+    template.prototype.fn = function () {
+        if (arguments.length === 1) {
+            this._fn = arguments[0];
+            return this;
+        }
+        return this._fn;
+    };
+    template.prototype.macro = function (name, fn) {
+        if (arguments.length === 1) {
+            this._macrofn = name || {};
+        } else if (arguments.length === 2) {
+            this._macrofn[name] = fn;
+        }
+        return this;
+    };
+    template.prototype.clean = function () {
+        for (var i in this) {
+            this[i] = null;
+        }
+    };
+    template.prototype.isAutodom = function () {
+        return this._autodom;
+    };
+    bright.template = function (temp, parameters, macro, autodom) {
+        return new template(temp, macro, parameters, autodom);
+    };
+    bright.setTemplateGlobalMacro = function (key, fn) {
+        if (arguments.length === 1) {
+            bright.extend(template.globalMacro, key);
+        } else if (arguments.length === 2) {
+            template.globalMacro[key] = fn;
+        }
+        return this;
+    };
+    query.prototype.template = function (parameters, macro) {
+        var temp = new template(ths.html(), macro, parameters), ths = this;
+        return {
+            render: function (data, fn) {
+                ths.html(temp.render(data, fn));
+                return ths;
+            },
+            compile: function (data, fn) {
+                return temp.render(data, fn);
+            }
+        };
+    };
+
     var autodomc = function (dom, temp, dataarray) {
+//        console.time("=>initrender");
         this.dom = dom;
         if (is.isString(temp)) {
-            this.tempt = bright.template(temp);
+            this.tempt = bright.template(temp, null, null, true);
         } else {
             this.tempt = temp;
         }
         var tempstr = this.tempt.render.apply(this.tempt, dataarray);
-        this.cache = node.parse(tempstr);
+        this.virt = this.tempt.autoDom.apply(this.tempt, dataarray);
         dom.html(tempstr);
         this.tempt.flush(dom);
+//        console.timeEnd("=>initrender");
     };
     autodomc.prototype.update = function (dataarray) {
-        this.dom.hide();
-        console.time("render and parse");
-        var tempstr = this.tempt.render.apply(this.tempt, dataarray);
-        var m = node.parse(tempstr);
-        console.timeEnd("render and parse");
-        var q = node.diff(node.parse(tempstr), this.cache);
-        this.cache = m;
-        node.effect(this.dom, q);
+//        console.time("=>update");
+        var virt = this.tempt.autoDom.apply(this.tempt, dataarray);
+        var q = template.diff(virt, this.virt);
+        this.virt = virt;
+//        console.log(virt);
+        template.effect(this.dom, q);
         this.tempt.flush(this.dom);
-        this.dom.show();
+//        console.timeEnd("=>update");
     };
     query.prototype.autodom = function (temp, dataarray) {
         return new autodomc(this, temp, dataarray);
@@ -6286,9 +6457,10 @@
         }
         module._finders._data = r;
         module.dom.find("[data-find]").each(function () {
-            var _name = bright(this).dataset("find");
-            bright(this).data("-finder-", {name: _name}).removeAttr("data-find").attr("finder", _name);
-            module._finders._data.push(bright(this));
+            var _name = this.dataset.find;
+            this.datasets || (this.datasets = {});
+            this.datasets["-finder-"] = {name: _name};
+            this.removeAttribute("data-find");
             try {
                 module["find_" + _name] && module["find_" + _name](bright(this), module._finders);
             } catch (e) {
@@ -6904,7 +7076,7 @@
                                         }
                                         return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
                                     }
-                                }, ths.marcos));
+                                }, ths.marcos), true);
                                 if (ths.autoupdate) {
                                     ths.autodom = ths.dom.autodom(tempt, [ths.option, ths.getId(), ths.option]);
                                 } else {
@@ -7339,7 +7511,7 @@
         };
     }
     window.onerror = function (msg, file, line) {
-        console.error(msg + " ," + file + " ," + line);
+        console.error(msg + " at " + file + ":" + line);
     };
     bright.overrideRequest = function (obj) {
         var request = module.factory.get("request");

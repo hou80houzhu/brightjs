@@ -29,6 +29,7 @@
     <%}%>
 </div>
 <!--[nodome]-->
+<%var t='';%>
 <div class="" data-find="change">change</div>
 <div class="" data-find="add">add row</div>
 <div class="" data-find="remove">remove row</div>
@@ -57,8 +58,11 @@
     </div>
     <%}%>
 </div>
+<%var t='';%>
+<%var t='';%>
+<%var t='';%>
 <!--[nodomef]-->
-<@module type="{{option.type}}"/>
+    <@module type="{{option.type}}"/>
 <div class="" data-find="change">change</div>
 <div class="" data-find="add">add row</div>
 <div class="" data-find="remove">remove row</div>
@@ -102,4 +106,14 @@
     <div class="" data-find="add600">add600</div>
     <div class="" data-find="add900">add900</div>
     <div class="" data-find="addadd1000">addadd1000</div>
+</div>
+<!--[testtest]-->
+<div class="a">
+    <%for(var i in data.list){%>
+        <div class="row" @cache(data.list[i])>
+             <div class="col-md-12 test-data">
+                <span class="<%=(i==data.selected?'selected':'');%>"><%=data.list[i].label;%></span>
+            </div>
+        </div>
+        <%}%>
 </div>
