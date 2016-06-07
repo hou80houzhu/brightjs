@@ -3775,7 +3775,7 @@
     packetInfo.prototype.getTemplate = function (packetName, key) {
         for (var i in this.template) {
             if (this.template[i].packet === packetName) {
-                return this.template[i].value[key] || "";
+                return "<!--("+packetName+"."+key+")-->"+(this.template[i].value[key] || "");
             }
         }
     };
@@ -5514,14 +5514,21 @@
         return /[.\(\)\{\};]/.test(this.content);
     };
     var template = function (temp, macro, parameters, autodom) {
+        if(baseMapping.debug){
+            var q=temp.match(template.h);
+            if(q){
+                this._pid=q[0].substring(5,q[0].length-4);
+                this._path=baseMapping.basePath+this._pid.replace(/\./g,"/")+".js";
+            }
+        }
         temp = template.cache(temp);
         var a = template.precompile(temp, autodom);
         this._scope = a.info;
-        this._code = template.code(a.template);
+        this._code = template.code.call(this,a.template);
         this._fn = template.compile(this._code, parameters);
         this._autodom = autodom;
         if (autodom) {
-            this._autocode = template.autocode(a.virtemplate);
+            this._autocode = template.autocode.call(this,a.virtemplate);
             this._autocodefn = template.autocompile(this._autocode, parameters);
         }
         this._session = null;
@@ -5529,6 +5536,7 @@
         this._macrofn = macro || {};
         bright.extend(this._macrofn, template.globalMacro);
     };
+    template.z=/\<\!\-\-\([0-9a-zA-Z-_]*?\)\-\-\>/;
     template.a = /&lt;%/g;
     template.b = /%&gt;/g;
     template.c = /&quot;/g;
@@ -5775,7 +5783,7 @@
         }
         fn += "return out;";
         if (baseMapping.debug) {
-            fn += "//# sourceURL=" + baseMapping.basePath + "_tempcompile/" + util.uuid() + ".js";
+            fn += "//# sourceURL=" + this._path;
         }
         return fn;
     };
@@ -5800,7 +5808,6 @@
         var t = "var r=[];\r\n";
         for (var i = 0, len = m.length; i < len; i++) {
             var ct = m[i].code();
-//            console.log(ct);
             if (ct.indexOf("([-code-])")===-1) {
                 t += ct + "\r\n";
                 t += "r.push(node0);\r\n";
@@ -5831,6 +5838,9 @@
             }
         });
         t += "return r;";
+        if(baseMapping.debug){
+            t+="//# sourceURL=" + this._path.substring(0,this._path.length-3)+"-autodom.js";
+        }
 //        console.log(t);
         return t;
     };
@@ -6235,14 +6245,10 @@
 //        console.timeEnd("=>initrender");
     };
     autodomc.prototype.update = function (dataarray) {
-//        console.time("=>update");
-        var virt = this.tempt.autoDom.apply(this.tempt, dataarray);
-        var q = template.diff(virt, this.virt);
+        var virt = this.tempt.autoDom.apply(this.tempt, dataarray),q = template.diff(virt, this.virt);
         this.virt = virt;
-//        console.log(virt);
         template.effect(this.dom, q);
         this.tempt.flush(this.dom);
-//        console.timeEnd("=>update");
     };
     query.prototype.autodom = function (temp, dataarray) {
         return new autodomc(this, temp, dataarray);
