@@ -5665,7 +5665,9 @@
         return r;
     };
     template.effect = function (dom, r) {
-        console.log(r);
+        if(baseMapping.debug){
+            console.log("Add:["+r.add.length+"] Replace:["+r.replace.length+"] Remove:["+r.remove.length+"] Edit:["+r.edit.length+"] removeAll:["+r.removeAll.length)+"]";
+        }
         var removes = [], adds = {};
         for (var i = 0, len = r.replace.length; i < len; i++) {
             var t = dom.get(0);
