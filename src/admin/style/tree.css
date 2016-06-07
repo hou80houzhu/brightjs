@@ -1,100 +1,76 @@
 .tree {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-}
-.tree .tree-head {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0; }
+  .tree .tree-head {
     line-height: 30px;
     border-bottom: 1px solid #D7D7D7;
-    display: -webkit-flex;
-}
-.tree .tree-head .tree-head-state {
-    padding: 0 10px 0 10px;
-    display: inline-block;
-    -webkit-flex: 1;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-.tree .tree-head .tree-head-toggle {
-    display: inline-block;
-    width: 30px;
-    text-align: center;
-}
-.tree .tree-container {
+    display: -webkit-flex; }
+    .tree .tree-head .tree-head-state {
+      padding: 0 10px 0 10px;
+      display: inline-block;
+      -webkit-flex: 1; }
+    .tree .tree-head .tree-head-toggle {
+      display: inline-block;
+      width: 30px;
+      text-align: center; }
+  .tree .tree-container {
     position: absolute;
     left: 0;
     top: 31px;
     right: 0;
     bottom: 0;
     overflow: hidden;
-    padding: 5px;
-}
-.tree .tree-container:hover {
-    overflow: auto;
-}
-.tree .tree-node .tree-node-head {
+    padding: 5px; }
+    .tree .tree-container:hover {
+      overflow: auto; }
+  .tree .tree-node .tree-node-head {
     line-height: 30px;
-    white-space: nowrap;
-}
-.tree .tree-node .tree-node-head .arrow {
-    display: inline-block;
-    width: 20px;
-    text-align: center;
-    vertical-align: top;
-    font-size: 15px;
-}
-.tree .tree-node .tree-node-head .arrow i {
-    -webkit-transform: rotate(45deg);
-}
-.tree .tree-node .tree-node-head .check {
-    display: inline-block;
-    width: 20px;
-    text-align: center;
-    vertical-align: top;
-}
-.tree .tree-node .tree-node-head .check input {
-    vertical-align: text-top;
-}
-.tree .tree-node .tree-node-head span {
-    display: inline-block;
-    vertical-align: top;
-    cursor: default;
-}
-.tree .tree-node .tree-node-head .tools {
-    display: none;
-}
-.tree .tree-node .tree-node-head .tools .tool {
-    display: inline-block;
-    width: 30px;
-    text-align: center;
-}
-.tree .tree-node .tree-node-head .tools .tool:hover {
-    background: #FCFCFC;
-}
-.tree .tree-node .tree-node-head.hover span {
-    background: #43D6B9;
-    color: white;
-    text-shadow: 2px 2px 3px #5A5A48;
-    padding: 0 5px 0 5px;
-    -webkit-border-radius: 5px;
-}
-.tree .tree-node .tree-node-head.hover .tools {
-    display: inline-block;
-}
-.tree .tree-node .tree-node-head.noarrow .arrow i {
-    display: none;
-}
-.tree .tree-node .tree-node-list {
-    margin-left: 15px;
-}
-.tree .tree-node.close .tree-node-head .arrow i {
-    -webkit-transform: rotate(0);
-}
-.tree .tree-node.close .tree-node-list {
-    display: none;
-}
+    white-space: nowrap; }
+    .tree .tree-node .tree-node-head .arrow {
+      display: inline-block;
+      width: 20px;
+      text-align: center;
+      vertical-align: top;
+      font-size: 15px; }
+      .tree .tree-node .tree-node-head .arrow i {
+        -webkit-transform: rotate(45deg); }
+    .tree .tree-node .tree-node-head .check {
+      display: inline-block;
+      width: 20px;
+      text-align: center;
+      vertical-align: top; }
+      .tree .tree-node .tree-node-head .check input {
+        vertical-align: text-top; }
+    .tree .tree-node .tree-node-head span {
+      display: inline-block;
+      vertical-align: top;
+      cursor: default; }
+    .tree .tree-node .tree-node-head .tools {
+      display: none; }
+      .tree .tree-node .tree-node-head .tools .tool {
+        display: inline-block;
+        width: 30px;
+        text-align: center; }
+        .tree .tree-node .tree-node-head .tools .tool:hover {
+          background: #FCFCFC; }
+    .tree .tree-node .tree-node-head.hover span {
+      background: #43D6B9;
+      color: white;
+      text-shadow: 2px 2px 3px #5A5A48;
+      padding: 0 5px 0 5px;
+      -webkit-border-radius: 5px; }
+    .tree .tree-node .tree-node-head.hover .tools {
+      display: inline-block; }
+    .tree .tree-node .tree-node-head.noarrow .arrow i {
+      display: none; }
+  .tree .tree-node .tree-node-list {
+    margin-left: 15px; }
+  .tree .tree-node.close .tree-node-head .arrow i {
+    -webkit-transform: rotate(0); }
+  .tree .tree-node.close .tree-node-list {
+    display: none; }
 
 /*# sourceMappingURL=tree.css.map */

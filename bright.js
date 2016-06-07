@@ -4955,16 +4955,12 @@
                 obj.extend = [obj.extend];
             }
         }
-        var b = new this._mapping[obj.extend[0]]();
-        for (var i in obj) {
-            if (i !== "name" && i !== "extend" && i !== "shortName" && i !== "packet") {
-                b[i] = obj[i];
-            }
+        var parent = new this._mapping[obj.extend[0]]();
+        parent.option=obj.option;
+        if (!parent.option) {
+            parent.option = {};
         }
-        if (!b.option) {
-            b.option = {};
-        }
-        var r = Object.getPrototypeOf(b), ops = [b.option];
+        var r = Object.getPrototypeOf(parent), ops = [parent.option];
         while (r) {
             ops.push(r.option ? bright.json.clone(r.option) : {});
             r = Object.getPrototypeOf(r);
@@ -4981,7 +4977,7 @@
                     for (var k = 0; k < m.length; k++) {
                         var opn = m[k];
                         if (opn !== "option" && opn !== "init") {
-                            b[opn] = q.prototype[opn];
+                            parent[opn] = q.prototype[opn];
                         }
                     }
                     ops.push(bright.json.clone(q.prototype.option));
@@ -4989,8 +4985,13 @@
             }
         }
         bright.extend.apply({}, ops);
-        if (!b.init) {
-            b.init = function () {};
+        for (var i in obj) {
+            if (i !== "name" && i !== "extend" && i !== "shortName" && i !== "packet") {
+                parent[i] = obj[i];
+            }
+        }
+        if (!parent.init) {
+            parent.init = function () {};
         }
         var pp = ex.concat(obj.extend);
         if (this._mapping[obj.extend[0]].prototype.__info__) {
@@ -5001,7 +5002,7 @@
                 }
             }
         }
-        factory.set(b, {"__info__": factory.set({}, {
+        factory.set(parent, {"__info__": factory.set({}, {
                 name: (obj.packet ? obj.packet + "." + obj.name : obj.name),
                 short: obj.name || "",
                 packet: obj.packet || "",
@@ -5010,8 +5011,8 @@
                 types: pp
             })});
         var adapt = function () {};
-        adapt.prototype = b;
-        this._mapping[b.__info__.name] = adapt;
+        adapt.prototype = parent;
+        this._mapping[parent.__info__.name] = adapt;
         return this;
     };
     factory.prototype.get = function (name) {
@@ -5512,6 +5513,9 @@
             if(q){
                 this._pid=q[0].substring(5,q[0].length-4);
                 this._path=baseMapping.basePath+this._pid.replace(/\./g,"/")+".js";
+            }else{
+                this._pid="template/"+util.uuid();
+                this._path=baseMapping.basePath+".js";
             }
         }
         temp = template.cache(temp);
@@ -6138,9 +6142,9 @@
         }
         return r;
     };
-    template.prototype.renderTo = function (dom) {
+    template.prototype.renderTo = function () {
         var a = Array.prototype.slice.call(arguments), b = "";
-        a.splice(0, 1);
+        var dom=a.shift();
         this._session = a;
         try {
             b = this._fn.apply(this, this._session);
@@ -6149,9 +6153,9 @@
         }
         this.flush(dom.html(b));
     };
-    template.prototype.renderAppendTo = function (dom) {
+    template.prototype.renderAppendTo = function () {
         var a = Array.prototype.slice.call(arguments), b = "";
-        a.splice(0, 1);
+        var dom=a.shift();
         this._session = a;
         try {
             b = this._fn.apply(this, this._session);
@@ -6467,6 +6471,7 @@
             this.datasets || (this.datasets = {});
             this.datasets["-finder-"] = {name: _name};
             this.removeAttribute("data-find");
+            module._finders._data.push($(this));
             try {
                 module["find_" + _name] && module["find_" + _name](bright(this), module._finders);
             } catch (e) {
@@ -6787,7 +6792,7 @@
                 } else {
                     var tep = bright.template(ths.template, null, ths.marcos), n = Array.prototype.slice.call(arguments);
                     n.unshift(ths.dom);
-                    tep.renderTo.apply(tep, n);
+                    tep.renderTo.apply(tep,n);
                     ths.delegate();
                 }
             } catch (e) {

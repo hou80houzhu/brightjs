@@ -138,9 +138,9 @@ Module({
             $(window).unbind("resize", fn);
         });
         this.postRequest(option.url).done(function (data) {
-            ths.remoteData = data;
-            ths.render(data);
-            ths.finders("item").eq(0).click();
+            this.remoteData = data;
+            this.render(data);
+            this.finders("item").eq(0).click();
         });
     },
     bind_open: function (dom) {
@@ -422,7 +422,7 @@ Module({
     },
     getIndexByid: function (id) {
         var r = -1;
-        this.dom.find(".container").children().each(function (num) {
+        this.dom.find(".container").children().each(function (a,num) {
             if ($(this).dataset("viewId") === "win-" + id) {
                 r = num;
                 return false;

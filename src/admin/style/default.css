@@ -2,8 +2,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  /*-webkit-user-select: none;*/
-}
+  -webkit-user-select: none; }
 
 .squart {
   line-height: 40px;
@@ -838,7 +837,7 @@ body {
     -webkit-border-radius: 15px 15px 0 0; }
   .login .logo {
     height: 170px;
-    background-image: url(images/logo1.png);
+    background-image: url(images/xlogo.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain; }
@@ -976,58 +975,6 @@ body {
   .newlist.open {
     width: 260px; }
 
-  .about{
-      position:absolute;
-      left:0;
-      top:0;
-      right:0;
-      bottom:0;
-      z-index:999999999;
-      display: -webkit-box;
-    -webkit-box-orient: horizontal;
-    -webkit-box-pack: center;
-    -webkit-box-align: center;
-  }
-  .about .about-mask{
-      position:absolute;
-      left:0;
-      top:0;
-      right:0;
-      bottom:0;
-      background:rgba(0,0,0,0);
-      -webkit-transition:all ease-out 3s;
-  }
-  .about.show .about-mask{
-      background:rgba(0,0,0,0.7);
-  }
-  .about .about-content{
-      width:40%;
-      height:300px;
-      background:white;
-      -webkit-border-radius: 10px;
-      -webkit-box-shadow:0 0 15px #0F0F0F;
-      position:relative;
-  }
-  .about .about-content-title{
-      line-height:35px;
-      padding:0 15px 0 15px;
-      border-bottom: 1px solid #FCFCFC;
-  }
-  .about .about-content-context{
-      text-align: center;
-      position:absolute;
-      left:0;
-      right:0;
-      top:36px;
-      bottom:0;
-      padding:0 15px 0 15px;
-  }
-  .about .about-content-context .about-content-context-logo{
-      height:150px;
-      background:url(images/logo1.png) no-repeat center;
-  }
-  
-  
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px; }
