@@ -3,12 +3,12 @@
     <div class='form'>
         <div class='head'><i class="fa fa-search"></i></div>
         <div class='body'>
-            <%=module(data.option.formType);%>
+            <@module type="{{data.formType}}"/>
         </div>
         <div class='foot'>
-            <%for(var i in data.option.btns){%>
-            <div class='tbtn' action='<%=data.option.btns[i].action;%>' data-bind='click:btn'>
-                <i class='<%=data.option.btns[i].icon;%>'></i>
+            <%for(var i in data.btns){%>
+            <div class='tbtn' action='<%=data.btns[i].action;%>' data-bind='click:btn'>
+                <i class='<%=data.btns[i].icon;%>'></i>
             </div>
             <%}%>
         </div>
@@ -16,19 +16,19 @@
     <div class='bar' data-bind='click:bar'><i class='fa fa-chevron-right'></i></div>
 </div>
 <div class='tablecon'>
-    <%=module(data.option.tableType);%>
+    <@module type="{{data.tableType}}"/>
 </div>
 <!--[selecttable]-->
 <div class='selecttable-search'>
     <div class='selecttable-form'>
         <div class='selecttable-head'><i class="fa fa-search"></i></div>
         <div class='selecttable-body'>
-            <%=module(data.option.formType);%>
+            <@module type="{{data.formType}}"/>
         </div>
         <div class='selecttable-foot'>
-            <%for(var i in data.option.btns){%>
-            <div class='tbtn' action='<%=data.option.btns[i].action;%>' data-bind='click:btn'>
-                <i class='<%=data.option.btns[i].icon;%>'></i>
+            <%for(var i in data.btns){%>
+            <div class='tbtn' action='<%=data.btns[i].action;%>' data-bind='click:btn'>
+                <i class='<%=data.btns[i].icon;%>'></i>
             </div>
             <%}%>
         </div>
@@ -37,7 +37,7 @@
 </div>
 <div class='selecttable-tablecon'>
     <div class="selecttable-tablecon-table">
-        <%=module(data.option.tableType);%>
+        <@module type="{{data.tableType}}"/>
     </div>
     <div class="selecttable-tablecon-selectpanl" data-find="panel">
         <div class="selecttable-tablecon-selectpanl-desc">勾选上方表格数据以选择</div>
@@ -45,61 +45,61 @@
 </div>
 <!--[treetablegroup]-->
 <div class='treecon'>
-    <%=module(data.option.treeType);%>
+    <@module type="{{data.treeType}}"/>
 </div>
 <div class='tbg'>
-    <%=module(data.option.tablegroupType);%>
+    <@module type="{{data.tablegroupType}}"/>
 </div>
 <!--[treetabgroup]-->
 <div class='treecon'>
-    <%=module(data.option.treeType);%>
+    <@module type="{{data.treeType}}"/>
 </div>
 <div class='tbg'>
-    <%=module(data.option.tablegroupType);%>
+    <@module type="{{data.tablegroupType}}"/>
 </div>
 <!--[edittree]-->
-<div class="edittree-tree"><%=module(data.option.treeType);%></div>
+<div class="edittree-tree"><@module type="{{data.treeType}}"/></div>
 <!--[tabgroup]-->
 <div class="tabgroup-titles">
-    <%for(var i in data.option.tabs){%>
-    <div class="tabgroup-title" data-find="title" data-bind="click:title" num="<%=i;%>"><%=data.option.tabs[i].name;%></div>
+    <%for(var i in data.tabs){%>
+    <div class="tabgroup-title" data-find="title" data-bind="click:title" num="<%=i;%>"><%=data.tabs[i].name;%></div>
     <%}%>
 </div>
 <div class="tabgroup-contents">
-    <%for(var i in data.option.tabs){%>
+    <%for(var i in data.tabs){%>
     <div class="tabgroup-content" data-find="content">
-        <%if(data.option.tabs[i].inner&&data.option.tabs[i]!==''){%>
-        <%=module(data.option.tabs[i].inner,data.option.tabs[i].option||'');%>
+        <%if(data.tabs[i].inner&&data.tabs[i]!==''){%>
+        <@module type="{{data.tabs[i].inner}}" option="{{data.tabs[i].option||''}}"/>
         <%}%>
     </div>
     <%}%>
 </div>
 <!--[tabstate]-->
 <div class="tabstate-titles">
-    <%for(var i in data.option.states){%>
-    <div class="tabstate-title" data-find="title" data-bind="click:title" num="<%=i;%>"><%=data.option.states[i].name;%></div>
+    <%for(var i in data.states){%>
+    <div class="tabstate-title" data-find="title" data-bind="click:title" num="<%=i;%>"><%=data.states[i].name;%></div>
     <%}%>
 </div>
 <div class="tabstate-contents">
-    <%=module(data.option.inner,data.option.option||'');%>
+    <@module type="{{data.inner}}" option="{{data.option||''}}"/>
 </div>
 <!--[edittreetablegroup]-->
 <div class='treecon'>
-    <%=module(data.option.treeType);%>
+    <@module type="{{data.treeType}}"/>
 </div>
 <div class='tbg'>
-    <%=module(data.option.tablegroupType);%>
+    <@module type="{{data.tablegroupType}}"/>
 </div>
 <!--[popup]-->
 <div class="popup-mask"></div>
-<div class="popup-container" style='width:<%=data.option.width;%>;height:<%=data.option.height;%>;margin-left:-<%=data.option.width2;%>;margin-top:-<%=data.option.height2;%>;'>
-    <div class="popup-header"><%=data.option.title;%></div>
+<div class="popup-container" style='width:<%=data.width;%>;height:<%=data.height;%>;margin-left:-<%=data.width2;%>;margin-top:-<%=data.height2;%>;'>
+    <div class="popup-header"><%=data.title;%></div>
     <div class="popup-body">
-        <%=module(data.option.inner,data.option.option||'');%>
+        <@module type="{{data.inner}}" option="{{data.option||''}}"/>
     </div>
     <div class="popup-foot">
-        <%for(var i in data.option.btns){%>
-        <div class="popup-foot-btn" action="<%=data.option.btns[i].action;%>" data-bind="click:btn"><i class="<%=data.option.btns[i].icon;%>"></i></div>
+        <%for(var i in data.btns){%>
+        <div class="popup-foot-btn" action="<%=data.btns[i].action;%>" data-bind="click:btn"><i class="<%=data.btns[i].icon;%>"></i></div>
         <%}%>
     </div>
 </div>

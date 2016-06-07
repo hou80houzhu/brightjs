@@ -69,10 +69,10 @@
     </div>
 </div><div class='xcon'></div>
 <!--[extendform]-->
-<%if(data.option.add){%>
+<%if(data.add){%>
 <div class="extendform-tools">
     <div class="extenform-btn" data-btn='add'><i class='fa fa-plus'></i></div>
-    <%=data.option.label;%>
+    <%=data.label;%>
 </div>
 <%}%>
 <div class='extendform-con'></div>
@@ -89,13 +89,13 @@
 </div
 <!--[simpleform]-->
 <div class='con'><div class='row'>
-        <%for(var i in data.option.fields){%>
-        <div class='span1-<%=data.option.colnum;%>'>
-            <div view-<%=data.id;%>='<%=data.option.fields[i]._type;%>' viewid='k<%=i;%>'></div>
+        <%for(var i in data.fields){%>
+        <div class='span1-<%=data.colnum;%>'>
+            <div view-<%=data.id;%>='<%=data.fields[i]._type;%>' viewid='k<%=i;%>'></div>
         </div><div class='con'><div class='row'>
-                <%for(var i in data.option.fields){%>
-                <div class='span1-<%=data.option.colnum;%>'>
-                    <div view-<%=data.id;%>='<%=data.option.fields[i]._type;%>' viewid='k<%=i;%>'></div>
+                <%for(var i in data.fields){%>
+                <div class='span1-<%=data.colnum;%>'>
+                    <div view-<%=data.id;%>='<%=data.fields[i]._type;%>' viewid='k<%=i;%>'></div>
                 </div>
                 <%}%>
             </div></div>
@@ -103,68 +103,68 @@
     </div>
 </div>
 <!--[simpleform]-->
-<%for(var i in data.option.fields){%>
-<div><%=module(data.option.fields[i].type,'','t'+i);%></div>
+<%for(var i in data.fields){%>
+<div><@module type="{{data.fields[i].type}}" id="{{'t'+i}}"/></div>
 <%}%>
 <!--[listform]-->
 <div class="listform-tips" data-find="tips"></div>
 <div class="listform-container">
-    <%for(var i in data.option.fields){%>
-    <div><%=module(data.option.fields[i].type,'','t'+i);%></div>
+    <%for(var i in data.fields){%>
+    <div><@module type="{{data.fields[i].type}}" id="{{'t'+i}}"/></div>
     <%}%>
 </div>
 <!--[singleform]-->
 <div class="singleform-tips" data-find="tips"></div>
 <div class='singleform-container'>
-    <%for(var i in data.option.fields){%>
-    <div><%=module(data.option.fields[i].type,'','t'+i);%></div>
+    <%for(var i in data.fields){%>
+    <div><@module type="{{data.fields[i].type}}" id="{{'t'+i}}"/></div>
     <%}%>
 </div>
 <div class='singleform-foot'>
     <div class='singleform-group'>
-        <%for(var i in data.option.btns){%>
-        <div data-btn='<%=data.option.btns[i].action;%>' class='singleform-btn' type='<%=data.option.btns[i].action;%>'><i class='<%=data.option.btns[i].icon;%>'></i></div>
+        <%for(var i in data.btns){%>
+        <div data-btn='<%=data.btns[i].action;%>' class='singleform-btn' type='<%=data.btns[i].action;%>'><i class='<%=data.btns[i].icon;%>'></i></div>
         <%}%>
     </div>
 </div>
 <!--[gridform]-->
 <div class='row'>
-    <%for(var i in data.option.fields){%>
-    <div class='span<%=data.option.fields[i].col;%>-<%=data.option.cols;%>'>
-        <div view-<%=data.id;%>='<%=data.option.fields[i]._type;%>' viewid='m<%=i;%>'></div>
+    <%for(var i in data.fields){%>
+    <div class='span<%=data.fields[i].col;%>-<%=data.cols;%>'>
+        <div view-<%=data.id;%>='<%=data.fields[i]._type;%>' viewid='m<%=i;%>'></div>
     </div>
     <%}%>
 </div>
 <!--[freeform]-->
-<%for(var i in data.option.fields){%>
-<div view-<%=data.id;%>='<%=data.option.fields[i]._type;%>' viewid='<%=i;%>'></div>
+<%for(var i in data.fields){%>
+<div view-<%=data.id;%>='<%=data.fields[i]._type;%>' viewid='<%=i;%>'></div>
 <%}%>
 <!--[htmleditor]-->
 <div class="editor-textare">
     <iframe data-find='textarea'></iframe>
 </div>
 <div class="editor-toolbar">
-    <%if(data.option.fontsize){%>
+    <%if(data.fontsize){%>
     <div class="editor-droplist" data-find='droplist' type='FontSize'>
-        <div class="editor-droplist-title" data-bind='click:droplist'><span><%=data.option.fontsize[0].name;%></span>&nbsp;<i class='fa fa-caret-down'></i></div>
+        <div class="editor-droplist-title" data-bind='click:droplist'><span><%=data.fontsize[0].name;%></span>&nbsp;<i class='fa fa-caret-down'></i></div>
         <div class="editor-droplist-con">
-            <%for(var i in data.option.fontsize){%>
-            <div class="editor-droplist-con-item" data-bind="click:droplistitem" value="<%=data.option.fontsize[i].value;%>" label='<%=data.option.fontsize[i].name;%>'><font size='<%=data.option.fontsize[i].value;%>'><%=data.option.fontsize[i].name;%></font></div>
+            <%for(var i in data.fontsize){%>
+            <div class="editor-droplist-con-item" data-bind="click:droplistitem" value="<%=data.fontsize[i].value;%>" label='<%=data.fontsize[i].name;%>'><font size='<%=data.fontsize[i].value;%>'><%=data.fontsize[i].name;%></font></div>
             <%}%>
         </div>
     </div>
     <%}%>
-    <%if(data.option.fontfamily){%>
+    <%if(data.fontfamily){%>
     <div class="editor-droplist" data-find='droplist' type='FontName'>
-        <div class="editor-droplist-title" data-bind='click:droplist'><span><%=data.option.fontfamily[0].name;%></span>&nbsp;<i class='fa fa-caret-down'></i></div>
+        <div class="editor-droplist-title" data-bind='click:droplist'><span><%=data.fontfamily[0].name;%></span>&nbsp;<i class='fa fa-caret-down'></i></div>
         <div class="editor-droplist-con">
-            <%for(var i in data.option.fontfamily){%>
-            <div class="editor-droplist-con-item" data-bind="click:droplistitem" value="<%=data.option.fontfamily[i].value;%>" label='<%=data.option.fontfamily[i].name;%>' style='font-family: <%=data.option.fontfamily[i].value;%>'><%=data.option.fontfamily[i].name;%></div>
+            <%for(var i in data.fontfamily){%>
+            <div class="editor-droplist-con-item" data-bind="click:droplistitem" value="<%=data.fontfamily[i].value;%>" label='<%=data.fontfamily[i].name;%>' style='font-family: <%=data.fontfamily[i].value;%>'><%=data.fontfamily[i].name;%></div>
             <%}%>
         </div>
     </div>
     <%}%>
-    <%if(data.option.color){%>
+    <%if(data.color){%>
     <div class="editor-droplist" data-find='droplist' type='foreColor'>
         <div class="editor-droplist-title" data-bind='click:droplist'><span><div style='display:inline-block;vertical-align:sub;width:15px;height:15px;background:black;'></div></span>&nbsp;<i class='fa fa-caret-down'></i></div>
         <div class="editor-droplist-con">
@@ -182,57 +182,57 @@
         </div>
     </div>
     <%}%>
-    <%if(data.option.basic){%>
+    <%if(data.basic){%>
     <div class="editor-btngroup">
-        <%for(var i in data.option.basic){%>
-        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.option.basic[i].action;%>" title="<%=data.option.basic[i].title;%>"><i class="<%=data.option.basic[i].icon;%>"></i></div>
+        <%for(var i in data.basic){%>
+        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.basic[i].action;%>" title="<%=data.basic[i].title;%>"><i class="<%=data.basic[i].icon;%>"></i></div>
         <%}%>
     </div>
     <%}%>
-    <%if(data.option.justify){%>
+    <%if(data.justify){%>
     <div class="editor-btngroup">
-        <%for(var i in data.option.justify){%>
-        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.option.justify[i].action;%>" title="<%=data.option.justify[i].title;%>"><i class="<%=data.option.justify[i].icon;%>"></i></div>
+        <%for(var i in data.justify){%>
+        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.justify[i].action;%>" title="<%=data.justify[i].title;%>"><i class="<%=data.justify[i].icon;%>"></i></div>
         <%}%>
     </div>
     <%}%>
-    <%if(data.option.list){%>
+    <%if(data.list){%>
     <div class="editor-btngroup">
-        <%for(var i in data.option.list){%>
-        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.option.list[i].action;%>" title="<%=data.option.list[i].title;%>"><i class="<%=data.option.list[i].icon;%>"></i></div>
+        <%for(var i in data.list){%>
+        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.list[i].action;%>" title="<%=data.list[i].title;%>"><i class="<%=data.list[i].icon;%>"></i></div>
         <%}%>
     </div>
     <%}%>
-    <%if(data.option.dent){%>
+    <%if(data.dent){%>
     <div class="editor-btngroup">
-        <%for(var i in data.option.dent){%>
-        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.option.dent[i].action;%>" title="<%=data.option.dent[i].title;%>"><i class="<%=data.option.dent[i].icon;%>"></i></div>
+        <%for(var i in data.dent){%>
+        <div class="editor-btn" data-find='basic' data-bind='click:basic' action="<%=data.dent[i].action;%>" title="<%=data.dent[i].title;%>"><i class="<%=data.dent[i].icon;%>"></i></div>
         <%}%>
     </div>
     <%}%>
-    <%if(data.option.insert){%>
+    <%if(data.insert){%>
     <div class="editor-btngroup">
-        <%for(var i in data.option.insert){%>
-        <div class="editor-btn" data-find='insert' data-bind='click:insert' action="<%=data.option.insert[i].action;%>" title="<%=data.option.insert[i].title;%>"><i class="<%=data.option.insert[i].icon;%>"></i></div>
+        <%for(var i in data.insert){%>
+        <div class="editor-btn" data-find='insert' data-bind='click:insert' action="<%=data.insert[i].action;%>" title="<%=data.insert[i].title;%>"><i class="<%=data.insert[i].icon;%>"></i></div>
         <%}%>
     </div>
     <%}%>
-    <%if(data.option.undo){%>
-    <div class="editor-btnx" data-find='basic' data-bind='click:basic' action="<%=data.option.undo.action;%>" title="<%=data.option.undo.title;%>"><i class="<%=data.option.undo.icon;%>"></i></div>
+    <%if(data.undo){%>
+    <div class="editor-btnx" data-find='basic' data-bind='click:basic' action="<%=data.undo.action;%>" title="<%=data.undo.title;%>"><i class="<%=data.undo.icon;%>"></i></div>
     <%}%>
-    <%if(data.option.html){%>
-    <div class="editor-btnx" data-find='basic' data-bind='click:basic' action="<%=data.option.html.action;%>" title="<%=data.option.html.title;%>"><i class="<%=data.option.html.icon;%>"></i></div>
+    <%if(data.html){%>
+    <div class="editor-btnx" data-find='basic' data-bind='click:basic' action="<%=data.html.action;%>" title="<%=data.html.title;%>"><i class="<%=data.html.icon;%>"></i></div>
     <%}%>
 </div>
 <div class="editor-tip"><i class='fa fa-check'></i> tips</div>
 <!--[htmleditorbox]-->
 <div class="editor-mask"></div>
 <div class="editor-box-content">
-    <div class="editor-box-header"><%=data.option.title;%></div>
-    <div class="editor-box-body"><%=module(data.option.inner);%></div>
+    <div class="editor-box-header"><%=data.title;%></div>
+    <div class="editor-box-body"><@module type="{{data.inner}}"/></div>
     <div class="editor-box-footer">
-        <%for(var i in data.option.btns){%>
-        <div class="editor-box-btn" action='<%=data.option.btns[i].action;%>' data-bind='click:btn'><i class='<%=data.option.btns[i].icon;%>'></i></div>
+        <%for(var i in data.btns){%>
+        <div class="editor-box-btn" action='<%=data.btns[i].action;%>' data-bind='click:btn'><i class='<%=data.btns[i].icon;%>'></i></div>
         <%}%>
     </div>
 </div>

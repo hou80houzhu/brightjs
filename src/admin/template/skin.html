@@ -6,7 +6,7 @@
         <div class='logo'></div>
     </div>
     <div class='loginform'>
-        <%=module(data.option.formType);%>
+        <@module type="{{data.formType}}"/>
     </div>
     <div class='btncon'>
         <div class='btn block success denglu' data-bind="click:login">登录</div>
@@ -15,7 +15,7 @@
 <!--[mainpage]-->
 <div class='middle-menulist'>
     <div class='menucon'>
-        <%=module(data.option.listType);%>
+        <@module type="{{data.listType}}"/>
     </div>
 </div>
 <div class='main-bar'>
@@ -32,7 +32,7 @@
         <div class='top-tbtn' data-bind='click:userinfo' title="登录信息"><i class='fa fa-user'></i></div>
     </div>
 </div>
-<%=module(data.option.pageType);%>
+<@module type="{{data.pageType}}"/>
 <!--[newlist]-->
 <div class='newlist-head' data-bind='click:open'>
     <div class='newlist-head-icon'><i class='fa fa-bars'></i></div>
@@ -96,11 +96,11 @@
 <!--[choutier]-->
 <div class='head'>修改密码</div>
 <div class='body'>
-    <%=module(data.option.inner);%>
+    <@module type="{{option.inner}}"/>
 </div>
 <div class='foot'>
-    <%for(var i in data.option.btns){%>
-    <div class='tbtn' data-bind='click:btn' action='<%=data.option.btns[i].action;%>'><i class='<%=data.option.btns[i].icon;%>'></i></div>
+    <%for(var i in data.btns){%>
+    <div class='tbtn' data-bind='click:btn' action='<%=data.btns[i].action;%>'><i class='<%=data.btns[i].icon;%>'></i></div>
     <%}%>
 </div>
 <!--[blank]-->
