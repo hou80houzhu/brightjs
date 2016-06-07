@@ -3768,7 +3768,7 @@
     packetInfo.prototype.getTemplate = function (packetName, key) {
         for (var i in this.template) {
             if (this.template[i].packet === packetName) {
-                return "<!--("+packetName+"."+key+")-->"+(this.template[i].value[key] || "");
+                return "<!--(" + packetName + "." + key + ")-->" + (this.template[i].value[key] || "");
             }
         }
     };
@@ -4956,7 +4956,7 @@
             }
         }
         var parent = new this._mapping[obj.extend[0]]();
-        parent.option=obj.option;
+        parent.option = obj.option;
         if (!parent.option) {
             parent.option = {};
         }
@@ -5446,8 +5446,8 @@
                     !element && (text += a);
                 }
             }
-            if(text){
-                nodes.push(new tnode(text,null));
+            if (text) {
+                nodes.push(new tnode(text, null));
             }
             return nodes;
         } else {
@@ -5508,24 +5508,24 @@
         return /[.\(\)\{\};]/.test(this.content);
     };
     var template = function (temp, macro, parameters, autodom) {
-        if(baseMapping.debug){
-            var q=temp.match(template.h);
-            if(q){
-                this._pid=q[0].substring(5,q[0].length-4);
-                this._path=baseMapping.basePath+this._pid.replace(/\./g,"/")+".js";
-            }else{
-                this._pid="template/"+util.uuid();
-                this._path=baseMapping.basePath+".js";
+        if (baseMapping.debug) {
+            var q = temp.match(template.h);
+            if (q) {
+                this._pid = q[0].substring(5, q[0].length - 4);
+                this._path = baseMapping.basePath + this._pid.replace(/\./g, "/") + ".js";
+            } else {
+                this._pid = "template/" + util.uuid();
+                this._path = baseMapping.basePath + ".js";
             }
         }
         temp = template.cache(temp);
         var a = template.precompile(temp, autodom);
         this._scope = a.info;
-        this._code = template.code.call(this,a.template);
+        this._code = template.code.call(this, a.template);
         this._fn = template.compile(this._code, parameters);
         this._autodom = autodom;
         if (autodom) {
-            this._autocode = template.autocode.call(this,a.virtemplate);
+            this._autocode = template.autocode.call(this, a.virtemplate);
             this._autocodefn = template.autocompile(this._autocode, parameters);
         }
         this._session = null;
@@ -5533,7 +5533,7 @@
         this._macrofn = macro || {};
         bright.extend(this._macrofn, template.globalMacro);
     };
-    template.z=/\<\!\-\-\([0-9a-zA-Z-_]*?\)\-\-\>/;
+    template.z = /\<\!\-\-\([0-9a-zA-Z-_]*?\)\-\-\>/;
     template.a = /&lt;%/g;
     template.b = /%&gt;/g;
     template.c = /&quot;/g;
@@ -5670,8 +5670,8 @@
         return r;
     };
     template.effect = function (dom, r) {
-        if(baseMapping.debug){
-            console.log("Add:["+r.add.length+"] Replace:["+r.replace.length+"] Remove:["+r.remove.length+"] Edit:["+r.edit.length+"] removeAll:["+r.removeAll.length)+"]";
+        if (baseMapping.debug) {
+            console.log("Add:[" + r.add.length + "] Replace:[" + r.replace.length + "] Remove:[" + r.remove.length + "] Edit:[" + r.edit.length + "] removeAll:[" + r.removeAll.length) + "]";
         }
         var removes = [], adds = {};
         for (var i = 0, len = r.replace.length; i < len; i++) {
@@ -5805,18 +5805,13 @@
         var t = "var r=[];\r\n";
         for (var i = 0, len = m.length; i < len; i++) {
             var ct = m[i].code();
-            if (ct.indexOf("([-code-])")===-1) {
-                t += ct + "\r\n";
+            t += ct + "\r\n";
+            if (ct.indexOf("node0") !== -1 && ct.indexOf("r.push(node0)") === -1) {
                 t += "r.push(node0);\r\n";
-            } else {
-                t += ct + "\r\n";
-                if(i===len-1){
-                    t+="r.push(node0);\r\n";
-                }
             }
         }
         t = t.replace(/\(\[-code-\]\)/g, function (a, b, c) {
-            var mt=ee.shift();
+            var mt = ee.shift();
             return mt;
         }).replace(/\[-code-\]/g, function (a, b, c) {
             var aa = cc.shift();
@@ -5835,8 +5830,8 @@
             }
         });
         t += "return r;";
-        if(baseMapping.debug){
-            t+="//# sourceURL=" + this._path.substring(0,this._path.length-3)+"-autodom.js";
+        if (baseMapping.debug) {
+            t += "//# sourceURL=" + this._path.substring(0, this._path.length - 3) + "-autodom.js";
         }
 //        console.log(t);
         return t;
@@ -6144,7 +6139,7 @@
     };
     template.prototype.renderTo = function () {
         var a = Array.prototype.slice.call(arguments), b = "";
-        var dom=a.shift();
+        var dom = a.shift();
         this._session = a;
         try {
             b = this._fn.apply(this, this._session);
@@ -6155,7 +6150,7 @@
     };
     template.prototype.renderAppendTo = function () {
         var a = Array.prototype.slice.call(arguments), b = "";
-        var dom=a.shift();
+        var dom = a.shift();
         this._session = a;
         try {
             b = this._fn.apply(this, this._session);
@@ -6167,15 +6162,13 @@
     template.prototype.flush = function (dom) {
         var ths = this;
         dom.find("[data-cache]").add(dom).each(function () {
-//            var c = bright(this).dataset("cache");
             var c = this.dataset.cache;
-            if (c) {
+            if (c !== undefined) {
                 this.datasets || (this.datasets = {});
                 this.datasets["-cache-"] = ths._caching[c];
                 this.removeAttribute("data-cache");
             }
         });
-        this._caching.length = 0;
     };
     template.prototype.code = function () {
         return this._code;
@@ -6240,7 +6233,7 @@
         this.tempt.flush(dom);
     };
     autodomc.prototype.update = function (dataarray) {
-        var virt = this.tempt.autoDom.apply(this.tempt, dataarray),q = template.diff(virt, this.virt);
+        var virt = this.tempt.autoDom.apply(this.tempt, dataarray), q = template.diff(virt, this.virt);
         this.virt = virt;
         template.effect(this.dom, q);
         this.tempt.flush(this.dom);
@@ -6792,7 +6785,7 @@
                 } else {
                     var tep = bright.template(ths.template, null, ths.marcos), n = Array.prototype.slice.call(arguments);
                     n.unshift(ths.dom);
-                    tep.renderTo.apply(tep,n);
+                    tep.renderTo.apply(tep, n);
                     ths.delegate();
                 }
             } catch (e) {
