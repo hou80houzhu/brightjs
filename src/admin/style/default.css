@@ -837,7 +837,7 @@ body {
     -webkit-border-radius: 15px 15px 0 0; }
   .login .logo {
     height: 170px;
-    background-image: url(images/xlogo.png);
+    background-image: url(images/logo1.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain; }
@@ -974,6 +974,71 @@ body {
       color: #2EB99D; }
   .newlist.open {
     width: 260px; }
+
+.about {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999999;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+  display: -ms-flexbox;
+  -ms-flex-orient: horizontal;
+  -ms-flex-pack: center;
+  -ms-flex-align: center;
+  display: box;
+  box-orient: horizontal;
+  box-pack: center;
+  box-align: center; }
+
+.about .about-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: transparent;
+  -webkit-transition: all ease-out 3s;
+  transition: all ease-out 3s; }
+
+.about.show .about-mask {
+  background: rgba(0, 0, 0, 0.7); }
+
+.about .about-content {
+  width: 40%;
+  height: 300px;
+  background: white;
+  -webkit-border-radius: 10px;
+  -webkit-box-shadow: 0 0 15px #0F0F0F;
+  -moz-border-radius: 10px;
+  -moz-box-shadow: 0 0 15px #0F0F0F;
+  -ms-border-radius: 10px;
+  -ms-box-shadow: 0 0 15px #0F0F0F;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #0F0F0F;
+  position: relative; }
+
+.about .about-content-title {
+  line-height: 35px;
+  padding: 0 15px 0 15px;
+  border-bottom: 1px solid #FCFCFC; }
+
+.about .about-content-context {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 36px;
+  bottom: 0;
+  padding: 0 15px 0 15px; }
 
 ::-webkit-scrollbar {
   width: 6px;
