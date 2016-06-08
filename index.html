@@ -12,8 +12,29 @@
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/72.png">
         <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/57.png">
         <link rel="shortcut icon" href="images/144.png">
-        <script src="adapt.js" type="text/javascript"></script>
+        <script src="bright.js" type="text/javascript"></script>
+        <script>
+            $().ready(function () {
+                $(".aa").delegate("click", "span", function (e) {
+                    console.log(e);
+                    e.stopPropagation();
+                });
+                $(".aa").delegate("click", ".bb", function (e) {
+                    console.log(e);
+                });
+            });
+        </script>
     </head>
     <body>
+        <div class="aa">
+            <div class="bb">
+                <div class="cc"><span>aa</span></div>
+                <div class="cc qq"><span>bb</span></div>
+            </div>
+            <div class="ee">
+                <div class="ff"><span>ff</span></div>
+                <div class="ff"><span>cc</span></div>
+            </div>
+        </div>
     </body>
 </html>

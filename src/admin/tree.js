@@ -92,7 +92,7 @@ Module({
             });
             str += "</div>";
             dom.parent().append(str);
-            this.delegate();
+            this.update();
         }
         this.dispatchEvent("treeclick", {
             node: this.current.parent(),
@@ -133,7 +133,7 @@ Module({
                 this.statedom.html("");
                 var str = this.treeStr(da);
                 this.dom.find(".tree-container").html(str);
-                this.delegate();
+                this.update();
                 if (ths.option.firstClick) {
                     this.dom.find(".tree-node").find(".title").eq(0).click();
                 }
@@ -218,7 +218,7 @@ Module({
                     (json[ths.option.iconname] ? "<div class='icon'><i class='" + json[ths.option.iconname] + "'></i></div>" : "") +
                     "<span class='title' data-bind='click:title'>" + ct + "</span></div><div class='tree-node-list'>";
             var c = $(html).appendTo(this.current.parent().children(1));
-            this.delegate();
+            this.update();
         }
         return this;
     },

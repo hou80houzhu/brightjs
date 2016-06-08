@@ -980,6 +980,15 @@
             }
             return ar;
         },
+        queryChildAll: function (node, selector) {
+            var id = node.getAttribute("id") || "__bright__";
+            node.setAttribute("id", id);
+            var ar = dom.util.query(node, "#" + id + " " + selector);
+            if (id === "__bright__") {
+                node.removeAttribute("id");
+            }
+            return ar;
+        },
         repairTags: {
             area: {l: 1, s: "<map>", e: ""},
             param: {l: 1, s: "<object>", e: ""},
@@ -2682,6 +2691,29 @@
             return this;
         }
     };
+    query.prototype.delegate = function (type, selector, fn) {
+        this.bind(type, function (e) {
+            var d = e.target, m = e.currentTarget;
+            var r = dom.util.queryChildAll($(this).get(0), selector);
+            while (d !== m && d !== window.document) {
+                if (r.indexOf(d) !== -1) {
+                    if (!e._ispropagation) {
+                        e.stopPropagation = function () {
+                            this._ispropagation = true;
+                            Object.getPrototypeOf(e).stopPropagation.call(this);
+                        };
+                        fn && fn.call(d, e);
+                    } else {
+                        break;
+                    }
+                    if (e._ispropagation) {
+                        break;
+                    }
+                }
+                d = d.parentNode;
+            }
+        });
+    };
     dom.prototype = new query();
     var windoc = function (obj) {
         this.obj = obj;
@@ -3637,6 +3669,15 @@
             baseMapping.onimportend = packetName.onimportend || null;
         }
         return this;
+    };
+    bootstrap.prototype.removeImportListener = function (packetName, type) {
+        if (arguments.length === 2) {
+            baseMapping.observers[packetName] && (baseMapping.observers[packetName][type] = null);
+        } else if (arguments.length === 1) {
+            baseMapping.observers[packetName] = {onimportstart: null, onimportprogress: null, onimportend: null};
+        } else {
+            baseMapping.observers = {};
+        }
     };
     bootstrap.prototype.setCodeRewriter = function (fn) {
         if (fn) {
@@ -5505,7 +5546,7 @@
         }
     };
     tnode.prototype.hasCode = function () {
-        return /[.\(\)\{\};]/.test(this.content);
+        return /\(\[-code-\]\)/.test(this.content);
     };
     var template = function (temp, macro, parameters, autodom) {
         if (baseMapping.debug) {
@@ -6189,6 +6230,7 @@
         return this;
     };
     template.prototype.clean = function () {
+        this._caching.length = 0;
         for (var i in this) {
             this[i] = null;
         }
@@ -6237,6 +6279,11 @@
         this.virt = virt;
         template.effect(this.dom, q);
         this.tempt.flush(this.dom);
+    };
+    autodomc.prototype.clean = function () {
+        for (var i in this) {
+            this[i] = null;
+        }
     };
     query.prototype.autodom = function (temp, dataarray) {
         return new autodomc(this, temp, dataarray);
@@ -6451,6 +6498,27 @@
     var delegater = function () {
         this._data = [];
     };
+    delegater.handler = function (e) {
+        var d = e.target, m = e.currentTarget, module = m.datasets["-view-"];
+        while (d && d !== m && d !== window.document && d !== window) {
+            if (d.datasets && d.datasets["_eventback_"]) {
+                var name = d.datasets["_eventback_"][e.type];
+                if (name) {
+                    if (module["bind_" + name]) {
+                        e.stopPropagation = function () {
+                            this._ispropagation = true;
+                        };
+                        module["bind_" + name].call(module, $(d), e);
+                        if (e._ispropagation) {
+                            break;
+                        }
+                    }
+                }
+            }
+            d = d.parentNode;
+        }
+        e.stopPropagation();
+    };
     delegater.finder = function (module) {
         var r = [];
         for (var i = 0; i < module._finders._data.length; i++) {
@@ -6500,19 +6568,28 @@
     };
     delegater.event = function (module) {
         module.dom.find("[data-bind]").each(function () {
-            if (!bright(this).data("_eventback_")) {
+            if (!this.datasets || this.datasets && !this.datasets["_eventback_"]) {
                 var q = {}, types = bright(this).dataset("bind").split(" ");
                 for (var m in types) {
-                    var type = types[m].split(":"), etype = type[0], back = type[1];
+                    var type = types[m].split(":"), etype = type[0], back = type[1], qt = module.dom.get(0);
                     q[etype] = back;
-                    bright(this).removeAttr("data-bind").bind(etype, function (e) {
-                        var back = bright(this).data("_eventback_")[e.type];
-                        module["bind_" + back] && module["bind_" + back].call(module, bright(this), e);
-                    });
+                    if (!qt.events || qt.events && !qt.events[etype]) {
+                        module.dom.bind(etype, delegater.handler);
+                    }
                 }
-                bright(this).data("_eventback_", q);
+                if (!this.datasets) {
+                    this.datasets = {};
+                }
+                this.datasets["_eventback_"] = q;
             }
         });
+    };
+    delegater.delegate = function (module) {
+        console.time("delegate");
+        delegater.finder(module);
+        delegater.group(module);
+        delegater.event(module);
+        console.timeEnd("delegate");
     };
 
     module.add({
@@ -6591,7 +6668,7 @@
         option: {},
         parentView: null,
         marcos: {},
-        autoupdate: false,
+        autodom: false,
         init: null,
         template: "",
         onbeforeinit: null,
@@ -6667,12 +6744,6 @@
                     fn && fn();
                 });
             }
-            return this;
-        },
-        delegate: function () {
-            delegater.finder(this);
-            delegater.group(this);
-            delegater.event(this);
             return this;
         },
         getId: function () {
@@ -6778,15 +6849,15 @@
                 console.error("[bright] onbeforerender called error with module of " + ths.type() + " Message:" + e.stack);
             }
             try {
-                if (ths.autoupdate) {
+                if (ths.autodom) {
                     this.autodomcache = Array.prototype.slice.call(arguments);
-                    ths.autodom = ths.dom.autodom(ths.template, this.autodomcache, ths.marcos);
-                    ths.delegate();
+                    ths.autodomc = ths.dom.autodom(ths.template, this.autodomcache, ths.marcos);
+                    delegater.delegate(ths);
                 } else {
                     var tep = bright.template(ths.template, null, ths.marcos), n = Array.prototype.slice.call(arguments);
                     n.unshift(ths.dom);
                     tep.renderTo.apply(tep, n);
-                    ths.delegate();
+                    delegater.delegate(ths);
                 }
             } catch (e) {
                 console.error("[bright] render called error with module of " + ths.type() + " Message:" + e.stack);
@@ -6802,16 +6873,14 @@
             return ps;
         },
         update: function () {
-            if (this.autoupdate && this.autodom) {
+            if (this.autodom && this.autodomc) {
                 if (arguments.length === 0) {
-                    this.autodom.update(this.autodomcache);
+                    this.autodomc.update(this.autodomcache);
                 } else {
-                    this.autodom.update(Array.prototype.slice.call(arguments));
+                    this.autodomc.update(Array.prototype.slice.call(arguments));
                 }
-                this.delegate();
-            } else {
-                console.warn("[bright] this view is not open autoupdate option");
             }
+            delegater.delegate(this);
         },
         original: function (methods) {
             var a = Object.getPrototypeOf(this)[methods];
@@ -7080,9 +7149,9 @@
                                         }
                                         return "<" + prps.tagName + " class='" + prps.fullClassName + "' data-parent-view='" + ths.getId() + "' data-view='" + type + "' data-view-id='" + (id || ths.getId() + "-" + ths.children.length) + "' data-option='" + (option || "") + "'></" + prps.tagName + ">";
                                     }
-                                }, ths.marcos), true);
-                                if (ths.autoupdate) {
-                                    ths.autodom = ths.dom.autodom(tempt, [ths.option, ths.getId(), ths.option]);
+                                }, ths.marcos), ths.autodom);
+                                if (ths.autodom) {
+                                    ths.autodomc = ths.dom.autodom(tempt, [ths.option, ths.getId(), ths.option]);
                                 } else {
                                     tempt.renderTo(ths.dom, ths.option, ths.getId(), ths.option);
                                 }
@@ -7108,7 +7177,7 @@
                         queue.complete(function (a) {
                             a["name"] = a.type();
                             a["shortname"] = a.shortName();
-                            a.delegate();
+                            delegater.delegate(a);
                             if (a.className && a.className !== "") {
                                 a.dom.addClass(a.className);
                             }
@@ -7274,12 +7343,10 @@
             return ps;
         },
         update: function () {
-            if (this.autoupdate && this.autodom) {
-                this.autodom.update([this.option, this.getId(), this.option]);
-                this.delegate();
-            } else {
-                console.warn("[bright] this viewgroup is not open autoupdate option");
+            if (this.autodom && this.autodomc) {
+                this.autodomc.update([this.option, this.getId(), this.option]);
             }
+            delegater.delegate(this);
         },
         getChildrenByType: function (type) {
             var r = [];

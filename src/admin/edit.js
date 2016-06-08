@@ -299,7 +299,7 @@ Module({
     },
     getBox: function (option) {
         var a = $($.template(module.getTemplate("@formtemplate", "htmleditorbox")).render(option)).appendTo(this.dom);
-        this.delegate();
+        this.update();
         return a;
     },
     getValue: function () {

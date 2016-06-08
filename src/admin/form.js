@@ -687,7 +687,7 @@ Module({
                             "</div>";
                     var p = $(str).insertBefore(ths.dom.find(".imagesuploader-container").children(0));
                     this._dom = p;
-                    ths.delegate();
+                    ths.update();
                 });
                 this.files.push(_file);
             }
@@ -753,7 +753,7 @@ Module({
                                 "</div>";
                         $(str).insertBefore(ths.dom.find(".imagesuploader-container").children(0));
                         ths.result.push(data[i]);
-                        ths.delegate();
+                        ths.update();
                     });
                 }
             }
@@ -940,7 +940,7 @@ Module({
             },
             container: t.find(".extendform-form")
         }).done(function () {
-            this.delegate();
+            this.update();
         });
     },
     btn_remove: function (dom) {
@@ -990,7 +990,7 @@ Module({
                 parameters: val[i],
                 container: t.find(".extendform-form")
             }).done(function () {
-                this.delegate();
+                this.update();
             });
         }
     },
@@ -1374,7 +1374,7 @@ Module({
             $(str).insertBefore(this.dom.find(".imagesuploader-container").children(0));
             this.result.push(files[i]);
         }
-        this.delegate();
+        this.update();
         if (this.option.hiddenremoveadd) {
             this.dom.find(".imageuploader-remove").hide();
             this.dom.find(".imagesuploader-filebtnplus").hide();
@@ -1406,7 +1406,7 @@ Module({
                     file.getImage(function (image) {
                         p.find(".imagesuploader-image-bg").css("background-image", "url(" + image.src + ")").empty();
                         file._dom = p;
-                        ths.delegate();
+                        ths.update();
                     });
                 })(_file);
                 this.files.push(_file);
@@ -1646,7 +1646,7 @@ Module({
                     }));
                     this.files.push(_file);
                     this.dispatchEvent("uploadfileselected", _file);
-                    this.delegate();
+                    this.update();
                 } else {
                     if (this.getFileSize() <= 0) {
                         _file._id = this.files.length;
@@ -1656,7 +1656,7 @@ Module({
                         }));
                         this.files.push(_file);
                         this.dispatchEvent("uploadfileselected", _file);
-                        this.delegate();
+                        this.update();
                     }
                 }
             }

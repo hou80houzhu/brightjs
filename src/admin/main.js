@@ -274,7 +274,7 @@ Module({
     name: "pages",
     className: "pages",
     extend: "viewgroup",
-    layout: "<div class='container'></div>",
+    layout: module.getTemplate("@skin","pages"),
     option: {
     },
     init: function () {
@@ -449,17 +449,18 @@ Module({
                 }
                 if (this.mapping.indexOf(id) === -1) {
                     this.mapping.push(id);
+                    this.dom.find(".pages-loading").show();
                     this.addChild({
                         type: data.mapping.view,
                         container: this.dom.find(".container"),
                         id: "win-" + data.id,
                         option: data.mapping.option,
-                        parameters: data,
-                        fn: function () {
-                            if (this.onflipIn) {
-                                this.pagein = true;
-                                this.onflipIn();
-                            }
+                        parameters: data
+                    }).done(function(a){
+                        this.dom.find(".pages-loading").hide();
+                        if (a.onflipIn) {
+                            a.pagein = true;
+                            a.onflipIn();
                         }
                     });
                     this.current = this.mapping.length - 1;
@@ -546,6 +547,8 @@ Module({
             }
         });
         var data = this.parameters.mapping.list[num];
+        console.log(data);
+        this.dom.find(".maincontainer-loading").html("<div><i class='fa "+data.img+"'></i></div>").show();
         this.removeAllChild().addChild({
             type: data.view,
             container: this.dom.find(".right-content"),
@@ -558,6 +561,9 @@ Module({
     },
     out: function () {
         this.dom.addClass("out");
+    },
+    oninitchild:function(){
+        this.dom.find(".maincontainer-loading").hide();
     }
 });
 Module({
@@ -646,7 +652,6 @@ Module({
         }
     },
     onflipIn: function () {
-
         var ths = this;
         clearInterval(this.timeout);
 //        this.timeout = setInterval(function () {
@@ -660,7 +665,6 @@ Module({
 //        }, 5000);
     },
     onflipOut: function () {
-
         clearInterval(this.timeout);
     },
     onunload: function () {
@@ -738,7 +742,7 @@ Module({
     layout: module.getTemplate("@skin", "choutier"),
     ondomready: function () {
         this.dom.width(this.option.width);
-        this.delegate();
+        this.update();
     },
     init: function () {
         var ths = this;

@@ -6,7 +6,7 @@ Module({
     name: "autoview",
     extend: "view",
     template: module.getTemplate("@temp", "nodome"),
-    autoupdate: true,
+    autodom: true,
     init: function () {
         this.c = [
             {name: 1, name2: 1, name3: 10, list: [
@@ -86,7 +86,7 @@ Module({
 Module({
     name: "autoviewgroup",
     extend: "viewgroup",
-    autoupdate: true,
+    autodom: true,
     option: {
         type: "@.autoview",
         data: [
@@ -305,7 +305,7 @@ Option({
 Module({
     name: "qut",
     extend: "view",
-    autoupdate: true,
+    autodom: true,
     template: module.getTemplate("@temp", "qut"),
     init: function () {
         this.total = 0;
@@ -389,12 +389,11 @@ Module({
 Module({
     name: "tt",
     extend: "view",
-    autoupdate: true,
+    autodom: true,
     template: module.getTemplate("@temp", "testtest"),
     init: function () {
         function _buildData(count) {
             count = count || 1000;
-
             var adjectives = ["pretty", "large", "big", "small", "tall", "short", "long", "handsome", "plain", "quaint", "clean", "elegant", "easy", "angry", "crazy", "helpful", "mushy", "odd", "unsightly", "adorable", "important", "inexpensive", "cheap", "expensive", "fancy"];
             var colours = ["red", "yellow", "blue", "green", "pink", "brown", "purple", "brown", "white", "black", "orange"];
             var nouns = ["table", "chair", "house", "bbq", "desk", "car", "pony", "cookie", "sandwich", "burger", "pizza", "mouse", "keyboard"];
@@ -406,24 +405,16 @@ Module({
         function _random(max) {
             return Math.round(Math.random() * 1000) % max;
         }
-        var data = _buildData(), date = new Date();
+        var data = _buildData();
+        console.time("init");
         this.render({
-            selected:0,
-            list:data
+            selected: 0,
+            list: data
         });
-        console.log(new Date() - date) + " ms";
-        var ths=this;
-        this.dom.click(function(e){
-            if(e.target.tagName==="SPAN"){
-                ths.autodomcache[0].selected=ths.autodomcache[0].list.indexOf($(e.target).parent(2).cache());
-                ths.update();
-            }
-        });
-    },
-    find_item:function(dom){
-        var ths=this;
-        dom.click(function(){
-            ths.autodomcache[0].selected=ths.autodomcache[0].list.indexOf($(this).cache());
+        console.timeEnd("init");
+        var ths = this;
+        this.dom.delegate("click", ".row", function (e) {
+            ths.autodomcache[0].selected = ths.autodomcache[0].list.indexOf($(this).cache());
             console.time("===>update");
             ths.update();
             console.timeEnd("===>update");

@@ -7,7 +7,7 @@
 Module({
     name: "todos",
     extend: "view",
-    autoupdate: true,
+    autodom: true,
     className: "todos",
     template: module.getTemplate("@temp", "todos"),
     init: function () {
@@ -20,33 +20,34 @@ Module({
         };
         this.render(this._todos);
     },
-    group_item: function (dom) {
-        var ths = this;
-        dom.items("check").click(function () {
-            var t = $(this).group().cache();
-            if (t.checked) {
-                t.checked = false;
-                ths._todos.totalleft = ths._todos.totalleft + 1;
-            } else {
-                t.checked = true;
-                ths._todos.totalleft = ths._todos.totalleft - 1;
-            }
-            ths.update();
-        });
-        dom.items("remove").click(function () {
-            var t = $(this).group().cache();
-            var q = ths._todos.task.indexOf(t);
-            ths._todos.task.splice(q, 1);
-            if (!t.checked) {
-                ths._todos.totalleft = ths._todos.totalleft - 1;
-            }
-            ths.update();
-        });
+    bind_check: function (dom,e) {
+        var t = dom.group().cache();
+        if (t.checked) {
+            t.checked = false;
+            this._todos.totalleft = this._todos.totalleft + 1;
+        } else {
+            t.checked = true;
+            this._todos.totalleft = this._todos.totalleft - 1;
+        }
+        this.update();
+        e.stopPropagation();
     },
-    bind_input: function (dom,e) {
+    bind_remove: function (dom) {
+        var t = dom.group().cache();
+        var q = this._todos.task.indexOf(t);
+        this._todos.task.splice(q, 1);
+        if (!t.checked) {
+            this._todos.totalleft = this._todos.totalleft - 1;
+        }
+        this.update();
+    },
+    bind_ppt:function(e){
+        console.log(e);
+    },
+    bind_input: function (dom, e) {
         if (e.keyCode === 13) {
             var t = dom.val();
-            if(t){
+            if (t) {
                 this._todos.task.push({
                     checked: false,
                     desc: t
