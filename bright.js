@@ -5712,7 +5712,7 @@
     };
     template.effect = function (dom, r) {
         if (baseMapping.debug) {
-            console.log("Add:[" + r.add.length + "] Replace:[" + r.replace.length + "] Remove:[" + r.remove.length + "] Edit:[" + r.edit.length + "] removeAll:[" + r.removeAll.length) + "]";
+            console.log("Add:" + r.add.length + " Replace:" + r.replace.length + " Remove:" + r.remove.length + " Edit:" + r.edit.length + " removeAll:" + r.removeAll.length);
         }
         var removes = [], adds = {};
         for (var i = 0, len = r.replace.length; i < len; i++) {
@@ -6263,6 +6263,7 @@
     };
 
     var autodomc = function (dom, temp, dataarray) {
+        console.time("=>init");
         this.dom = dom;
         if (is.isString(temp)) {
             this.tempt = bright.template(temp, null, null, true);
@@ -6273,12 +6274,15 @@
         this.virt = this.tempt.autoDom.apply(this.tempt, dataarray);
         dom.html(tempstr);
         this.tempt.flush(dom);
+        console.timeEnd("=>init");
     };
     autodomc.prototype.update = function (dataarray) {
+        console.time("=>update");
         var virt = this.tempt.autoDom.apply(this.tempt, dataarray), q = template.diff(virt, this.virt);
         this.virt = virt;
         template.effect(this.dom, q);
         this.tempt.flush(this.dom);
+        console.timeEnd("=>update");
     };
     autodomc.prototype.clean = function () {
         for (var i in this) {
@@ -6500,7 +6504,7 @@
     };
     delegater.handler = function (e) {
         var d = e.target, m = e.currentTarget, module = m.datasets["-view-"];
-        while (d && d !== m && d !== window.document && d !== window) {
+        while (d && d !== window) {
             if (d.datasets && d.datasets["_eventback_"]) {
                 var name = d.datasets["_eventback_"][e.type];
                 if (name) {
@@ -6514,6 +6518,9 @@
                         }
                     }
                 }
+            }
+            if(d===m){
+                break;
             }
             d = d.parentNode;
         }
@@ -6585,11 +6592,9 @@
         });
     };
     delegater.delegate = function (module) {
-        console.time("delegate");
         delegater.finder(module);
         delegater.group(module);
         delegater.event(module);
-        console.timeEnd("delegate");
     };
 
     module.add({
