@@ -14,8 +14,8 @@ Module({
         form: {}
     },
     layout: module.getTemplate("@skin", "login"),
-    onoption: function (option, a, b) {
-        return this.option.form;
+    oninitchild:function(a){
+        $.extend(a.option,this.option.form);
     },
     init: function () {
         var ths = this;

@@ -136,9 +136,10 @@ Module({
             return pros;
         }
     },
-    onoption: function (option, view, viewid) {
+    oninitchild: function (module) {
+        var viewid=module.getId();
         var name = viewid.substring(1, viewid.length);
-        return this.option.fields[name];
+        $.extend(module.option,this.option.fields[name]);
     },
     event_selectchange: function (e) {
         var next = e.data.next, value = e.data.value, ths = this;

@@ -3675,9 +3675,10 @@
             baseMapping.observers[packetName] && (baseMapping.observers[packetName][type] = null);
         } else if (arguments.length === 1) {
             baseMapping.observers[packetName] = {onimportstart: null, onimportprogress: null, onimportend: null};
-        } else {
-            baseMapping.observers = {};
         }
+    };
+    bootstrap.prototype.clearImportListener=function(){
+        baseMapping.observers={};
     };
     bootstrap.prototype.setCodeRewriter = function (fn) {
         if (fn) {
@@ -4737,21 +4738,27 @@
             }
         }
         return code.replace(/src=['"].+?['"]/g, function (a) {
+            a=a.trim();
             if (a.indexOf("<%") === -1) {
-                var rp = a, newpath = a.substring(5, a.length - 1), _a = newpath.split("/"), name = _a[_a.length - 1].split(".")[0], done = false;
-                if (oldtemp.indexOf(name) !== -1) {
-                    for (var i = 0; i < oldpaths.length; i++) {
-                        if (oldpaths[i].indexOf(name) !== -1) {
-                            rp = oldpaths[i];
-                            done = true;
-                            break;
+                var rp = a, newpath = a.substring(5, a.length - 1);
+                if(newpath.indexOf("http:")===0||newpath.indexOf("data:")===0||newpath.indexOf("https:")===0){
+                    return "src=\"" + newpath + "\"";
+                }else{
+                    var _a = newpath.split("/"), name = _a[_a.length - 1].split(".")[0], done = false;
+                    if (oldtemp.indexOf(name) !== -1) {
+                        for (var i = 0; i < oldpaths.length; i++) {
+                            if (oldpaths[i].indexOf(name) !== -1) {
+                                rp = oldpaths[i];
+                                done = true;
+                                break;
+                            }
                         }
                     }
+                    if (!done) {
+                        rp = "src=\"" + baseMapping.basePath + a + "\"";
+                    }
+                    return rp;
                 }
-                if (!done) {
-                    rp = "src=\"" + baseMapping.basePath + a.substring(5, a.length - 1) + "\"";
-                }
-                return rp;
             } else {
                 return a;
             }
@@ -5002,10 +5009,7 @@
             parent.option = {};
         }
         var r = Object.getPrototypeOf(parent), ops = [parent.option];
-        while (r) {
-            ops.push(r.option ? bright.json.clone(r.option) : {});
-            r = Object.getPrototypeOf(r);
-        }
+        ops.push(r.option ? bright.json.clone(r.option) : {});
         var ife = [], ex = [obj.packet ? obj.packet + "." + obj.name : obj.name];
         if (obj.extend.length > 1) {
             ex.push(obj.extend.shift());
@@ -5575,8 +5579,8 @@
         bright.extend(this._macrofn, template.globalMacro);
     };
     template.z = /\<\!\-\-\([0-9a-zA-Z-_]*?\)\-\-\>/;
-    template.a = /&lt;%/g;
-    template.b = /%&gt;/g;
+    template.a = /&lt;/g;
+    template.b = /&gt;/g;
     template.c = /&quot;/g;
     template.d = /<%|%>/g;
     template.e = /^=.*;$/;
@@ -5814,7 +5818,7 @@
             outp = "\r\nout+";
         }
         fn += "var out='';";
-        var tp = temp.replace(template.a, "<%").replace(template.b, "%>").split(template.d);
+        var tp = temp.split(template.d);
         for (var index = 0; index < tp.length; index++) {
             var e = tp[index];
             index % 2 !== 0 ? (template.e.test(e) ? (fn += outp + e) : (fn += e)) : (fn += outp + "=\"" + e.replace(template.m, '\\"') + "\";");
@@ -5932,7 +5936,7 @@
         }
     };
     template.precompile = function (str, autodom) {
-        str = str.replace(template.h, "").replace(template.f, "><").replace(template.i, "").replace(template.k, "").replace(template.l, "");
+        str = str.replace(template.a, "<").replace(template.b, ">").replace(template.h, "").replace(template.f, "><").replace(template.i, "").replace(template.k, "").replace(template.l, "");
         if (str.indexOf("<@") !== -1) {
             var i = -1, current = "", state = "start", tagname = "", propname = "", propnamestart, propvalue = "";
             var isbody = true, endtagname = "", props = {}, tagindex = 0, tagendindex = 0, endtagindex = 0, endtagendindex = 0, obj = [];
@@ -7087,8 +7091,8 @@
         extend: "view",
         layout: null,
         ondomready: null,
-        onoption: null,
         oninitchild: null,
+        oninitchildend:null,
         _render: function (fn) {
             if (!this.dom.data("-view-")) {
                 this.dom.data("-view-", this);
@@ -7140,7 +7144,7 @@
                             }
                         }
                         var str = ths.layout;
-                        if (str === "" && ths.dom.children().length > 0) {
+                        if (!str&& ths.dom.children().length > 0) {
                             str = ths.dom.html();
                         }
                         if (bright.is.isString(str)) {
@@ -7206,34 +7210,32 @@
                             queue.add(function (aa, dom) {
                                 var que = this;
                                 var ops = {}, subview = dom.dataset("view"), subid = dom.dataset("viewId");
-                                if (aa.oninitchild) {
-                                    try {
-                                        aa.oninitchild({id: subid, type: subview});
-                                    } catch (e) {
-                                        console.error("[bright] oninitchild called error with module of " + ths.type() + " Message:" + e.stack);
-                                    }
-                                }
                                 module.get(aa.type(), subview, null, function (k) {
                                     for (var i = k.__info__.types.length - 1; i >= 0; i--) {
                                         bright.extend(ops, aa.option[k.__info__.types[i]]);
                                     }
                                     bright.extend(ops, aa.option[subid]);
-                                    var tops = null;
-                                    if (typeof aa.onoption === 'function') {
-                                        try {
-                                            tops = aa.onoption.call(aa, ops, subview, subid);
-                                            bright.extend(ops, tops);
-                                        } catch (e) {
-                                            console.error("[bright] onoption called error with module of " + ths.type() + " Message:" + e.stack);
-                                        }
-                                    }
                                     bright.extend(k.option, ops);
                                     if (!dom.data("-view-")) {
                                         var obj = k;
                                         obj.dom = dom;
                                         obj.parentView = aa;
+                                        if (aa.oninitchild) {
+                                            try {
+                                                aa.oninitchild(obj);
+                                            } catch (e) {
+                                                console.error("[bright] oninitchild called error with module of " + ths.type() + " Message:" + e.stack);
+                                            }
+                                        }
                                         aa.children.push(obj);
                                         obj.privator("render", function () {
+                                            if (aa.oninitchildend) {
+                                                try {
+                                                    aa.oninitchildend(obj);
+                                                } catch (e) {
+                                                    console.error("[bright] oninitchildend called error with module of " + ths.type() + " Message:" + e.stack);
+                                                }
+                                            }
                                             que.next(aa);
                                         });
                                     } else {
@@ -7317,16 +7319,23 @@
                     if (!ths.dom.contain(sobj.dom)) {
                         sobj.___outer___ = true;
                     }
+                    if (ths.oninitchild) {
+                        try {
+                            ths.oninitchild(sobj);
+                        } catch (e) {
+                            console.error("[bright] oninitchild called error with module of " + ths.type() + " [" + e.stack + "]");
+                        }
+                    }
                     sobj.option = opss;
                     sobj.parameters = ops.parameters;
                     sobj.target = ops.target;
                     sobj.parentView = ths;
                     sobj.privator("render", function () {
-                        if (typeof ths.oninitchild === 'function') {
+                        if (typeof ths.oninitchildend === 'function') {
                             try {
-                                ths.oninitchild({id: sobj.getId(), type: sobj.type()});
+                                ths.oninitchildend(sobj);
                             } catch (e) {
-                                console.error("[bright] oninitchild called error with module of " + ths.type() + " [" + e.stack + "]");
+                                console.error("[bright] oninitchildend called error with module of " + ths.type() + " [" + e.stack + "]");
                             }
                         }
                         callback && callback.call(sobj);
